@@ -1,0 +1,18 @@
+.payment-history {
+    padding: 16px;
+    background: #f0f2f5;
+  }
+  
+  .payment-history h2 {
+    margin-bottom: 16px;
+  }
+  
+  .ant-card {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .ant-card-head-title {
+    font-weight: bold;
+  }
+  

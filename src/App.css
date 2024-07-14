@@ -1,0 +1,61 @@
+body {
+  font-size: 25px; /* Adjust the base font size */
+  font-family: sans-serif; /* Change the default font family if needed */
+  background-color: #fff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit; /* Ensure headings scale with the base font size */
+}
+
+.ant-typography {
+  font-size: 1.1em; /* Slightly larger text for Ant Design Typography components */
+}
+
+.menu-item {
+  font-size: 18px;
+  color: black;
+}
+
+.menu-item-active {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.header {
+  border-radius: 10px;
+  overflow: hidden;
+  /* margin: 10px; */
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Custom styles for the title */
+.custom-title {
+  text-align: center;
+  font-family: 'Playfair Display', serif; /* Choose a good font */
+  font-size: 3rem; /* Adjust the font size as needed */
+  font-weight: 700; /* Adjust the thickness as needed */
+  margin-bottom: 2rem;
+}
+
+/* Custom styles for the sections */
+.custom-section {
+  text-align: center;
+  padding: 20px;
+}
+
+.custom-icon {
+  font-size: 4rem; /* Adjust the icon size as needed */
+  margin-bottom: 1rem;
+}
+
+.custom-section-title {
+  font-size: 1.5rem; /* Adjust the section title size as needed */
+  font-weight: 600; /* Adjust the thickness as needed */
+  margin-bottom: 0.5rem;
+}
+
+.custom-section-paragraph {
+  font-size: 1rem; /* Adjust the paragraph size as needed */
+}

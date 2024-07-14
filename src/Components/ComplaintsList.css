@@ -1,0 +1,13 @@
+.complaints-list {
+    padding: 16px;
+    background: #f0f2f5;
+  }
+  
+  .complaints-list h2 {
+    margin-bottom: 16px;
+  }
+  
+  .ant-list-item-meta-title {
+    font-weight: bold;
+  }
+  
