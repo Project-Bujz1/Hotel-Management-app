@@ -58,10 +58,6 @@ const App = () => {
             </Routes>
           </div>
         </Content>
-        <Footer style={{ textAlign: "center" }}>
-          <AppFooter />
-          PG Hostel Management System ©2024
-        </Footer>
       </Layout>
     </Router>
   );
