@@ -18,10 +18,9 @@ import PaymentHistory from "./Components/PaymentHistory";
 import ComplaintsList from "./Components/ComplaintsList";
 import AddComplaint from "./Components/AddComplaint";
 import Profile from "./Components/Profile";
-import AppFooter from "./Components/AppFooter";
 import MainMenu from "./Components/MainMenu";
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content } = Layout;
 
 const App = () => {
   return (
@@ -45,7 +44,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Navigate to="/home" />} />
               <Route path="/home" element={<About />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+              {/* <Route path="/dashboard" element={<Dashboard />} /> */}
               <Route path="/rooms" element={<RoomList />} />
               <Route path="/addRoom" element={<AddEditRoom />} />
               <Route path="/tenants" element={<TenantsList />} />
@@ -58,10 +57,6 @@ const App = () => {
             </Routes>
           </div>
         </Content>
-        <Footer style={{ textAlign: "center" }}>
-          <AppFooter />
-          PG Hostel Management System ©2024
-        </Footer>
       </Layout>
     </Router>
   );

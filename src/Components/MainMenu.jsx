@@ -1,11 +1,38 @@
-import React from "react";
-import { Menu, Input } from "antd";
+import React, { useEffect, useState } from "react";
+import { Menu, Input, Progress, Tooltip } from "antd";
 import { SearchOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo-1.png";
 
 const MainMenu = () => {
   const navigate = useNavigate();
+  const [tenantCount, setTenantCount] = useState(0);
+
+  useEffect(() => {
+    const fetchTenantData = async () => {
+      try {
+        const response = await fetch("http://localhost:3030/rooms");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const rooms = await response.json();
+
+        let count = 0;
+        rooms.forEach((room) => {
+          count += room.tenants.length;
+        });
+
+        setTenantCount(count);
+      } catch (error) {
+        console.error("Error fetching tenant data:", error);
+      }
+    };
+
+    fetchTenantData();
+  }, []);
+
+  const totalCapacity = 10; // Full capacity of the hostel
+  const progressPercentage = (tenantCount / totalCapacity) * 100;
 
   return (
     <div
@@ -14,140 +41,112 @@ const MainMenu = () => {
         top: 0,
         zIndex: 1,
         width: "100%",
-        backgroundColor: "rgba(255, 255, 255, 0)",
+        backgroundColor: "rgba(255, 255, 255, 0.9)",
         height: "80px",
         display: "flex",
         alignItems: "center",
-        overflowX: "hidden",
+        justifyContent: "space-between",
+        padding: "0 20px",
+        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
       }}
     >
-      <img src={logo} alt="Logo" style={{ height: "60px", margin: "10px" }} />
-      <Menu
-        mode="horizontal"
-        defaultSelectedKeys={["home"]}
-        style={{
-          backgroundColor: "transparent",
-          flex: 1,
-          display: "flex",
-          textTransform: "uppercase",
-          fontFamily: "Playfair, Montserrat, sans-serif",
-          textShadow: "2px 2px 4px white",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderBottom: "none",
-          fontWeight: "bold",
-        }}
-      >
-        <Menu.Item
-          key="home"
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <img
+          src={logo}
+          alt="Logo"
+          style={{ height: "60px", marginRight: "20px" }}
+        />
+        <Menu
+          mode="horizontal"
+          defaultSelectedKeys={["home"]}
           style={{
-            fontSize: "18px",
-            color: "black",
-            textShadow: "1px 1px 2px white",
+            backgroundColor: "transparent",
+            display: "flex",
+            textTransform: "uppercase",
+            fontFamily: "Playfair, Montserrat, sans-serif",
+            fontWeight: "bold",
           }}
-          onClick={() => navigate("/home")}
         >
-          Home
-        </Menu.Item>
-        <Menu.Item
-          key="dashboard"
+          <Menu.Item
+            key="home"
+            style={{ fontSize: "14px", color: "black", padding: "0 10px" }}
+            onClick={() => navigate("/home")}
+          >
+            Home
+          </Menu.Item>
+          <Menu.Item
+            key="rooms"
+            style={{ fontSize: "14px", color: "black", padding: "0 10px" }}
+            onClick={() => navigate("/rooms")}
+          >
+            Rooms
+          </Menu.Item>
+          <Menu.Item
+            key="tenants"
+            style={{ fontSize: "14px", color: "black", padding: "0 10px" }}
+            onClick={() => navigate("/tenants")}
+          >
+            Tenants
+          </Menu.Item>
+          <Menu.Item
+            key="rentDue"
+            style={{ fontSize: "14px", color: "black", padding: "0 10px" }}
+            onClick={() => navigate("/rentDue")}
+          >
+            Rent Due
+          </Menu.Item>
+          <Menu.Item
+            key="paymentHistory"
+            style={{ fontSize: "14px", color: "black", padding: "0 10px" }}
+            onClick={() => navigate("/paymentHistory")}
+          >
+            Payment History
+          </Menu.Item>
+          <Menu.Item
+            key="complaints"
+            style={{ fontSize: "14px", color: "black", padding: "0 10px" }}
+            onClick={() => navigate("/complaints")}
+          >
+            Complaints
+          </Menu.Item>
+        </Menu>
+      </div>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <Input
+          size="small"
+          prefix={<SearchOutlined />}
+          placeholder="Search a Tenant"
           style={{
-            fontSize: "18px",
-            color: "black",
+            width: "250px",
+            borderRadius: "10px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+            marginRight: "20px",
           }}
-          onClick={() => navigate("/dashboard")}
-        >
-          Dashboard
-        </Menu.Item>
-        <Menu.Item
-          key="rooms"
+        />
+        <Tooltip title={`Tenant Count: ${tenantCount} / ${totalCapacity}`}>
+          <div style={{ width: "120px", marginRight: "20px" }}>
+            <Progress percent={progressPercentage} size="small" />
+          </div>
+        </Tooltip>
+        <Menu
+          mode="horizontal"
           style={{
-            fontSize: "18px",
-            color: "black",
-            textShadow: "1px 1px 2px white",
-          }}
-          onClick={() => navigate("/rooms")}
-        >
-          Rooms
-        </Menu.Item>
-        <Menu.Item
-          key="tenants"
-          style={{
-            fontSize: "18px",
-            color: "black",
-            textShadow: "1px 1px 2px white",
-          }}
-          onClick={() => navigate("/tenants")}
-        >
-          Tenants
-        </Menu.Item>
-        <Menu.Item
-          key="rentDue"
-          style={{
-            fontSize: "18px",
-            color: "black",
-            textShadow: "1px 1px 2px white",
-          }}
-          onClick={() => navigate("/rentDue")}
-        >
-          Rent Due
-        </Menu.Item>
-        <Menu.Item
-          key="paymentHistory"
-          style={{
-            fontSize: "18px",
-            color: "black",
-            textShadow: "1px 1px 2px white",
-          }}
-          onClick={() => navigate("/paymentHistory")}
-        >
-          Payment History
-        </Menu.Item>
-        <Menu.Item
-          key="complaints"
-          style={{
-            fontSize: "18px",
-            color: "black",
-            textShadow: "1px 1px 2px white",
-          }}
-          onClick={() => navigate("/complaints")}
-        >
-          Complaints
-        </Menu.Item>
-        <Menu.Item
-          key="search"
-          style={{
+            backgroundColor: "transparent",
             display: "flex",
             alignItems: "center",
-            fontSize: "18px",
-            color: "black",
-            flex: 2,
-            marginLeft: "10px",
+            borderBottom: "none",
           }}
         >
-          <Input
-            prefix={<SearchOutlined style={{ width: "100%" }} />}
-            placeholder="Search"
-            style={{
-              width: "100%",
-              borderRadius: "5px",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-            }}
-          />
-        </Menu.Item>
-        <Menu.Item
-          key="profile"
-          style={{
-            fontSize: "18px",
-            color: "black",
-            textShadow: "1px 1px 2px white",
-          }}
-          icon={<UserOutlined />}
-          onClick={() => navigate("/profile")}
-        >
-          Profile
-        </Menu.Item>
-      </Menu>
+          <Menu.Item
+            key="profile"
+            style={{ fontSize: "14px", color: "black" }}
+            icon={<UserOutlined />}
+            onClick={() => navigate("/profile")}
+          >
+            Profile
+          </Menu.Item>
+        </Menu>
+      </div>
     </div>
   );
 };
