@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   Modal,
@@ -10,6 +10,9 @@ import {
   Input,
   Upload,
   Popconfirm,
+  message,
+  Select,
+  DatePicker,
 } from "antd";
 import {
   EditOutlined,
@@ -20,54 +23,33 @@ import {
 } from "@ant-design/icons";
 
 const { Text, Title } = Typography;
+const { Option } = Select;
 
 const TenantsList = () => {
-  // State for managing rooms and tenants
-  const [rooms, setRooms] = useState([
-    {
-      id: 1,
-      roomNumber: "101",
-      sharing: 2,
-      tenants: [
-        {
-          id: 1,
-          name: "John Doe",
-          image: "https://randomuser.me/api/portraits/men/1.jpg",
-          details: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        },
-        {
-          id: 2,
-          name: "Jane Smith",
-          image: "https://randomuser.me/api/portraits/women/2.jpg",
-          details:
-            "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        },
-      ],
-    },
-    {
-      id: 2,
-      roomNumber: "102",
-      sharing: 3,
-      tenants: [
-        {
-          id: 3,
-          name: "Michael Johnson",
-          image: "https://randomuser.me/api/portraits/men/3.jpg",
-          details:
-            "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-        },
-      ],
-    },
-  ]);
-
-  // State for managing modal visibility and form data
+  const [rooms, setRooms] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentRoom, setCurrentRoom] = useState(null);
   const [currentTenant, setCurrentTenant] = useState(null);
   const [form] = Form.useForm();
 
-  // Modal control functions
-  const showModal = (room, tenant) => {
+  // Fetch rooms data from the API
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        const response = await fetch("http://localhost:3030/rooms");
+        if (!response.ok) throw new Error("Network response was not ok");
+        const data = await response.json();
+        setRooms(data);
+      } catch (error) {
+        console.error("Error fetching rooms:", error);
+        message.error("Failed to fetch rooms data");
+      }
+    };
+
+    fetchRooms();
+  }, []);
+
+  const showModal = (room, tenant = null) => {
     setCurrentRoom(room);
     setCurrentTenant(tenant);
     setIsModalVisible(true);
@@ -110,8 +92,28 @@ const TenantsList = () => {
         }
         return room;
       });
-      setRooms(updatedRooms);
-      setIsModalVisible(false);
+
+      // Update data on the server
+      fetch(`http://localhost:3030/rooms/${currentRoom.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedRooms.find((r) => r.id === currentRoom.id)),
+      })
+        .then((response) => {
+          if (!response.ok) throw new Error("Network response was not ok");
+          return response.json();
+        })
+        .then(() => {
+          setRooms(updatedRooms);
+          setIsModalVisible(false);
+          message.success("Tenant information updated successfully");
+        })
+        .catch((error) => {
+          console.error("Error updating room data:", error);
+          message.error("Failed to update tenant information");
+        });
     });
   };
 
@@ -125,7 +127,49 @@ const TenantsList = () => {
       }
       return room;
     });
-    setRooms(updatedRooms);
+
+    // Update data on the server
+    fetch(`http://localhost:3030/rooms/${roomId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedRooms.find((r) => r.id === roomId)),
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error("Network response was not ok");
+        return response.json();
+      })
+      .then(() => {
+        setRooms(updatedRooms);
+        message.success("Tenant deleted successfully");
+      })
+      .catch((error) => {
+        console.error("Error deleting tenant:", error);
+        message.error("Failed to delete tenant");
+      });
+  };
+
+  const handleImageClick = (tenant) => {
+    Modal.info({
+      title: `Tenant Details - ${tenant.name}`,
+      content: (
+        <div style={{ textAlign: "center" }}>
+          <img
+            alt={tenant.name}
+            src={tenant.image || "https://via.placeholder.com/150"}
+            style={{ width: "150px", borderRadius: "50%" }}
+          />
+          <p>
+            <strong>Name:</strong> {tenant.name}
+          </p>
+          <p>
+            <strong>Details:</strong> {tenant.details}
+          </p>
+        </div>
+      ),
+      onOk() {},
+    });
   };
 
   return (
@@ -145,7 +189,14 @@ const TenantsList = () => {
               >
                 <Card
                   hoverable
-                  cover={<img alt={tenant.name} src={tenant.image} />}
+                  cover={
+                    <img
+                      alt={tenant.name}
+                      src={tenant.image || "https://via.placeholder.com/150"}
+                      onClick={() => handleImageClick(tenant)}
+                      style={{ cursor: "pointer" }}
+                    />
+                  }
                   actions={[
                     <EditOutlined
                       key="edit"
@@ -203,37 +254,47 @@ const TenantsList = () => {
         destroyOnClose
       >
         <Form form={form} layout="vertical">
-          <Form.Item
-            name="name"
-            label="Name"
-            rules={[{ required: true, message: "Please enter tenant's name!" }]}
-          >
-            <Input prefix={<UserOutlined />} />
-          </Form.Item>
-          <Form.Item
-            name="details"
-            label="Details"
-            rules={[
-              { required: true, message: "Please enter tenant's details!" },
-            ]}
-          >
-            <Input.TextArea rows={4} />
-          </Form.Item>
-          <Form.Item name="image" label="Image">
-            <Upload
-              listType="picture"
-              beforeUpload={(file) => {
-                const reader = new FileReader();
-                reader.onload = () => {
-                  form.setFieldsValue({ image: reader.result });
-                };
-                reader.readAsDataURL(file);
-                return false;
-              }}
-            >
-              <Button icon={<PictureOutlined />}>Upload Image</Button>
-            </Upload>
-          </Form.Item>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="name"
+                label="Name"
+                rules={[
+                  { required: true, message: "Please enter tenant's name!" },
+                ]}
+              >
+                <Input prefix={<UserOutlined />} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="details"
+                label="Details"
+                rules={[
+                  { required: true, message: "Please enter tenant's details!" },
+                ]}
+              >
+                <Input.TextArea rows={4} />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="image" label="Image">
+                <Upload
+                  listType="picture"
+                  beforeUpload={(file) => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                      form.setFieldsValue({ image: reader.result });
+                    };
+                    reader.readAsDataURL(file);
+                    return false;
+                  }}
+                >
+                  <Button icon={<PictureOutlined />}>Upload Image</Button>
+                </Upload>
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
       </Modal>
     </div>

@@ -1,0 +1,26 @@
+{
+  "rooms": [
+    {
+      "id": "1",
+      "roomNumber": "101",
+      "sharing": 2,
+      "tenants": [
+        {
+          "id": 1,
+          "name": "Akash",
+          "image": "https://randomuser.me/api/portraits/men/1.jpg",
+          "details": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "phone": "123-456-7890",
+          "email": "akash@example.com",
+          "moveInDate": "2024-07-01"
+        }
+      ]
+    },
+    {
+      "id": 1721817638134,
+      "roomNumber": "202",
+      "sharing": "3",
+      "tenants": []
+    }
+  ]
+}
