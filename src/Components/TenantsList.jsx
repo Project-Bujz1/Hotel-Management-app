@@ -175,7 +175,10 @@ const TenantsList = () => {
   return (
     <div style={{ marginTop: "75px" }}>
       {rooms.map((room) => (
-        <Card key={room.id} title={`Room ${room.roomNumber}`}>
+        <Card
+          key={room.id}
+          title={`Room ${room.roomNumber} (Capacity: ${room.capacity}, Type: ${room.type}, Room Type: ${room.roomType})`}
+        >
           <Row gutter={16}>
             {room.tenants.map((tenant) => (
               <Col
@@ -260,10 +263,10 @@ const TenantsList = () => {
                 name="name"
                 label="Name"
                 rules={[
-                  { required: true, message: "Please enter tenant's name!" },
+                  { required: true, message: "Please enter tenant name" },
                 ]}
               >
-                <Input prefix={<UserOutlined />} />
+                <Input />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -271,26 +274,20 @@ const TenantsList = () => {
                 name="details"
                 label="Details"
                 rules={[
-                  { required: true, message: "Please enter tenant's details!" },
+                  { required: true, message: "Please enter tenant details" },
                 ]}
               >
-                <Input.TextArea rows={4} />
+                <Input.TextArea />
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col span={24}>
               <Form.Item name="image" label="Image">
                 <Upload
-                  listType="picture"
-                  beforeUpload={(file) => {
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                      form.setFieldsValue({ image: reader.result });
-                    };
-                    reader.readAsDataURL(file);
-                    return false;
-                  }}
+                  listType="picture-card"
+                  showUploadList={false}
+                  beforeUpload={() => false}
                 >
-                  <Button icon={<PictureOutlined />}>Upload Image</Button>
+                  <Button icon={<PictureOutlined />}>Upload</Button>
                 </Upload>
               </Form.Item>
             </Col>

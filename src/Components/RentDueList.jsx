@@ -1,32 +1,5 @@
-import React, { useState } from "react";
-import { Card, Row, Col, Badge, Tag, Space, Button, message } from "antd";
-
-const initialRentData = [
-  {
-    key: "1",
-    name: "John Doe",
-    roomNumber: "101",
-    status: "Paid",
-    dueDate: "2024-07-10",
-    modeOfPayment: "Online",
-  },
-  {
-    key: "2",
-    name: "Jane Smith",
-    roomNumber: "102",
-    status: "Not Paid",
-    dueDate: "2024-07-15",
-    modeOfPayment: "Cash",
-  },
-  {
-    key: "3",
-    name: "Bob Johnson",
-    roomNumber: "103",
-    status: "Due Soon",
-    dueDate: "2024-07-18",
-    modeOfPayment: "Cheque",
-  },
-];
+import React, { useState, useEffect } from "react";
+import { Card, Row, Col, Badge, Space, Button, message } from "antd";
 
 const statusColors = {
   Paid: "green",
@@ -35,7 +8,33 @@ const statusColors = {
 };
 
 const RentDueList = () => {
-  const [rentData, setRentData] = useState(initialRentData);
+  const [rentData, setRentData] = useState([]);
+
+  useEffect(() => {
+    const fetchRentData = async () => {
+      try {
+        const response = await fetch("http://localhost:3030/rooms");
+        if (!response.ok) throw new Error("Network response was not ok");
+        const data = await response.json();
+        const rentDetails = data.flatMap((room) =>
+          room.tenants.map((tenant) => ({
+            key: tenant.id,
+            name: tenant.name,
+            roomNumber: room.roomNumber,
+            status: tenant.rentStatus,
+            dueDate: tenant.dueDate,
+            modeOfPayment: tenant.modeOfPayment,
+          }))
+        );
+        setRentData(rentDetails);
+      } catch (error) {
+        console.error("Error fetching rent data:", error);
+        message.error("Failed to fetch rent data");
+      }
+    };
+
+    fetchRentData();
+  }, []);
 
   const handleMarkAsPaid = (key) => {
     setRentData((prevData) =>

@@ -3,7 +3,9 @@
     {
       "id": "1",
       "roomNumber": "101",
-      "sharing": 2,
+      "capacity": 4,
+      "type": "AC",
+      "roomType": "Single",
       "tenants": [
         {
           "id": 1,
@@ -11,16 +13,58 @@
           "image": "https://randomuser.me/api/portraits/men/1.jpg",
           "details": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
           "phone": "123-456-7890",
-          "email": "akash@example.com",
-          "moveInDate": "2024-07-01"
+          "email": "john.doe@example.com",
+          "moveInDate": "2024-07-01",
+          "rentStatus": "Paid",
+          "dueDate": "2024-07-10",
+          "modeOfPayment": "Online"
+        },
+        {
+          "id": 1721821364610,
+          "name": "Akash Kumar Dangeti",
+          "details": "Hi",
+          "image": {
+            "file": {
+              "uid": "rc-upload-1721821347987-3"
+            },
+            "fileList": [
+              {
+                "uid": "rc-upload-1721821347987-3",
+                "lastModified": 1720021554879,
+                "lastModifiedDate": "2024-07-03T15:45:54.879Z",
+                "name": "02.jpg",
+                "size": 21688,
+                "type": "image/jpeg",
+                "percent": 0,
+                "originFileObj": {
+                  "uid": "rc-upload-1721821347987-3"
+                }
+              }
+            ]
+          }
         }
       ]
     },
     {
-      "id": 1721817638134,
-      "roomNumber": "202",
-      "sharing": "3",
-      "tenants": []
+      "id": "2",
+      "roomNumber": "102",
+      "capacity": 3,
+      "type": "Non-AC",
+      "roomType": "Double",
+      "tenants": [
+        {
+          "id": 2,
+          "name": "Smithika",
+          "image": "https://randomuser.me/api/portraits/women/2.jpg",
+          "details": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "phone": "123-456-7891",
+          "email": "jane.smith@example.com",
+          "moveInDate": "2024-07-05",
+          "rentStatus": "Not Paid",
+          "dueDate": "2024-07-15",
+          "modeOfPayment": "Cash"
+        }
+      ]
     }
   ]
 }
