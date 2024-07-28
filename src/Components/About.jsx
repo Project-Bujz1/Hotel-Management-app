@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Row, Col, Carousel } from "antd";
+import { Typography, Row, Col, Carousel, Layout } from "antd";
 import {
   WifiOutlined,
   HomeOutlined,
@@ -13,6 +13,7 @@ import view3 from "../assets/view-3.jpg";
 import view4 from "../assets/view-4.jpg";
 import view5 from "../assets/view-5.jpg";
 import view6 from "../assets/view-6.jpg";
+import AppFooter from "./AppFooter";
 
 const { Title, Paragraph } = Typography;
 
@@ -44,6 +45,7 @@ const Typewriter = ({ text }) => {
 
   return <span>{displayedText}</span>;
 };
+const { Footer } = Layout;
 
 const About = () => {
   return (
@@ -116,6 +118,10 @@ const About = () => {
           </Paragraph>
         </Col>
       </Row>
+      <Footer style={{ textAlign: "center" }}>
+          <AppFooter />
+          PG Hostel Management System ©2024
+        </Footer>
     </div>
   );
 };
