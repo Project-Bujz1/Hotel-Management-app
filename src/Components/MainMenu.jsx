@@ -50,16 +50,6 @@ const MainMenu = () => {
           Home
         </Menu.Item>
         <Menu.Item
-          key="dashboard"
-          style={{
-            fontSize: "18px",
-            color: "black",
-          }}
-          onClick={() => navigate("/dashboard")}
-        >
-          Dashboard
-        </Menu.Item>
-        <Menu.Item
           key="rooms"
           style={{
             fontSize: "18px",

@@ -8,7 +8,6 @@ import {
 import { Layout } from "antd";
 import "./App.css";
 import About from "./Components/About";
-import Dashboard from "./Components/Dashboard";
 import RoomList from "./Components/RoomList";
 import AddEditRoom from "./Components/AddEditRoom";
 import TenantsList from "./Components/TenantsList";
@@ -44,7 +43,6 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Navigate to="/home" />} />
               <Route path="/home" element={<About />} />
-              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/rooms" element={<RoomList />} />
               <Route path="/addRoom" element={<AddEditRoom />} />
               <Route path="/tenants" element={<TenantsList />} />
