@@ -1,71 +1,3 @@
-// import React from 'react';
-// import { Table, Button, Space } from 'antd';
-
-// const columns = [
-//   {
-//     title: 'Room Number',
-//     dataIndex: 'roomNumber',
-//     key: 'roomNumber',
-//   },
-//   {
-//     title: 'Complaint',
-//     dataIndex: 'complaint',
-//     key: 'complaint',
-//   },
-//   {
-//     title: 'Status',
-//     dataIndex: 'status',
-//     key: 'status',
-//   },
-//   {
-//     title: 'Action',
-//     key: 'action',
-//     render: (text, record) => (
-//       <Space size="middle">
-//         <Button onClick={() => handleResolve(record.key)}>Resolve</Button>
-//         <Button onClick={() => handleDelete(record.key)}>Delete</Button>
-//       </Space>
-//     ),
-//   },
-// ];
-
-// const data = [
-//   {
-//     key: '1',
-//     roomNumber: '101',
-//     complaint: 'Leaking tap',
-//     status: 'Pending',
-//   },
-//   {
-//     key: '2',
-//     roomNumber: '102',
-//     complaint: 'Broken window',
-//     status: 'Resolved',
-//   },
-// ];
-
-// const ComplaintsList = () => {
-
-//   const handleResolve = (key) => {
-//     console.log(`Resolving complaint with key: ${key}`);
-//     // Implement resolve logic here
-//   };
-
-//   const handleDelete = (key) => {
-//     console.log(`Deleting complaint with key: ${key}`);
-//     // Implement delete logic here
-//   };
-
-//   return (
-//     <div>
-//       <h2>Complaints Management</h2>
-//       <Button type="primary" style={{ marginBottom: 16 }}>Add Complaint</Button>
-//       <Table columns={columns} dataSource={data} />
-//     </div>
-//   );
-// };
-
-// export default ComplaintsList;
 import React, { useState } from "react";
 import {
   List,
@@ -76,10 +8,12 @@ import {
   Input,
   Upload,
   message,
-  Space,
-  Tag,
+  Select,
   Tooltip,
   Popconfirm,
+  Row,
+  Col,
+  Tag,
 } from "antd";
 import {
   EditOutlined,
@@ -89,6 +23,8 @@ import {
   PictureOutlined,
 } from "@ant-design/icons";
 import "./ComplaintsList.css";
+
+const { Option } = Select;
 
 const initialComplaints = [
   {
@@ -245,7 +181,7 @@ const ComplaintsList = () => {
                     <img
                       src={complaint.imageUrl}
                       alt="complaint"
-                      style={{ width: "100%", marginTop: 16 }}
+                      style={{ width: "100px", height: "100px", marginTop: 16 }}
                     />
                   )}
                 </div>
@@ -262,59 +198,95 @@ const ComplaintsList = () => {
         onOk={handleAddEditComplaint}
       >
         <Form form={form} layout="vertical">
-          <Form.Item
-            name="roomNumber"
-            label="Room Number"
-            rules={[
-              { required: true, message: "Please input the room number!" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="complaint"
-            label="Complaint"
-            rules={[{ required: true, message: "Please input the complaint!" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="reportedDate"
-            label="Reported Date"
-            rules={[
-              { required: true, message: "Please input the reported date!" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="reportedBy"
-            label="Reported By"
-            rules={[
-              {
-                required: true,
-                message: "Please input the name of the reporter!",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item name="imageUrl" label="Image">
-            <Upload
-              listType="picture"
-              beforeUpload={(file) => {
-                const reader = new FileReader();
-                reader.onload = () => {
-                  form.setFieldsValue({ imageUrl: reader.result });
-                };
-                reader.readAsDataURL(file);
-                return false;
-              }}
-              maxCount={1}
-            >
-              <Button icon={<PictureOutlined />}>Upload</Button>
-            </Upload>
-          </Form.Item>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="roomNumber"
+                label="Room Number"
+                rules={[
+                  { required: true, message: "Please input the room number!" },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="complaint"
+                label="Complaint"
+                rules={[
+                  { required: true, message: "Please input the complaint!" },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="reportedDate"
+                label="Reported Date"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input the reported date!",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="reportedBy"
+                label="Reported By"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input the name of the reporter!",
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="status"
+                label="Status"
+                rules={[
+                  { required: true, message: "Please select the status!" },
+                ]}
+              >
+                <Select>
+                  <Option value="Pending">Pending</Option>
+                  <Option value="In Progress">In Progress</Option>
+                  <Option value="Completed">Completed</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="imageUrl" label="Image">
+                <Upload
+                  listType="picture"
+                  beforeUpload={(file) => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                      form.setFieldsValue({ imageUrl: reader.result });
+                    };
+                    reader.readAsDataURL(file);
+                    return false;
+                  }}
+                  maxCount={1}
+                >
+                  <Button icon={<PictureOutlined />}>Upload</Button>
+                </Upload>
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
       </Modal>
     </div>

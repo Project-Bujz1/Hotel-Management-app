@@ -9,6 +9,7 @@ import {
   InputNumber,
   Upload,
   Popconfirm,
+  Select,
 } from "antd";
 import {
   UploadOutlined,
@@ -22,11 +23,13 @@ import {
   AppstoreAddOutlined,
 } from "@ant-design/icons";
 
+const { Option } = Select;
+
 const initialRooms = [
   {
     key: "1",
     roomNumber: "101",
-    type: "Single",
+    type: "AC",
     status: "Vacant",
     rent: "5000",
     sharing: "1",
@@ -36,7 +39,7 @@ const initialRooms = [
   {
     key: "2",
     roomNumber: "102",
-    type: "Double",
+    type: "Non-AC",
     status: "Occupied",
     rent: "8000",
     sharing: "2",
@@ -182,6 +185,7 @@ const RoomList = () => {
           justifyContent: "flex-end",
           marginBottom: 16,
           marginTop: "75px",
+          marginRight: "20px"
         }}
       >
         <Button
@@ -207,24 +211,37 @@ const RoomList = () => {
             rules={[
               { required: true, message: "Please input the room number!" },
             ]}
+            style={{ display: "inline-block", width: "calc(50% - 8px)" }}
           >
             <Input prefix={<HomeOutlined />} />
           </Form.Item>
           <Form.Item
             name="type"
             label="Type"
-            rules={[{ required: true, message: "Please input the room type!" }]}
+            rules={[{ required: true, message: "Please select the room type!" }]}
+            style={{
+              display: "inline-block",
+              width: "calc(50% - 8px)",
+              margin: "0 8px",
+            }}
           >
-            <Input prefix={<UserOutlined />} />
+            <Select prefix={<UserOutlined />}>
+              <Option value="AC">AC</Option>
+              <Option value="Non-AC">Non-AC</Option>
+            </Select>
           </Form.Item>
           <Form.Item
             name="status"
             label="Status"
             rules={[
-              { required: true, message: "Please input the room status!" },
+              { required: true, message: "Please select the room status!" },
             ]}
+            style={{ display: "inline-block", width: "calc(50% - 8px)" }}
           >
-            <Input prefix={<EditOutlined />} />
+            <Select prefix={<EditOutlined />}>
+              <Option value="Vacant">Vacant</Option>
+              <Option value="Occupied">Occupied</Option>
+            </Select>
           </Form.Item>
           <Form.Item
             name="rent"
@@ -232,6 +249,11 @@ const RoomList = () => {
             rules={[
               { required: true, message: "Please input the rent amount!" },
             ]}
+            style={{
+              display: "inline-block",
+              width: "calc(50% - 8px)",
+              margin: "0 8px",
+            }}
           >
             <InputNumber
               prefix={<DollarOutlined />}
@@ -242,10 +264,17 @@ const RoomList = () => {
             name="sharing"
             label="Sharing"
             rules={[
-              { required: true, message: "Please input the sharing details!" },
+              { required: true, message: "Please select the sharing details!" },
             ]}
+            style={{ display: "inline-block", width: "calc(50% - 8px)" }}
           >
-            <InputNumber prefix={<TeamOutlined />} style={{ width: "100%" }} />
+            <Select prefix={<TeamOutlined />}>
+              <Option value="1">1</Option>
+              <Option value="2">2</Option>
+              <Option value="3">3</Option>
+              <Option value="4">4</Option>
+              <Option value="Multi">Multi</Option>
+            </Select>
           </Form.Item>
           <Form.Item
             name="tenants"
@@ -256,10 +285,19 @@ const RoomList = () => {
                 message: "Please input the number of tenants!",
               },
             ]}
+            style={{
+              display: "inline-block",
+              width: "calc(50% - 8px)",
+              margin: "0 8px",
+            }}
           >
             <InputNumber prefix={<TeamOutlined />} style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item name="imageUrl" label="Image">
+          <Form.Item
+            name="imageUrl"
+            label="Image"
+            style={{ display: "inline-block", width: "calc(50% - 8px)" }}
+          >
             <Upload
               listType="picture"
               beforeUpload={(file) => {
