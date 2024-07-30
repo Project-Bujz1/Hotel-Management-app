@@ -13,18 +13,28 @@ const { Title, Text } = Typography;
 
 const AppFooter = () => (
   <Footer
-    style={{ backgroundColor: "#001529", color: "#fff", margin: "0 0px" }}
+    style={{
+      backgroundColor: "#000", // Black background
+      color: "#fff", // White text
+      padding: "40px 20px",
+      width: "100%",
+      position: "relative",
+      bottom: 0,
+      borderTop: "2px solid #fff", // White top border
+    }}
   >
-    <Row justify="space-around" align="middle">
-      <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+    <Row gutter={[16, 24]} justify="center">
+      <Col xs={24} sm={24} md={8} lg={6}>
         <div style={{ textAlign: "center" }}>
-          <Title level={3}>Follow Us</Title>
-          <div style={{ fontSize: "24px" }}>
+          <Title level={3} style={{ color: "#fff", marginBottom: "20px", fontSize: "24px" }}>
+            Follow Us
+          </Title>
+          <div style={{ fontSize: "28px" }}>
             <a
               href="https://www.facebook.com/"
               target="_blank"
               rel="noopener noreferrer"
-              style={{ color: "#fff", margin: "0  10px" }}
+              style={{ color: "#fff", margin: "0 15px", transition: "color 0.3s" }}
             >
               <FacebookOutlined />
             </a>
@@ -32,7 +42,7 @@ const AppFooter = () => (
               href="https://www.instagram.com/"
               target="_blank"
               rel="noopener noreferrer"
-              style={{ color: "#fff", margin: "0 10px" }}
+              style={{ color: "#fff", margin: "0 15px", transition: "color 0.3s" }}
             >
               <InstagramOutlined />
             </a>
@@ -40,49 +50,50 @@ const AppFooter = () => (
               href="https://twitter.com/"
               target="_blank"
               rel="noopener noreferrer"
-              style={{ color: "#fff", margin: "0 10px" }}
+              style={{ color: "#fff", margin: "0 15px", transition: "color 0.3s" }}
             >
               <TwitterOutlined />
             </a>
           </div>
         </div>
       </Col>
-      <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+      <Col xs={24} sm={24} md={8} lg={6}>
         <div style={{ textAlign: "center" }}>
-          <Title level={3}>Contact Us</Title>
-          <div>
-            <Text style={{ color: "#fff" }}>
-              <MailOutlined /> hostel@example.com
+          <Title level={3} style={{ color: "#fff", marginBottom: "20px", fontSize: "24px" }}>
+            Contact Us
+          </Title>
+          <div style={{ marginBottom: "15px" }}>
+            <Text style={{ color: "#fff", display: "block", marginBottom: "5px", fontSize: "16px" }}>
+              <MailOutlined style={{ marginRight: "8px" }} /> hostel@example.com
             </Text>
-          </div>
-          <div>
-            <Text style={{ color: "#fff" }}>
-              <PhoneOutlined /> +91 90300 62699
+            <Text style={{ color: "#fff", display: "block", marginBottom: "5px", fontSize: "16px" }}>
+              <PhoneOutlined style={{ marginRight: "8px" }} /> +91 90300 62699
             </Text>
-          </div>
-          <div>
-            <Text style={{ color: "#fff" }}>Address:</Text>
-            <Text style={{ color: "#fff" }}>
-              MVP Main Rd, Sector 10, MVP Colony,
-            </Text>
-            <Text style={{ color: "#fff" }}>
-              Visakhapatnam, Andhra Pradesh 530017
+            <Text style={{ color: "#fff", fontSize: "16px" }}>
+              <strong>Address:</strong>
+              <div>MVP Main Rd, Sector 10, MVP Colony</div>
+              <div>Visakhapatnam, Andhra Pradesh 530017</div>
             </Text>
           </div>
         </div>
       </Col>
-      <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+      <Col xs={24} sm={24} md={8} lg={6}>
         <div style={{ textAlign: "center" }}>
-          <Title level={3}>Facilities</Title>
-          <ul style={{ listStyleType: "none", padding: 0 }}>
-            <li>AC Rooms</li>
-            <li>Kitchen</li>
-            <li>24 Hours Water Supply</li>
-            <li>Corporate Accommodation</li>
+          <Title level={3} style={{ color: "#fff", marginBottom: "20px", fontSize: "24px" }}>
+            Facilities
+          </Title>
+          <ul style={{ listStyleType: "none", padding: 0, margin: 0, fontSize: "16px" }}>
+            <li style={{ marginBottom: "10px", color: "#fff" }}>AC Rooms</li>
+            <li style={{ marginBottom: "10px", color: "#fff" }}>Kitchen</li>
+            <li style={{ marginBottom: "10px", color: "#fff" }}>24 Hours Water Supply</li>
+            <li style={{ marginBottom: "10px", color: "#fff" }}>Corporate Accommodation</li>
           </ul>
         </div>
       </Col>
     </Row>
+    <div style={{ textAlign: "center", marginTop: "40px", fontSize: "14px" }}>
+      <Text style={{ color: "#fff" }}>© {new Date().getFullYear()} Your Hostel Name. All rights reserved.</Text>
+    </div>
   </Footer>
 );
 

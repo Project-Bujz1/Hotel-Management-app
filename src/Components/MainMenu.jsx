@@ -1,11 +1,23 @@
 import React from "react";
 import { Menu, Input } from "antd";
 import { SearchOutlined, UserOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import logo from "../assets/logo-1.png";
 
 const MainMenu = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const currentPath = location.pathname;
+  const selectedKeys = {
+    "/home": "home",
+    "/rooms": "rooms",
+    "/tenants": "tenants",
+    "/rentDue": "rentDue",
+    "/paymentHistory": "paymentHistory",
+    "/complaints": "complaints",
+    "/profile": "profile",
+  }[currentPath] || "home";
 
   return (
     <div
@@ -24,7 +36,7 @@ const MainMenu = () => {
       <img src={logo} alt="Logo" style={{ height: "60px", margin: "10px" }} />
       <Menu
         mode="horizontal"
-        defaultSelectedKeys={["home"]}
+        selectedKeys={[selectedKeys]}
         style={{
           backgroundColor: "transparent",
           flex: 1,

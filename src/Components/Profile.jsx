@@ -6,45 +6,43 @@ const Profile = () => {
   const [imageUrl, setImageUrl] = useState(null);
   const [form] = Form.useForm();
 
-  // Handle image upload and preview
   const handleImageChange = (info) => {
     if (info.file.status === 'done') {
       setImageUrl(URL.createObjectURL(info.file.originFileObj));
     }
   };
 
-  // Handle form submission
   const handleSubmit = (values) => {
     message.success('Profile updated successfully!');
     console.log('Form values:', values);
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', padding: 20, marginTop: "75px" }}>
-      <Card
-        style={{ width: 500, borderRadius: 10, boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}
-        title="Profile"
-        cover={
-          <div style={{ textAlign: 'center', marginBottom: 20 , marginTop: 10}}>
-            <Avatar
-              size={128}
-              src={imageUrl || 'https://via.placeholder.com/128'}
-              style={{ marginBottom: 10 }}
-            />
-            <Upload
-              showUploadList={false}
-              customRequest={({ file, onSuccess }) => {
-                setTimeout(() => {
-                  handleImageChange({ file: { status: 'done', originFileObj: file } });
-                  onSuccess(null, file);
-                }, 1000);
-              }}
-            >
-              <Button icon={<UploadOutlined />} style={{ marginBottom: 10 }}>
-                Upload Picture
-              </Button>
-            </Upload>
-          </div>
+<div style={{ display: 'flex', justifyContent: 'center', padding: 20, marginTop: "75px" }}>
+  <Card
+    style={{ width: 500, borderRadius: 10, boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}
+    title="Profile"
+    cover={
+      <div style={{ textAlign: 'center', marginBottom: 20, marginTop: 10, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Avatar
+          size={128}
+          src={imageUrl || 'https://via.placeholder.com/128'}
+          style={{ marginBottom: 10 }}
+        />
+        <Upload
+          showUploadList={false}
+          customRequest={({ file, onSuccess }) => {
+            setTimeout(() => {
+              handleImageChange({ file: { status: 'done', originFileObj: file } });
+              onSuccess(null, file);
+            }, 1000);
+          }}
+        >
+          <Button icon={<UploadOutlined />} style={{ marginTop: 10 }}>
+            Upload Picture
+          </Button>
+        </Upload>
+      </div>
         }
       >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>

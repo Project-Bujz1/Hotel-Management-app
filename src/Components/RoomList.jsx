@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   Button,
@@ -22,9 +22,14 @@ import {
   UserOutlined,
   AppstoreAddOutlined,
 } from "@ant-design/icons";
+import {
+  fetchRooms,
+  addRoom,
+  updateRoom,
+  deleteRoom,
+} from "./apiservice"
 
 const { Option } = Select;
-
 const initialRooms = [
   {
     key: "1",
@@ -49,10 +54,17 @@ const initialRooms = [
 ];
 
 const RoomList = () => {
-  const [rooms, setRooms] = useState(initialRooms);
+  // const [rooms, setRooms] = useState(initialRooms);
+  const [rooms, setRooms] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const [editingRoom, setEditingRoom] = useState(null);
+
+  useEffect(() => {
+    fetchRooms()
+      .then((response) => setRooms(response.data))
+      .catch((error) => console.error("Error fetching rooms:", error));
+  }, []);
 
   const showModal = (room = null) => {
     setEditingRoom(room);
@@ -68,20 +80,47 @@ const RoomList = () => {
     setIsModalVisible(false);
   };
 
+  // const handleAddEditRoom = () => {
+  //   form.validateFields().then((values) => {
+  //     const newRooms = editingRoom
+  //       ? rooms.map((room) =>
+  //           room.key === editingRoom.key ? { ...editingRoom, ...values } : room
+  //         )
+  //       : [...rooms, { key: Date.now().toString(), ...values }];
+  //     setRooms(newRooms);
+  //     setIsModalVisible(false);
+  //   });
+  // };
+
   const handleAddEditRoom = () => {
     form.validateFields().then((values) => {
-      const newRooms = editingRoom
-        ? rooms.map((room) =>
-            room.key === editingRoom.key ? { ...editingRoom, ...values } : room
-          )
-        : [...rooms, { key: Date.now().toString(), ...values }];
-      setRooms(newRooms);
-      setIsModalVisible(false);
+      const apiCall = editingRoom
+        ? updateRoom(editingRoom.key, values)
+        : addRoom(values);
+
+      apiCall
+        .then(() => {
+          fetchRooms()
+            .then((response) => setRooms(response.data))
+            .catch((error) => console.error("Error fetching rooms:", error));
+          setIsModalVisible(false);
+        })
+        .catch((error) => console.error("Error saving room:", error));
     });
   };
 
+  // const handleDelete = (key) => {
+  //   setRooms(rooms.filter((room) => room.key !== key));
+  // };
+
   const handleDelete = (key) => {
-    setRooms(rooms.filter((room) => room.key !== key));
+    deleteRoom(key)
+      .then(() => {
+        fetchRooms()
+          .then((response) => setRooms(response.data))
+          .catch((error) => console.error("Error fetching rooms:", error));
+      })
+      .catch((error) => console.error("Error deleting room:", error));
   };
 
   const columns = [
