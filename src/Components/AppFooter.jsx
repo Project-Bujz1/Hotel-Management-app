@@ -90,6 +90,19 @@ const AppFooter = () => (
           </ul>
         </div>
       </Col>
+      <Col xs={24} sm={24} md={8} lg={6}>
+        <div style={{ textAlign: "center" }}>
+          <Title level={3} style={{ color: "#fff", marginBottom: "20px", fontSize: "24px" }}>
+            Company
+          </Title>
+          <ul style={{ listStyleType: "none", padding: 0, margin: 0, fontSize: "16px" }}>
+            <li><a href="#" style={{ color: "#bbbbbb", textDecoration: "none", display: "block", marginBottom: "10px", transition: "color 0.3s" }}>About Us</a></li>
+            <li><a href="#" style={{ color: "#bbbbbb", textDecoration: "none", display: "block", marginBottom: "10px", transition: "color 0.3s" }}>Our Services</a></li>
+            <li><a href="#" style={{ color: "#bbbbbb", textDecoration: "none", display: "block", marginBottom: "10px", transition: "color 0.3s" }}>Privacy Policy</a></li>
+            <li><a href="#" style={{ color: "#bbbbbb", textDecoration: "none", display: "block", marginBottom: "10px", transition: "color 0.3s" }}>Affiliate Program</a></li>
+          </ul>
+        </div>
+      </Col>
     </Row>
     <div style={{ textAlign: "center", marginTop: "40px", fontSize: "14px" }}>
       <Text style={{ color: "#fff" }}>© {new Date().getFullYear()} Your Hostel Name. All rights reserved.</Text>

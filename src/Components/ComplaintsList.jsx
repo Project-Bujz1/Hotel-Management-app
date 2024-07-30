@@ -118,12 +118,11 @@ const ComplaintsList = () => {
 
   return (
     <div className="complaints-list" style={{ marginTop: "75px" }}>
-      <h2>Complaints List</h2>
       <Button
         type="primary"
         icon={<PlusOutlined />}
         onClick={() => showModal()}
-        style={{ marginBottom: 16 }}
+        style={{ marginBottom: 16, marginLeft: 1350}}
       >
         Add Complaint
       </Button>
