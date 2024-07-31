@@ -43,7 +43,7 @@ const paymentModeOptions = [
   { value: "Bank Transfer", label: "Bank Transfer" },
 ];
 
-const statusColors = {
+export const statusColors = {
   Paid: "green",
   "Not Paid": "red",
   "Due Soon": "blue",

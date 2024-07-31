@@ -17,9 +17,10 @@ import PaymentHistory from "./Components/PaymentHistory";
 import ComplaintsList from "./Components/ComplaintsList";
 import AddComplaint from "./Components/AddComplaint";
 import Profile from "./Components/Profile";
-import DisplaySettings from "./Components/DisplaySettings"; // Import your components
-import OrgSettings from "./Components/OrgSettings"; // Import your components
+import DisplaySettings from "./Components/DisplaySettings";
+import OrgSettings from "./Components/OrgSettings";
 import MainMenu from "./Components/MainMenu";
+import ReportsAndAnalytics from "./Components/ReportsAndAnalytics";
 
 const { Header, Content } = Layout;
 
@@ -54,8 +55,10 @@ const App = () => {
               <Route path="/complaints" element={<ComplaintsList />} />
               <Route path="/addComplaint" element={<AddComplaint />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/displaySettings" element={<DisplaySettings />} /> {/* Add new route */}
-              <Route path="/orgSettings" element={<OrgSettings />} /> {/* Add new route */}
+              <Route path="/displaySettings" element={<DisplaySettings />} />
+              <Route path="/orgSettings" element={<OrgSettings />} /> 
+              <Route path="/reports" element={<ReportsAndAnalytics />} /> 
+
             </Routes>
           </div>
         </Content>

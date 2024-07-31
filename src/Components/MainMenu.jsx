@@ -16,6 +16,7 @@
       "/home": "home",
       "/rooms": "rooms",
       "/tenants": "tenants",
+      "/reports": "reports",
       "/rentDue": "rentDue",
       "/paymentHistory": "paymentHistory",
       "/complaints": "complaints",
@@ -87,6 +88,7 @@
           <Menu.Item key="home" style={getMenuItemStyle(selectedKeys, "home")} onClick={() => navigate("/home")}>Home</Menu.Item>
           <Menu.Item key="rooms" style={getMenuItemStyle(selectedKeys, "rooms")} onClick={() => navigate("/rooms")}>Rooms</Menu.Item>
           <Menu.Item key="tenants" style={getMenuItemStyle(selectedKeys, "tenants")} onClick={() => navigate("/tenants")}>Tenants</Menu.Item>
+          <Menu.Item key="reports" style={getMenuItemStyle(selectedKeys, "reports")} onClick={() => navigate("/reports")}>Reports & Analytics</Menu.Item>
           <Menu.Item key="rentDue" style={getMenuItemStyle(selectedKeys, "rentDue")} onClick={() => navigate("/rentDue")}>Rent Due</Menu.Item>
           <Menu.Item key="paymentHistory" style={getMenuItemStyle(selectedKeys, "paymentHistory")} onClick={() => navigate("/paymentHistory")}>Payment History</Menu.Item>
           <Menu.Item key="complaints" style={getMenuItemStyle(selectedKeys, "complaints")} onClick={() => navigate("/complaints")}>Complaints</Menu.Item>

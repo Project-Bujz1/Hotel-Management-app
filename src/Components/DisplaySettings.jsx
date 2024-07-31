@@ -1,12 +1,13 @@
 // src/Components/DisplaySettings.js
 import React, { useState } from 'react';
-import { Card, Radio, Slider, Typography, Divider } from 'antd';
+import { Card, Radio, Slider, Typography, Divider, Switch } from 'antd';
 
 const { Title, Paragraph } = Typography;
 
 const DisplaySettings = () => {
   const [theme, setTheme] = useState('light');
   const [fontSize, setFontSize] = useState(14);
+  const [isCompact, setIsCompact] = useState(false);
 
   const handleThemeChange = (e) => {
     setTheme(e.target.value);
@@ -18,8 +19,13 @@ const DisplaySettings = () => {
     // Implement font size change logic here (e.g., updating context or state)
   };
 
+  const handleLayoutChange = (checked) => {
+    setIsCompact(checked);
+    // Implement layout change logic here (e.g., updating context or state)
+  };
+
   return (
-    <div style={{ padding: '20px', marginTop: "75px" }}>
+    <div style={{ padding: '20px', marginTop: '75px' }}>
       <Card>
         <Title level={4}>Theme</Title>
         <Radio.Group value={theme} onChange={handleThemeChange}>
@@ -39,6 +45,15 @@ const DisplaySettings = () => {
         <div style={{ marginTop: '10px', fontSize: `${fontSize}px` }}>
           <p>Sample text with current font size.</p>
         </div>
+        <Divider />
+        <Title level={4}>Layout</Title>
+        <Paragraph>Choose between compact and spacious layout.</Paragraph>
+        <Switch
+          checked={isCompact}
+          onChange={handleLayoutChange}
+          checkedChildren="Compact"
+          unCheckedChildren="Spacious"
+        />
       </Card>
     </div>
   );
