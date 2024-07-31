@@ -56,7 +56,7 @@ const initialComplaints = [
   },
 ];
 
-const statusColors = {
+export const statusColors = {
   Pending: "red",
   "In Progress": "blue",
   Completed: "green",

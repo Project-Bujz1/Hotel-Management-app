@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Row, Col, Statistic, Progress } from 'antd';
 import { PieChart, Pie, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Cell } from 'recharts';
-import { statusColors } from './RentDueList'; // Ensure this import aligns with where statusColors are defined
+import { statusColors } from './ComplaintsList'; // Make sure this aligns with your actual statusColors import
 
 // Example data
 const rentData = [
@@ -10,6 +10,18 @@ const rentData = [
   { key: '3', name: 'Bob Johnson', roomNumber: '103', status: 'Due Soon', dueDate: '2024-07-18', modeOfPayment: 'Cheque', isNonNative: false, category: 'Employee', stayDuration: 90 },
   // Add more data as needed
 ];
+
+// Complaints Data
+const complaintsData = [
+  { key: '1', roomNumber: '101', complaint: 'Leaking faucet', status: 'Pending' },
+  { key: '2', roomNumber: '102', complaint: 'Broken window', status: 'In Progress' },
+  { key: '3', roomNumber: '103', complaint: 'No hot water', status: 'Completed' },
+  // Add more data as needed
+];
+
+// Rooms Data
+const totalRooms = 6;
+const occupiedRooms = 4;
 
 // Transform data for Pie Chart
 const statusCounts = rentData.reduce((acc, tenant) => {
@@ -21,6 +33,13 @@ const pieData = Object.keys(statusCounts).map(status => ({
   name: status,
   value: statusCounts[status]
 }));
+
+// Define colors for each status
+const paymentStatusColors = {
+  Paid: '#52c41a', // Green
+  'Not Paid': '#f5222d', // Red
+  'Due Soon': '#1890ff', // Blue
+};
 
 // Transform data for Bar Chart
 const barData = rentData.map(tenant => ({
@@ -38,7 +57,14 @@ const studentTenants = rentData.filter(tenant => tenant.category === 'Student').
 const employeeTenants = rentData.filter(tenant => tenant.category === 'Employee').length;
 const longTermTenants = rentData.filter(tenant => tenant.stayDuration > 180).length;
 
-const occupancyPercentage = Math.round((totalTenants - nonNativeTenants) / totalTenants * 100);
+const complaintsRaised = complaintsData.length;
+const complaintsResolved = complaintsData.filter(c => c.status === 'Completed').length;
+const complaintsPending = complaintsData.filter(c => c.status === 'Pending').length;
+const complaintsInProgress = complaintsData.filter(c => c.status === 'In Progress').length;
+
+const totalRoomsCapacity = totalRooms;
+const vacantRooms = totalRooms - occupiedRooms;
+const occupancyPercentage = Math.round((occupiedRooms / totalRoomsCapacity) * 100);
 const vacancyPercentage = 100 - occupancyPercentage;
 
 const ReportsAndAnalytics = () => {
@@ -54,11 +80,10 @@ const ReportsAndAnalytics = () => {
                 dataKey="value"
                 nameKey="name"
                 outerRadius={150}
-                fill="#8884d8"
                 label
               >
                 {pieData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={statusColors[entry.name] || '#8884d8'} />
+                  <Cell key={`cell-${index}`} fill={paymentStatusColors[entry.name] || '#8884d8'} />
                 ))}
               </Pie>
               <Tooltip />
@@ -106,6 +131,15 @@ const ReportsAndAnalytics = () => {
         <Col span={24} md={12} lg={6}>
           <Card title="Long-Term Tenants">
             <Statistic title="Tenants Staying Over 6 Months" value={longTermTenants} />
+          </Card>
+        </Col>
+
+        <Col span={24} md={12} lg={6}>
+          <Card title="Complaints Status">
+            <Statistic title="Total Complaints" value={complaintsRaised} />
+            <Statistic title="Resolved Complaints" value={complaintsResolved} style={{ marginTop: '16px' }} />
+            <Statistic title="Pending Complaints" value={complaintsPending} style={{ marginTop: '16px' }} />
+            <Statistic title="In Progress Complaints" value={complaintsInProgress} style={{ marginTop: '16px' }} />
           </Card>
         </Col>
 

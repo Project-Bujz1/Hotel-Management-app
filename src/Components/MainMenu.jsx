@@ -1,146 +1,148 @@
   import React, { useState } from "react";
-  import { Menu, Input, Modal, Progress, Tooltip, Drawer } from "antd";
-  import { SearchOutlined, UserOutlined, MenuOutlined } from "@ant-design/icons";
-  import { useNavigate, useLocation } from "react-router-dom";
-  import orgLogo from "../assets/logo-1.png";
-  import logo from "../assets/logo-transparent-png.png";
-  
-  const MainMenu = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [drawerVisible, setDrawerVisible] = useState(false);
-  
-    const currentPath = location.pathname;
-    const selectedKeys = {
-      "/home": "home",
-      "/rooms": "rooms",
-      "/tenants": "tenants",
-      "/reports": "reports",
-      "/rentDue": "rentDue",
-      "/paymentHistory": "paymentHistory",
-      "/complaints": "complaints",
-      "/profile": "profile",
-    }[currentPath] || "home";
-  
-    const handleLogoClick = () => {
-      setIsModalVisible(true);
-    };
-  
-    const handleModalClose = () => {
-      setIsModalVisible(false);
-    };
-  
-    const handleDrawerOpen = () => {
-      setDrawerVisible(true);
-    };
-  
-    const handleDrawerClose = () => {
-      setDrawerVisible(false);
-    };
-  
-    const menuItems = (
-      <Menu>
-        <Menu.Item key="displaySettings" onClick={() => navigate("/displaySettings")}>
-          Display Settings
-        </Menu.Item>
-        <Menu.Item key="orgSettings" onClick={() => navigate("/orgSettings")}>
-          Org Settings
-        </Menu.Item>
-      </Menu>
-    );
-  
-    return (
-      <div
+import { Menu, Input, Modal, Progress, Tooltip, Drawer } from "antd";
+import { SearchOutlined, UserOutlined, MenuOutlined } from "@ant-design/icons";
+import { useNavigate, useLocation } from "react-router-dom";
+import orgLogo from "../assets/logo-1.png";
+import logo from "../assets/logo-transparent-png.png";
+
+const MainMenu = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [drawerVisible, setDrawerVisible] = useState(false);
+
+  const currentPath = location.pathname;
+  const selectedKeys = {
+    "/home": "home",
+    "/rooms": "rooms",
+    "/tenants": "tenants",
+    "/reports": "reports",
+    "/rentDue": "rentDue",
+    "/paymentHistory": "paymentHistory",
+    "/complaints": "complaints",
+    "/profile": "profile",
+  }[currentPath] || "home";
+
+  const handleLogoClick = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleDrawerOpen = () => {
+    setDrawerVisible(true);
+  };
+
+  const handleDrawerClose = () => {
+    setDrawerVisible(false);
+  };
+
+  const menuItems = (
+    <Menu>
+      <Menu.Item key="displaySettings" onClick={() => navigate("/displaySettings")}>
+        Display Settings
+      </Menu.Item>
+      <Menu.Item key="orgSettings" onClick={() => navigate("/orgSettings")}>
+        Org Settings
+      </Menu.Item>
+    </Menu>
+  );
+
+  return (
+    <div
+      style={{
+        position: "sticky",
+        top: 0,
+        zIndex: 1,
+        width: "100%",
+        backgroundColor: "rgba(255, 255, 255, 0.9)",
+        height: "60px",
+        display: "flex",
+        alignItems: "center",
+        overflow: "hidden",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+        padding: "0 10px", // Added padding to avoid elements touching the edges
+      }}
+    >
+      <img
+        src={logo}
+        alt="Logo"
+        style={{ height: "50px", width: "auto", cursor: "pointer", flexShrink: 0 }}
+        onClick={() => navigate("/home")}
+      />
+      <Menu
+        mode="horizontal"
+        selectedKeys={[selectedKeys]}
         style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 1,
-          width: "100%",
-          backgroundColor: "rgba(255, 255, 255, 0.9)",
-          height: "60px",
+          backgroundColor: "transparent",
+          flex: 1,
           display: "flex",
           alignItems: "center",
-          overflow: "hidden",
-          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+          fontFamily: "Playfair, Montserrat, sans-serif",
+          borderBottom: "none",
+          fontWeight: "bold",
+          fontSize: "14px",
+          margin: 0,
+          padding: "0 10px", // Added padding to ensure space around elements
         }}
       >
-        <img
-          src={logo}
-          alt="Logo"
-          style={{ height: "50px", width: "200px", cursor: "pointer" }}
-          onClick={() => navigate("/home")}
-        />
-        <Menu
-          mode="horizontal"
-          selectedKeys={[selectedKeys]}
-          style={{
-            backgroundColor: "transparent",
-            flex: 1,
-            display: "flex",
-            fontFamily: "Playfair, Montserrat, sans-serif",
-            borderBottom: "none",
-            fontWeight: "bold",
-            fontSize: "14px",
-            margin: 0,
-          }}
-        >
-          <Menu.Item key="home" style={getMenuItemStyle(selectedKeys, "home")} onClick={() => navigate("/home")}>Home</Menu.Item>
-          <Menu.Item key="rooms" style={getMenuItemStyle(selectedKeys, "rooms")} onClick={() => navigate("/rooms")}>Rooms</Menu.Item>
-          <Menu.Item key="tenants" style={getMenuItemStyle(selectedKeys, "tenants")} onClick={() => navigate("/tenants")}>Tenants</Menu.Item>
-          <Menu.Item key="reports" style={getMenuItemStyle(selectedKeys, "reports")} onClick={() => navigate("/reports")}>Reports & Analytics</Menu.Item>
-          <Menu.Item key="rentDue" style={getMenuItemStyle(selectedKeys, "rentDue")} onClick={() => navigate("/rentDue")}>Rent Due</Menu.Item>
-          <Menu.Item key="paymentHistory" style={getMenuItemStyle(selectedKeys, "paymentHistory")} onClick={() => navigate("/paymentHistory")}>Payment History</Menu.Item>
-          <Menu.Item key="complaints" style={getMenuItemStyle(selectedKeys, "complaints")} onClick={() => navigate("/complaints")}>Complaints</Menu.Item>
-          <Tooltip title="Hostel capacity: 80%">
-            <Menu.Item key="capacity" style={{ display: "flex", alignItems: "center", fontSize: "14px", color: "black", marginRight: "10px" }}>
-              <Progress percent={80} strokeColor="#1890ff" style={{ width: "120px" }} />
-            </Menu.Item>
-          </Tooltip>
-          <Menu.Item key="search" style={{ display: "flex", alignItems: "center", fontSize: "14px", color: "black", marginLeft: "auto", marginRight: "10px" }}>
-            <Input prefix={<SearchOutlined style={{ width: "100%" }} />} placeholder="Search" size="small" style={{ width: "100%", borderRadius: "5px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }} />
+        <Menu.Item key="home" style={getMenuItemStyle(selectedKeys, "home")} onClick={() => navigate("/home")}>Home</Menu.Item>
+        <Menu.Item key="rooms" style={getMenuItemStyle(selectedKeys, "rooms")} onClick={() => navigate("/rooms")}>Rooms</Menu.Item>
+        <Menu.Item key="tenants" style={getMenuItemStyle(selectedKeys, "tenants")} onClick={() => navigate("/tenants")}>Tenants</Menu.Item>
+        <Menu.Item key="reports" style={getMenuItemStyle(selectedKeys, "reports")} onClick={() => navigate("/reports")}>Analytics</Menu.Item>
+        <Menu.Item key="rentDue" style={getMenuItemStyle(selectedKeys, "rentDue")} onClick={() => navigate("/rentDue")}>Rent Due</Menu.Item>
+        <Menu.Item key="paymentHistory" style={getMenuItemStyle(selectedKeys, "paymentHistory")} onClick={() => navigate("/paymentHistory")}>Payment History</Menu.Item>
+        <Menu.Item key="complaints" style={getMenuItemStyle(selectedKeys, "complaints")} onClick={() => navigate("/complaints")}>Complaints</Menu.Item>
+        <Tooltip title="Hostel capacity: 80%">
+          <Menu.Item key="capacity" style={{ display: "flex", alignItems: "center", fontSize: "14px", color: "black", marginRight: "10px" }}>
+            <Progress percent={80} strokeColor="#1890ff" style={{ width: "120px" }} />
           </Menu.Item>
-          <Menu.Item key="profile" style={getMenuItemStyle(selectedKeys, "profile")} icon={<UserOutlined />} onClick={() => navigate("/profile")}>Profile</Menu.Item>
-          <Menu.Item key="options" style={{ fontSize: "14px", color: "black", marginRight: "10px" }} onClick={handleDrawerOpen}>
-            <MenuOutlined />
-          </Menu.Item>
+        </Tooltip>
+        <Menu.Item key="search" style={{ display: "flex", alignItems: "center", fontSize: "14px", color: "black", marginLeft: "auto", marginRight: "10px" }}>
+          <Input prefix={<SearchOutlined />} placeholder="Search" size="small" style={{ width: "150px", borderRadius: "5px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }} />
+        </Menu.Item>
+        <Menu.Item key="profile" style={getMenuItemStyle(selectedKeys, "profile")} icon={<UserOutlined />} onClick={() => navigate("/profile")}>Profile</Menu.Item>
+        <Menu.Item key="options" style={{ fontSize: "14px", color: "black", marginRight: "10px" }} onClick={handleDrawerOpen}>
+          <MenuOutlined />
+        </Menu.Item>
+      </Menu>
+      <img
+        src={orgLogo}
+        alt="Organization Logo"
+        style={{ height: "60px", marginLeft: "auto", cursor: "pointer", flexShrink: 0 }}
+        onClick={handleLogoClick}
+      />
+
+      <Modal visible={isModalVisible} footer={null} onCancel={handleModalClose} centered bodyStyle={{ textAlign: "center" }}>
+        <img src={orgLogo} alt="Organization Logo" style={{ maxWidth: "100%", height: "auto" }} />
+      </Modal>
+
+      <Drawer
+        title="Additional Settings"
+        placement="right"
+        closable
+        onClose={handleDrawerClose}
+        visible={drawerVisible}
+        width={300}
+      >
+        <Menu>
+          <Menu.Item key="displaySettings" onClick={() => navigate("/displaySettings")}>Display Settings</Menu.Item>
+          <Menu.Item key="orgSettings" onClick={() => navigate("/orgSettings")}>Org Settings</Menu.Item>
+          {/* Add more options here if needed */}
         </Menu>
-        <img
-          src={orgLogo}
-          alt="Organization Logo"
-          style={{ height: "60px", margin: "10px", cursor: "pointer" }}
-          onClick={handleLogoClick}
-        />
-  
-        <Modal visible={isModalVisible} footer={null} onCancel={handleModalClose} centered bodyStyle={{ textAlign: "center" }}>
-          <img src={orgLogo} alt="Organization Logo" style={{ maxWidth: "100%", height: "auto" }} />
-        </Modal>
-  
-        <Drawer
-          title="Additional Settings"
-          placement="right"
-          closable
-          onClose={handleDrawerClose}
-          visible={drawerVisible}
-          width={300}
-        >
-          <Menu>
-            <Menu.Item key="displaySettings" onClick={() => navigate("/displaySettings")}>Display Settings</Menu.Item>
-            <Menu.Item key="orgSettings" onClick={() => navigate("/orgSettings")}>Org Settings</Menu.Item>
-            {/* Add more options here if needed */}
-          </Menu>
-        </Drawer>
-      </div>
-    );
-  };
-  
-  const getMenuItemStyle = (selectedKeys, key) => ({
-    fontSize: "14px",
-    color: selectedKeys === key ? "blue" : "black",
-    fontWeight: selectedKeys === key ? "bold" : "normal",
-    borderBottom: selectedKeys === key ? "2px solid blue" : "none",
-    marginRight: "10px",
-  });
-  
-  export default MainMenu;
-  
+      </Drawer>
+    </div>
+  );
+};
+
+const getMenuItemStyle = (selectedKeys, key) => ({
+  fontSize: "14px",
+  color: selectedKeys === key ? "blue" : "black",
+  fontWeight: selectedKeys === key ? "bold" : "normal",
+  borderBottom: selectedKeys === key ? "2px solid blue" : "none",
+  marginRight: "10px",
+});
+
+export default MainMenu;
