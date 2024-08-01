@@ -1,11 +1,10 @@
 import React from "react";
 import {
   BrowserRouter as Router,
-  Route,
   Routes,
+  Route,
   Navigate,
 } from "react-router-dom";
-import { Layout } from "antd";
 import "./App.css";
 import About from "./Components/About";
 import RoomList from "./Components/RoomList";
@@ -19,51 +18,45 @@ import AddComplaint from "./Components/AddComplaint";
 import Profile from "./Components/Profile";
 import DisplaySettings from "./Components/DisplaySettings";
 import OrgSettings from "./Components/OrgSettings";
-import MainMenu from "./Components/MainMenu";
 import ReportsAndAnalytics from "./Components/ReportsAndAnalytics";
-
-const { Header, Content } = Layout;
+import SignOut from "./Components/SignOut";
+import ChangePassword from "./Components/ChangePassword";
+import Login from "./Components/Login";
+import Signup from "./Components/SignUp";
+import { AuthProvider } from "./Components/AuthContext"; 
+import PrivateRoute from "./Components/PrivateRoute";
+import ForgotPassword from "./ForgotPassword";
+import AppLayout from "./Components/AppLayout";
 
 const App = () => {
   return (
-    <Router>
-      <Layout className="layout">
-        <Header
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            zIndex: 1,
-            backgroundColor: "transparent",
-            padding: 0,
-          }}
-        >
-          <MainMenu />
-        </Header>
-        <Content>
-          <div className="site-layout-content">
-            <Routes>
-              <Route path="/" element={<Navigate to="/home" />} />
-              <Route path="/home" element={<About />} />
-              <Route path="/rooms" element={<RoomList />} />
-              <Route path="/addRoom" element={<AddEditRoom />} />
-              <Route path="/tenants" element={<TenantsList />} />
-              <Route path="/addTenant" element={<AddEditTenant />} />
-              <Route path="/rentDue" element={<RentDueList />} />
-              <Route path="/paymentHistory" element={<PaymentHistory />} />
-              <Route path="/complaints" element={<ComplaintsList />} />
-              <Route path="/addComplaint" element={<AddComplaint />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/displaySettings" element={<DisplaySettings />} />
-              <Route path="/orgSettings" element={<OrgSettings />} /> 
-              <Route path="/reports" element={<ReportsAndAnalytics />} /> 
-
-            </Routes>
-          </div>
-        </Content>
-      </Layout>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <AppLayout>
+          <Routes>
+            <Route path="/" element={<Navigate to="/home" />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />  
+            <Route path="/home" element={<PrivateRoute element={About} />} />
+            <Route path="/rooms" element={<PrivateRoute element={RoomList} />} />
+            <Route path="/addRoom" element={<PrivateRoute element={AddEditRoom} />} />
+            <Route path="/tenants" element={<PrivateRoute element={TenantsList} />} />
+            <Route path="/addTenant" element={<PrivateRoute element={AddEditTenant} />} />
+            <Route path="/rentDue" element={<PrivateRoute element={RentDueList} />} />
+            <Route path="/paymentHistory" element={<PrivateRoute element={PaymentHistory} />} />
+            <Route path="/complaints" element={<PrivateRoute element={ComplaintsList} />} />
+            <Route path="/addComplaint" element={<PrivateRoute element={AddComplaint} />} />
+            <Route path="/profile" element={<PrivateRoute element={Profile} />} />
+            <Route path="/displaySettings" element={<PrivateRoute element={DisplaySettings} />} />
+            <Route path="/orgSettings" element={<PrivateRoute element={OrgSettings} />} /> 
+            <Route path="/reports" element={<PrivateRoute element={ReportsAndAnalytics} />} /> 
+            <Route path="/signout" element={<PrivateRoute element={SignOut} />} /> 
+            <Route path="/changepassword" element={<PrivateRoute element={ChangePassword} />} /> 
+          </Routes>
+        </AppLayout>
+      </Router>
+    </AuthProvider>
   );
 };
 

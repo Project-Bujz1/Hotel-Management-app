@@ -1,6 +1,6 @@
   import React, { useState } from "react";
-import { Menu, Input, Modal, Progress, Tooltip, Drawer } from "antd";
-import { SearchOutlined, UserOutlined, MenuOutlined } from "@ant-design/icons";
+import { Menu, Input, Modal, Progress, Tooltip, Drawer, Avatar, Popover, Button } from "antd";
+import { SearchOutlined, UserOutlined, MenuOutlined, LockOutlined, LogoutOutlined, QuestionCircleOutlined, SettingOutlined, MailOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import orgLogo from "../assets/logo-1.png";
 import logo from "../assets/logo-transparent-png.png";
@@ -41,15 +41,30 @@ const MainMenu = () => {
 
   const menuItems = (
     <Menu>
-      <Menu.Item key="displaySettings" onClick={() => navigate("/displaySettings")}>
+      <Menu.Item key="displaySettings" icon={<SettingOutlined />} onClick={() => navigate("/displaySettings")}>
         Display Settings
       </Menu.Item>
-      <Menu.Item key="orgSettings" onClick={() => navigate("/orgSettings")}>
+      <Menu.Item key="orgSettings" icon={<SettingOutlined />} onClick={() => navigate("/orgSettings")}>
         Org Settings
+      </Menu.Item>
+      <Menu.Item key="changePassword" icon={<LockOutlined />} onClick={() => navigate("/changePassword")}>
+        Change Password
+      </Menu.Item>
+      <Menu.Item key="signOut" icon={<LogoutOutlined />} onClick={() => navigate("/signout")}>
+        Sign Out
       </Menu.Item>
     </Menu>
   );
 
+  const popoverContent = (
+    <div>
+      For Any Queries? Contact Us <br />
+      <a href="mailto:smartannoyers@gmail.com">
+        <MailOutlined style={{ marginRight: "5px" }} />
+        smartannoyers@gmail.com
+      </a>
+    </div>
+  );
   return (
     <div
       style={{
@@ -63,7 +78,7 @@ const MainMenu = () => {
         alignItems: "center",
         overflow: "hidden",
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-        padding: "0 10px", // Added padding to avoid elements touching the edges
+        padding: "0 10px",
       }}
     >
       <img
@@ -85,7 +100,7 @@ const MainMenu = () => {
           fontWeight: "bold",
           fontSize: "14px",
           margin: 0,
-          padding: "0 10px", // Added padding to ensure space around elements
+          padding: "0 10px",
         }}
       >
         <Menu.Item key="home" style={getMenuItemStyle(selectedKeys, "home")} onClick={() => navigate("/home")}>Home</Menu.Item>
@@ -104,14 +119,21 @@ const MainMenu = () => {
           <Input prefix={<SearchOutlined />} placeholder="Search" size="small" style={{ width: "150px", borderRadius: "5px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }} />
         </Menu.Item>
         <Menu.Item key="profile" style={getMenuItemStyle(selectedKeys, "profile")} icon={<UserOutlined />} onClick={() => navigate("/profile")}>Profile</Menu.Item>
-        <Menu.Item key="options" style={{ fontSize: "14px", color: "black", marginRight: "10px" }} onClick={handleDrawerOpen}>
+        <Menu.Item key="options" style={{ fontSize: "14px", color: "black", marginLeft: "0px", marginRight : "0px"}} onClick={handleDrawerOpen}>
           <MenuOutlined />
         </Menu.Item>
       </Menu>
+      <Popover content={popoverContent} trigger="hover">
+        <Button
+          shape="circle"
+          icon={<QuestionCircleOutlined />}
+          style={{ border: "none", backgroundColor: "#f0f0f0", cursor: "pointer", marginLeft: "0px" }}
+        />
+      </Popover>
       <img
         src={orgLogo}
         alt="Organization Logo"
-        style={{ height: "60px", marginLeft: "auto", cursor: "pointer", flexShrink: 0 }}
+        style={{ height: "60px", cursor: "pointer", flexShrink: 0 }}
         onClick={handleLogoClick}
       />
 
@@ -128,9 +150,10 @@ const MainMenu = () => {
         width={300}
       >
         <Menu>
-          <Menu.Item key="displaySettings" onClick={() => navigate("/displaySettings")}>Display Settings</Menu.Item>
-          <Menu.Item key="orgSettings" onClick={() => navigate("/orgSettings")}>Org Settings</Menu.Item>
-          {/* Add more options here if needed */}
+          <Menu.Item key="displaySettings" icon={<SettingOutlined />} onClick={() => navigate("/displaySettings")}>Display Settings</Menu.Item>
+          <Menu.Item key="orgSettings" icon={<SettingOutlined />} onClick={() => navigate("/orgSettings")}>Org Settings</Menu.Item>
+          <Menu.Item key="changePassword" icon={<LockOutlined />} onClick={() => navigate("/changePassword")}>Change Password</Menu.Item>
+          <Menu.Item key="signOut" icon={<LogoutOutlined />} onClick={() => navigate("/signout")}>Sign Out</Menu.Item>
         </Menu>
       </Drawer>
     </div>
@@ -142,7 +165,7 @@ const getMenuItemStyle = (selectedKeys, key) => ({
   color: selectedKeys === key ? "blue" : "black",
   fontWeight: selectedKeys === key ? "bold" : "normal",
   borderBottom: selectedKeys === key ? "2px solid blue" : "none",
-  marginRight: "10px",
+  marginRight: "6px",
 });
 
 export default MainMenu;

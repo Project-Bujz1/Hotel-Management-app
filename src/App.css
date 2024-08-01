@@ -59,3 +59,47 @@ h1, h2, h3, h4, h5, h6 {
 .custom-section-paragraph {
   font-size: 1rem; /* Adjust the paragraph size as needed */
 }
+
+.auth-container {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f2f5; /* Background color for the entire container */
+}
+
+.background-image {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+
+.left-background {
+  left: 0;
+  background-image: url('../src/assets/left-background.png'); /* Replace with your image path */
+}
+
+.right-background {
+  right: 0;
+  background-image: url('../src/assets/right-background.png'); /* Replace with your image path */
+}
+
+.auth-form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+}
+
+.logo {
+  display: block;
+  margin: 0 auto 20px;
+  max-width: 300px; /* Adjust the size of the logo */
+}

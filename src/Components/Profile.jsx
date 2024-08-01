@@ -18,16 +18,16 @@ const Profile = () => {
   };
 
   return (
-<div style={{ display: 'flex', justifyContent: 'center', padding: 20, marginTop: "75px" }}>
+<div style={{ display: 'flex', justifyContent: 'center', padding: 20, marginTop: "55px" }}>
   <Card
-    style={{ width: 500, borderRadius: 10, boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}
+    style={{ width: 400, borderRadius: 10, boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}
     title="Profile"
     cover={
-      <div style={{ textAlign: 'center', marginBottom: 20, marginTop: 10, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div style={{ textAlign: 'center', marginBottom: 5, marginTop: 5, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Avatar
-          size={128}
+          size={118}
           src={imageUrl || 'https://via.placeholder.com/128'}
-          style={{ marginBottom: 10 }}
+          style={{ marginBottom: 5 }}
         />
         <Upload
           showUploadList={false}
@@ -38,7 +38,7 @@ const Profile = () => {
             }, 1000);
           }}
         >
-          <Button icon={<UploadOutlined />} style={{ marginTop: 10 }}>
+          <Button icon={<UploadOutlined />} style={{ marginTop: 5 }}>
             Upload Picture
           </Button>
         </Upload>
