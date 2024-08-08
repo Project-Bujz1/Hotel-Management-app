@@ -1,0 +1,114 @@
+{
+  "rooms": [
+    {
+      "id": "b469",
+      "roomNumber": "201",
+      "type": "Non-AC",
+      "status": "Occupied",
+      "rent": 1,
+      "sharing": "2",
+      "tenants": 1
+    },
+    {
+      "id": "2beb",
+      "roomNumber": "206",
+      "type": "Non-AC",
+      "status": "Occupied",
+      "rent": 2,
+      "sharing": "2",
+      "tenants": 2
+    },
+    {
+      "id": "e41d",
+      "roomNumber": "202",
+      "type": "Non-AC",
+      "status": "Occupied",
+      "rent": 2,
+      "sharing": "2",
+      "tenants": 2
+    }
+  ],
+  "tenants": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "image": "https://via.placeholder.com/150",
+      "email": "john.doe@example.com",
+      "phoneNumber": "1234567890",
+      "emergencyContact": "Jane Doe - 0987654321",
+      "idNumber": "A1234567",
+      "currentAddress": "123 Main St",
+      "permanentAddress": "456 Elm St",
+      "leaseStartDate": "2024-01-01",
+      "leaseEndDate": "2024-12-31",
+      "monthlyRent": 500,
+      "paymentMethod": "cash",
+      "securityDeposit": 1000,
+      "occupation": "Engineer",
+      "employerName": "Tech Corp",
+      "employerContact": "0987654321",
+      "nationality": "American",
+      "medicalConditions": "None"
+    }
+  ],
+  "complaints": [
+    {
+      "id": "2",
+      "roomNumber": "102",
+      "complaint": "Broken window",
+      "status": "Completed",
+      "imageUrl": "",
+      "reportedDate": "2024-07-11",
+      "reportedBy": "Jane Smith"
+    },
+    {
+      "id": "3",
+      "roomNumber": "104",
+      "complaint": "No hot water",
+      "status": "Completed",
+      "imageUrl": "",
+      "reportedDate": "2024-07-12",
+      "reportedBy": "Bob Johnson"
+    },
+    {
+      "id": "1723146353012",
+      "roomNumber": "206",
+      "complaint": "Water",
+      "reportedDate": "2",
+      "reportedBy": "Akash",
+      "status": "Pending"
+    }
+  ],
+  "rentDue": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "roomNumber": "101",
+      "status": "Paid",
+      "dueDate": "2024-07-10",
+      "modeOfPayment": "Online"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "roomNumber": "102",
+      "status": "Not Paid",
+      "dueDate": "2024-07-15",
+      "modeOfPayment": "Cash"
+    },
+    {
+      "id": 3,
+      "name": "Bob Johnson",
+      "roomNumber": "103",
+      "status": "Due Soon",
+      "dueDate": "2024-07-18",
+      "modeOfPayment": "Cheque"
+    }
+  ],
+  "profile": {
+    "name": "Akash Kumar",
+    "email": "dakash5539@gmail.com",
+    "phone": "09553313334",
+    "imageUrl": "blob:http://localhost:5173/c832d14b-5e68-4ace-bd9e-b21c0593141c"
+  }
+}
