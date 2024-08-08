@@ -1,22 +1,50 @@
 import axios from 'axios';
+// apiservice.js
 
-const BASE_URL = 'http://127.0.0.1:5000';
+const API_URL = 'http://localhost:5000/rooms';
 
-const api = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+export const fetchRooms = async () => {
+  const response = await fetch(API_URL);
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.json();
+};
 
-// Get all rooms
-export const fetchRooms = () => api.get('/rooms');
+export const addRoom = async (room) => {
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(room),
+  });
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.json();
+};
 
-// Add a new room
-export const addRoom = (roomData) => api.post('/rooms', roomData);
+export const updateRoom = async (id, room) => {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(room),
+  });
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.json();
+};
 
-// Update a room
-export const updateRoom = (roomId, roomData) => api.put(`/rooms/${roomId}`, roomData);
-
-// Delete a room
-export const deleteRoom = (roomId) => api.delete(`/rooms/${roomId}`);
+export const deleteRoom = async (id) => {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.json();
+};

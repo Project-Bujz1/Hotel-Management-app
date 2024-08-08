@@ -1,77 +1,78 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, Row, Col, Statistic, Progress } from 'antd';
 import { PieChart, Pie, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Cell } from 'recharts';
-import { statusColors } from './ComplaintsList'; // Make sure this aligns with your actual statusColors import
-
-// Example data
-const rentData = [
-  { key: '1', name: 'John Doe', roomNumber: '101', status: 'Paid', dueDate: '2024-07-10', modeOfPayment: 'Online', isNonNative: true, category: 'Student', stayDuration: 120 },
-  { key: '2', name: 'Jane Smith', roomNumber: '102', status: 'Not Paid', dueDate: '2024-07-15', modeOfPayment: 'Cash', isNonNative: false, category: 'Employee', stayDuration: 250 },
-  { key: '3', name: 'Bob Johnson', roomNumber: '103', status: 'Due Soon', dueDate: '2024-07-18', modeOfPayment: 'Cheque', isNonNative: false, category: 'Employee', stayDuration: 90 },
-  // Add more data as needed
-];
-
-// Complaints Data
-const complaintsData = [
-  { key: '1', roomNumber: '101', complaint: 'Leaking faucet', status: 'Pending' },
-  { key: '2', roomNumber: '102', complaint: 'Broken window', status: 'In Progress' },
-  { key: '3', roomNumber: '103', complaint: 'No hot water', status: 'Completed' },
-  // Add more data as needed
-];
-
-// Rooms Data
-const totalRooms = 6;
-const occupiedRooms = 4;
-
-// Transform data for Pie Chart
-const statusCounts = rentData.reduce((acc, tenant) => {
-  acc[tenant.status] = (acc[tenant.status] || 0) + 1;
-  return acc;
-}, {});
-
-const pieData = Object.keys(statusCounts).map(status => ({
-  name: status,
-  value: statusCounts[status]
-}));
-
-// Define colors for each status
-const paymentStatusColors = {
-  Paid: '#52c41a', // Green
-  'Not Paid': '#f5222d', // Red
-  'Due Soon': '#1890ff', // Blue
-};
-
-// Transform data for Bar Chart
-const barData = rentData.map(tenant => ({
-  name: tenant.name,
-  rent: Math.floor(Math.random() * 500) + 100 // Example rent amount, replace with actual rent data if available
-}));
-
-// Calculate statistics
-const totalTenants = rentData.length;
-const paidTenants = statusCounts['Paid'] || 0;
-const notPaidTenants = statusCounts['Not Paid'] || 0;
-const dueSoonTenants = statusCounts['Due Soon'] || 0;
-const nonNativeTenants = rentData.filter(tenant => tenant.isNonNative).length;
-const studentTenants = rentData.filter(tenant => tenant.category === 'Student').length;
-const employeeTenants = rentData.filter(tenant => tenant.category === 'Employee').length;
-const longTermTenants = rentData.filter(tenant => tenant.stayDuration > 180).length;
-
-const complaintsRaised = complaintsData.length;
-const complaintsResolved = complaintsData.filter(c => c.status === 'Completed').length;
-const complaintsPending = complaintsData.filter(c => c.status === 'Pending').length;
-const complaintsInProgress = complaintsData.filter(c => c.status === 'In Progress').length;
-
-const totalRoomsCapacity = totalRooms;
-const vacantRooms = totalRooms - occupiedRooms;
-const occupancyPercentage = Math.round((occupiedRooms / totalRoomsCapacity) * 100);
-const vacancyPercentage = 100 - occupancyPercentage;
 
 const ReportsAndAnalytics = () => {
+  const [rentData, setRentData] = useState([]);
+  const [complaintsData, setComplaintsData] = useState([]);
+  const [roomsData, setRoomsData] = useState([]);
+
+  useEffect(() => {
+    // Fetch data from API
+    const fetchData = async () => {
+      try {
+        const [rentResponse, complaintsResponse, roomsResponse] = await Promise.all([
+          fetch('http://localhost:5000/rentDue'),
+          fetch('http://localhost:5000/complaints'),
+          fetch('http://localhost:5000/rooms')
+        ]);
+        const [rentData, complaintsData, roomsData] = await Promise.all([
+          rentResponse.json(),
+          complaintsResponse.json(),
+          roomsResponse.json()
+        ]);
+        setRentData(rentData);
+        setComplaintsData(complaintsData);
+        setRoomsData(roomsData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Process data
+  const totalRooms = roomsData.length;
+  const occupiedRooms = roomsData.filter(room => room.status === 'Occupied').length;
+
+  const statusCounts = rentData.reduce((acc, tenant) => {
+    acc[tenant.status] = (acc[tenant.status] || 0) + 1;
+    return acc;
+  }, {});
+
+  const pieData = Object.keys(statusCounts).map(status => ({
+    name: status,
+    value: statusCounts[status]
+  }));
+
+  const paymentStatusColors = {
+    Paid: '#52c41a',
+    'Not Paid': '#f5222d',
+    'Due Soon': '#1890ff'
+  };
+
+  const barData = rentData.map(tenant => ({
+    name: tenant.name,
+    rent: Math.floor(Math.random() * 500) + 100
+  }));
+
+  const totalTenants = rentData.length;
+  const paidTenants = statusCounts['Paid'] || 0;
+  const notPaidTenants = statusCounts['Not Paid'] || 0;
+  const dueSoonTenants = statusCounts['Due Soon'] || 0;
+
+  const complaintsRaised = complaintsData.length;
+  const complaintsResolved = complaintsData.filter(c => c.status === 'Completed').length;
+  const complaintsPending = complaintsData.filter(c => c.status === 'Pending').length;
+  const complaintsInProgress = complaintsData.filter(c => c.status === 'In Progress').length;
+
+  const occupancyPercentage = Math.round((occupiedRooms / totalRooms) * 100);
+  const vacancyPercentage = 100 - occupancyPercentage;
+
   return (
     <div style={{ padding: '20px', marginTop: '75px' }}>
       <Row gutter={[16, 16]}>
-        {/* Pie Chart */}
         <Col span={24} md={12}>
           <Card title="Payment Status Distribution">
             <PieChart width={400} height={400}>
@@ -92,7 +93,6 @@ const ReportsAndAnalytics = () => {
           </Card>
         </Col>
 
-        {/* Bar Chart */}
         <Col span={24} md={12}>
           <Card title="Rent Amount by Tenant">
             <BarChart
@@ -122,15 +122,15 @@ const ReportsAndAnalytics = () => {
 
         <Col span={24} md={12} lg={6}>
           <Card title="Tenant Categories">
-            <Statistic title="Non-Native Tenants" value={nonNativeTenants} />
-            <Statistic title="Students" value={studentTenants} style={{ marginTop: '16px' }} />
-            <Statistic title="Employees" value={employeeTenants} style={{ marginTop: '16px' }} />
+            <Statistic title="Non-Native Tenants" value={rentData.filter(tenant => tenant.isNonNative).length} />
+            <Statistic title="Students" value={rentData.filter(tenant => tenant.category === 'Student').length} style={{ marginTop: '16px' }} />
+            <Statistic title="Employees" value={rentData.filter(tenant => tenant.category === 'Employee').length} style={{ marginTop: '16px' }} />
           </Card>
         </Col>
 
         <Col span={24} md={12} lg={6}>
           <Card title="Long-Term Tenants">
-            <Statistic title="Tenants Staying Over 6 Months" value={longTermTenants} />
+            <Statistic title="Tenants Staying Over 6 Months" value={rentData.filter(tenant => tenant.stayDuration > 180).length} />
           </Card>
         </Col>
 
@@ -145,9 +145,9 @@ const ReportsAndAnalytics = () => {
 
         <Col span={24} md={12} lg={6}>
           <Card title="Rent Payment Status">
-            <Progress percent={paidTenants / totalTenants * 100} status="active" strokeColor="#52c41a" format={() => `${paidTenants} Paid`} />
-            <Progress percent={notPaidTenants / totalTenants * 100} status="exception" strokeColor="#f5222d" format={() => `${notPaidTenants} Not Paid`} style={{ marginTop: '16px' }} />
-            <Progress percent={dueSoonTenants / totalTenants * 100} status="normal" strokeColor="#1890ff" format={() => `${dueSoonTenants} Due Soon`} style={{ marginTop: '16px' }} />
+            <Progress percent={paidTenants / totalTenants * 100} status="active" />
+            <Progress percent={notPaidTenants / totalTenants * 100} status="exception" />
+            <Progress percent={dueSoonTenants / totalTenants * 100} status="normal" />
           </Card>
         </Col>
       </Row>

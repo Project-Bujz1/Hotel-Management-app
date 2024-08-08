@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   List,
   Avatar,
@@ -26,36 +26,6 @@ import "./ComplaintsList.css";
 
 const { Option } = Select;
 
-const initialComplaints = [
-  {
-    key: "1",
-    roomNumber: "101",
-    complaint: "Leaking faucet",
-    status: "Pending",
-    imageUrl: "",
-    reportedDate: "2024-07-10",
-    reportedBy: "John Doe",
-  },
-  {
-    key: "2",
-    roomNumber: "102",
-    complaint: "Broken window",
-    status: "In Progress",
-    imageUrl: "",
-    reportedDate: "2024-07-11",
-    reportedBy: "Jane Smith",
-  },
-  {
-    key: "3",
-    roomNumber: "103",
-    complaint: "No hot water",
-    status: "Completed",
-    imageUrl: "",
-    reportedDate: "2024-07-12",
-    reportedBy: "Bob Johnson",
-  },
-];
-
 export const statusColors = {
   Pending: "red",
   "In Progress": "blue",
@@ -63,10 +33,21 @@ export const statusColors = {
 };
 
 const ComplaintsList = () => {
-  const [complaints, setComplaints] = useState(initialComplaints);
+  const [complaints, setComplaints] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const [editingComplaint, setEditingComplaint] = useState(null);
+
+  useEffect(() => {
+    // Fetch complaints from API
+    fetch("http://localhost:5000/complaints")
+      .then((response) => response.json())
+      .then((data) => setComplaints(data))
+      .catch((error) => {
+        console.error("Error fetching complaints:", error);
+        message.error("Failed to load complaints");
+      });
+  }, []);
 
   const showModal = (complaint = null) => {
     setEditingComplaint(complaint);
@@ -84,36 +65,74 @@ const ComplaintsList = () => {
 
   const handleAddEditComplaint = () => {
     form.validateFields().then((values) => {
-      const newComplaints = editingComplaint
-        ? complaints.map((complaint) =>
-            complaint.key === editingComplaint.key
-              ? { ...editingComplaint, ...values }
-              : complaint
-          )
-        : [
-            ...complaints,
-            { key: Date.now().toString(), status: "Pending", ...values },
-          ];
-      setComplaints(newComplaints);
-      setIsModalVisible(false);
-      message.success("Complaint saved successfully");
+      const method = editingComplaint ? "PUT" : "POST";
+      const url = editingComplaint
+        ? `http://localhost:5000/complaints/${editingComplaint.id}`
+        : "http://localhost:5000/complaints";
+
+      fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(editingComplaint ? { ...editingComplaint, ...values } : { id: Date.now().toString(), ...values }),
+      })
+        .then((response) => response.json())
+        .then(() => {
+          // Update local state
+          if (editingComplaint) {
+            setComplaints(complaints.map((complaint) =>
+              complaint.id === editingComplaint.id ? { ...editingComplaint, ...values } : complaint
+            ));
+          } else {
+            setComplaints([...complaints, { id: Date.now().toString(), ...values }]);
+          }
+          setIsModalVisible(false);
+          message.success("Complaint saved successfully");
+        })
+        .catch((error) => {
+          console.error("Error saving complaint:", error);
+          message.error("Failed to save complaint");
+        });
     });
   };
 
-  const handleDelete = (key) => {
-    setComplaints(complaints.filter((complaint) => complaint.key !== key));
-    message.success("Complaint deleted successfully");
+  const handleDelete = (id) => {
+    fetch(`http://localhost:5000/complaints/${id}`, {
+      method: "DELETE",
+    })
+      .then(() => {
+        setComplaints(complaints.filter((complaint) => complaint.id !== id));
+        message.success("Complaint deleted successfully");
+      })
+      .catch((error) => {
+        console.error("Error deleting complaint:", error);
+        message.error("Failed to delete complaint");
+      });
   };
 
-  const handleMarkAsCompleted = (key) => {
-    setComplaints((prevData) =>
-      prevData.map((complaint) =>
-        complaint.key === key
-          ? { ...complaint, status: "Completed" }
-          : complaint
-      )
-    );
-    message.success("Complaint marked as completed");
+  const handleMarkAsCompleted = (id) => {
+    fetch(`http://localhost:5000/complaints/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status: "Completed" }),
+    })
+      .then(() => {
+        setComplaints((prevData) =>
+          prevData.map((complaint) =>
+            complaint.id === id
+              ? { ...complaint, status: "Completed" }
+              : complaint
+          )
+        );
+        message.success("Complaint marked as completed");
+      })
+      .catch((error) => {
+        console.error("Error marking complaint as completed:", error);
+        message.error("Failed to mark complaint as completed");
+      });
   };
 
   return (
@@ -122,7 +141,7 @@ const ComplaintsList = () => {
         type="primary"
         icon={<PlusOutlined />}
         onClick={() => showModal()}
-        style={{ marginBottom: 16, marginLeft: 1350}}
+        style={{ marginBottom: 16, marginLeft: 1350 }}
       >
         Add Complaint
       </Button>
@@ -141,7 +160,7 @@ const ComplaintsList = () => {
               <Tooltip title="Delete">
                 <Popconfirm
                   title="Are you sure you want to delete this complaint?"
-                  onConfirm={() => handleDelete(complaint.key)}
+                  onConfirm={() => handleDelete(complaint.id)}
                   okText="Yes"
                   cancelText="No"
                 >
@@ -152,7 +171,7 @@ const ComplaintsList = () => {
                 <Button
                   type="primary"
                   icon={<CheckOutlined />}
-                  onClick={() => handleMarkAsCompleted(complaint.key)}
+                  onClick={() => handleMarkAsCompleted(complaint.id)}
                 />
               </Tooltip>,
             ]}

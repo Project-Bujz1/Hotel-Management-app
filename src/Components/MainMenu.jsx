@@ -1,8 +1,7 @@
-  import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu, Input, Modal, Progress, Tooltip, Drawer, Avatar, Popover, Button } from "antd";
 import { SearchOutlined, UserOutlined, MenuOutlined, LockOutlined, LogoutOutlined, QuestionCircleOutlined, SettingOutlined, MailOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
-import orgLogo from "../assets/logo-1.png";
 import logo from "../assets/logo-transparent-png.png";
 
 const MainMenu = () => {
@@ -10,6 +9,7 @@ const MainMenu = () => {
   const location = useLocation();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);
+  const [orgLogo, setOrgLogo] = useState(''); // State to hold the organization logo URL
 
   const currentPath = location.pathname;
   const selectedKeys = {
@@ -22,6 +22,17 @@ const MainMenu = () => {
     "/complaints": "complaints",
     "/profile": "profile",
   }[currentPath] || "home";
+
+  useEffect(() => {
+    // Fetch the profile data including the image URL
+    const fetchProfileData = async () => {
+      const response = await fetch('http://localhost:5000/profile');
+      const data = await response.json();
+      setOrgLogo(data.imageUrl || ''); // Set the image URL from profile data
+    };
+
+    fetchProfileData();
+  }, []);
 
   const handleLogoClick = () => {
     setIsModalVisible(true);
@@ -65,6 +76,7 @@ const MainMenu = () => {
       </a>
     </div>
   );
+
   return (
     <div
       style={{
@@ -119,7 +131,7 @@ const MainMenu = () => {
           <Input prefix={<SearchOutlined />} placeholder="Search" size="small" style={{ width: "150px", borderRadius: "5px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }} />
         </Menu.Item>
         <Menu.Item key="profile" style={getMenuItemStyle(selectedKeys, "profile")} icon={<UserOutlined />} onClick={() => navigate("/profile")}>Profile</Menu.Item>
-        <Menu.Item key="options" style={{ fontSize: "14px", color: "black", marginLeft: "0px", marginRight : "0px"}} onClick={handleDrawerOpen}>
+        <Menu.Item key="options" style={{ fontSize: "14px", color: "black", marginLeft: "0px", marginRight: "0px"}} onClick={handleDrawerOpen}>
           <MenuOutlined />
         </Menu.Item>
       </Menu>
