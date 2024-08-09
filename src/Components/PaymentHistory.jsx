@@ -1,37 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { List, Card, DatePicker, Button, Tag, Space, message } from "antd";
 import moment from "moment";
 import "./PaymentHistory.css";
 
-const initialPayments = [
-  {
-    key: "1",
-    tenantName: "John Doe",
-    amount: 500,
-    paymentDate: "2024-07-10",
-    paymentMode: "Credit Card",
-  },
-  {
-    key: "2",
-    tenantName: "Jane Smith",
-    amount: 450,
-    paymentDate: "2024-07-11",
-    paymentMode: "Bank Transfer",
-  },
-  {
-    key: "3",
-    tenantName: "Bob Johnson",
-    amount: 600,
-    paymentDate: "2024-07-12",
-    paymentMode: "Cash",
-  },
-  // Add more initial payment data as needed
-];
-
 const PaymentHistory = () => {
-  const [payments, setPayments] = useState(initialPayments);
-  const [filteredPayments, setFilteredPayments] = useState(initialPayments);
+  const [payments, setPayments] = useState([]);
+  const [filteredPayments, setFilteredPayments] = useState([]);
   const [dateRange, setDateRange] = useState([null, null]);
+
+  useEffect(() => {
+    const fetchPayments = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/tenants');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log(data); // Add this line to check the fetched data
+        setPayments(data);
+        setFilteredPayments(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        message.error('Failed to fetch payment data');
+      }
+    };
+  
+    fetchPayments();
+  }, []);
+  
 
   const filterPaymentsByDate = (date) => {
     if (!date) {
@@ -40,7 +36,7 @@ const PaymentHistory = () => {
     }
     const formattedDate = moment(date).format("YYYY-MM-DD");
     setFilteredPayments(
-      payments.filter((payment) => payment.paymentDate === formattedDate)
+      payments.filter((payment) => payment.dueDate === formattedDate)
     );
   };
 
@@ -53,15 +49,15 @@ const PaymentHistory = () => {
     setFilteredPayments(
       payments.filter(
         (payment) =>
-          moment(payment.paymentDate).isSameOrAfter(start) &&
-          moment(payment.paymentDate).isSameOrBefore(end)
+          moment(payment.dueDate).isSameOrAfter(start) &&
+          moment(payment.dueDate).isSameOrBefore(end)
       )
     );
   };
 
   return (
     <div className="payment-history" style={{ marginTop: "75px" }}>
-      <Space direction="vertical" size="large" style={{ marginBottom: 16, marginLeft: 1250}}>
+      <Space direction="vertical" size="large" style={{ marginBottom: 16, marginLeft: 1250 }}>
         <DatePicker.RangePicker
           onChange={(dates) => filterPaymentsByDateRange(dates)}
           placeholder={["Start Date", "End Date"]}
@@ -73,14 +69,17 @@ const PaymentHistory = () => {
         renderItem={(payment) => (
           <List.Item>
             <Card
-              title={payment.tenantName}
-              extra={<Tag color="blue">{payment.paymentMode}</Tag>}
+              title={payment.name} // Display tenant name
+              extra={<Tag color={payment.status === "Paid" ? "green" : "red"}>{payment.status}</Tag>}
             >
               <p>
                 <strong>Amount Paid:</strong> ${payment.amount}
               </p>
               <p>
-                <strong>Payment Date:</strong> {payment.paymentDate}
+                <strong>Payment Date:</strong> {payment.dueDate}
+              </p>
+              <p>
+                <strong>Mode of Payment:</strong> {payment.modeOfPayment}
               </p>
             </Card>
           </List.Item>

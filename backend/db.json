@@ -5,7 +5,7 @@
       "roomNumber": "201",
       "type": "Non-AC",
       "status": "Occupied",
-      "rent": 1,
+      "rent": 1000,
       "sharing": "2",
       "tenants": 1
     },
@@ -14,23 +14,14 @@
       "roomNumber": "206",
       "type": "Non-AC",
       "status": "Occupied",
-      "rent": 2,
-      "sharing": "2",
-      "tenants": 2
-    },
-    {
-      "id": "e41d",
-      "roomNumber": "202",
-      "type": "Non-AC",
-      "status": "Occupied",
-      "rent": 2,
+      "rent": 1200,
       "sharing": "2",
       "tenants": 2
     }
   ],
   "tenants": [
     {
-      "id": 1,
+      "id": "1",
       "name": "John Doe",
       "image": "https://via.placeholder.com/150",
       "email": "john.doe@example.com",
@@ -42,73 +33,115 @@
       "leaseStartDate": "2024-01-01",
       "leaseEndDate": "2024-12-31",
       "monthlyRent": 500,
-      "paymentMethod": "cash",
+      "paymentMethod": "Cash",
       "securityDeposit": 1000,
       "occupation": "Engineer",
       "employerName": "Tech Corp",
       "employerContact": "0987654321",
       "nationality": "American",
-      "medicalConditions": "None"
+      "medicalConditions": "None",
+      "status": "Paid"
+    },
+    {
+      "name": "Akki",
+      "email": "dakash5539@gmail.com",
+      "phoneNumber": "09553313334",
+      "emergencyContact": "1",
+      "idNumber": "1",
+      "currentAddress": "d no-18-9-24 gandhi nagar samalkot  pin code- 533440 east godavari district andhra pradesh",
+      "permanentAddress": "18-9-24",
+      "leaseStartDate": "2024-08-12T18:30:00.000Z",
+      "leaseEndDate": "2024-08-29T18:30:00.000Z",
+      "monthlyRent": "1",
+      "paymentMethod": "Cash",
+      "securityDeposit": "1",
+      "occupation": "1",
+      "employerName": "1",
+      "employerContact": "1",
+      "nationality": "American",
+      "id": "da54",
+      "status": "Paid"
+    },
+    {
+      "name": "Chiranjeevi",
+      "email": "dakash5539@gmail.com",
+      "phoneNumber": "09553313334",
+      "emergencyContact": "1",
+      "idNumber": "1",
+      "currentAddress": "d no-18-9-24 gandhi nagar samalkot  pin code- 533440 east godavari district andhra pradesh",
+      "permanentAddress": "18-9-24",
+      "leaseStartDate": "2024-08-04T18:30:00.000Z",
+      "leaseEndDate": "2024-08-28T18:30:00.000Z",
+      "monthlyRent": "1",
+      "paymentMethod": "Cash",
+      "securityDeposit": "1",
+      "occupation": "1",
+      "employerName": "1",
+      "employerContact": "1",
+      "id": "77d1",
+      "status": "Paid"
+    },
+    {
+      "id": "5778",
+      "name": "Akash Kumar",
+      "email": "dakash5539@gmail.com",
+      "phoneNumber": "09553313334",
+      "emergencyContact": "1`",
+      "idNumber": "1",
+      "currentAddress": "d no-18-9-24 gandhi nagar samalkot  pin code- 533440 east godavari district andhra pradesh",
+      "permanentAddress": "1",
+      "leaseStartDate": "2024-08-05T18:30:00.000Z",
+      "leaseEndDate": "2024-08-07T18:30:00.000Z",
+      "monthlyRent": "1",
+      "paymentMethod": "Bank Transfer",
+      "securityDeposit": "1",
+      "occupation": "1",
+      "employerName": "1",
+      "employerContact": "1",
+      "nationality": "American",
+      "roomId": "2beb",
+      "status": "Not Paid"
     }
   ],
   "complaints": [
     {
-      "id": "2",
-      "roomNumber": "102",
+      "id": "1",
+      "roomNumber": "201",
       "complaint": "Broken window",
       "status": "Completed",
       "imageUrl": "",
       "reportedDate": "2024-07-11",
-      "reportedBy": "Jane Smith"
+      "reportedBy": "John Doe"
     },
     {
-      "id": "3",
-      "roomNumber": "104",
-      "complaint": "No hot water",
       "status": "Completed",
-      "imageUrl": "",
-      "reportedDate": "2024-07-12",
-      "reportedBy": "Bob Johnson"
-    },
-    {
-      "id": "1723146353012",
-      "roomNumber": "206",
-      "complaint": "Water",
-      "reportedDate": "2",
-      "reportedBy": "Akash",
-      "status": "Pending"
+      "id": "2"
     }
   ],
   "rentDue": [
     {
-      "id": 1,
+      "id": "1",
       "name": "John Doe",
-      "roomNumber": "101",
+      "roomNumber": "201",
       "status": "Paid",
       "dueDate": "2024-07-10",
-      "modeOfPayment": "Online"
+      "modeOfPayment": "Cash",
+      "amount": 500
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Jane Smith",
-      "roomNumber": "102",
-      "status": "Not Paid",
-      "dueDate": "2024-07-15",
-      "modeOfPayment": "Cash"
-    },
-    {
-      "id": 3,
-      "name": "Bob Johnson",
-      "roomNumber": "103",
+      "roomNumber": "206",
       "status": "Due Soon",
-      "dueDate": "2024-07-18",
-      "modeOfPayment": "Cheque"
+      "dueDate": "2024-07-15",
+      "modeOfPayment": "Bank Transfer",
+      "amount": 600
     }
   ],
   "profile": {
     "name": "Akash Kumar",
     "email": "dakash5539@gmail.com",
     "phone": "09553313334",
-    "imageUrl": "blob:http://localhost:5173/c832d14b-5e68-4ace-bd9e-b21c0593141c"
+    "imageUrl": "blob:http://localhost:5173/07d44685-fa93-4767-b3e5-2a0b70ccdb17"
   }
 }

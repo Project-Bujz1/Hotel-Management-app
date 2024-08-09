@@ -12,7 +12,7 @@ const ReportsAndAnalytics = () => {
     const fetchData = async () => {
       try {
         const [rentResponse, complaintsResponse, roomsResponse] = await Promise.all([
-          fetch('http://localhost:5000/rentDue'),
+          fetch('http://localhost:5000/tenants'),
           fetch('http://localhost:5000/complaints'),
           fetch('http://localhost:5000/rooms')
         ]);

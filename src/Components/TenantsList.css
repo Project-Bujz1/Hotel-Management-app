@@ -1,0 +1,40 @@
+.tenants-list-container {
+    padding: 20px;
+  }
+  
+  .room-section {
+    margin-bottom: 40px;
+  }
+  
+  .add-tenant-button {
+    margin-bottom: 10px;
+  }
+  
+  .delete-button {
+    margin-left: 10px;
+  }
+  
+  .tenant-form .ant-form-item {
+    margin-bottom: 16px;
+  }
+  
+  .tenant-form .ant-form-item-label {
+    font-weight: bold;
+  }
+  
+  .form-columns {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .form-column {
+    flex: 1;
+  }
+  
+  .image-preview {
+    margin-top: 10px;
+    max-width: 200px;
+    max-height: 200px;
+    display: block;
+  }
+  

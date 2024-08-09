@@ -1,646 +1,333 @@
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
-// import { Card, Modal, Button, Row, Col, Typography, Form, Input, Upload, Select, DatePicker, Popconfirm } from "antd";
-// import { EditOutlined, DeleteOutlined, UserOutlined, PictureOutlined, ExclamationCircleOutlined, IdcardOutlined, BankOutlined } from "@ant-design/icons";
-// import moment from 'moment';
-
-// const { Text } = Typography;
-// const { Option } = Select;
-
-// const apiUrl = "http://localhost:5000"; // URL for json-server
-
-// const TenantsList = () => {
-//   const [tenants, setTenants] = useState([]);
-//   const [isModalVisible, setIsModalVisible] = useState(false);
-//   const [currentTenant, setCurrentTenant] = useState(null);
-//   const [form] = Form.useForm();
-
-//   useEffect(() => {
-//     // Fetch tenants from API
-//     axios.get(`${apiUrl}/tenants`)
-//       .then(response => {
-//         setTenants(response.data);
-//       })
-//       .catch(error => {
-//         console.error("Error fetching tenants:", error);
-//       });
-//   }, []);
-
-//   const showModal = (tenant) => {
-//     setCurrentTenant(tenant);
-//     setIsModalVisible(true);
-//     if (tenant) {
-//       form.setFieldsValue({
-//         name: tenant.name,
-//         email: tenant.email,
-//         phoneNumber: tenant.phoneNumber,
-//         emergencyContact: tenant.emergencyContact,
-//         idNumber: tenant.idNumber,
-//         currentAddress: tenant.currentAddress,
-//         permanentAddress: tenant.permanentAddress,
-//         leaseStartDate: moment(tenant.leaseStartDate),
-//         leaseEndDate: moment(tenant.leaseEndDate),
-//         monthlyRent: tenant.monthlyRent,
-//         paymentMethod: tenant.paymentMethod,
-//         securityDeposit: tenant.securityDeposit,
-//         occupation: tenant.occupation,
-//         employerName: tenant.employerName,
-//         employerContact: tenant.employerContact,
-//         nationality: tenant.nationality,
-//         medicalConditions: tenant.medicalConditions,
-//         image: tenant.image
-//       });
-//     } else {
-//       form.resetFields();
-//     }
-//   };
-
-//   const handleCancel = () => {
-//     setIsModalVisible(false);
-//   };
-
-//   const handleAddEditTenant = () => {
-//     form.validateFields().then((values) => {
-//       const tenantData = {
-//         ...values,
-//         leaseStartDate: values.leaseStartDate.format('YYYY-MM-DD'),
-//         leaseEndDate: values.leaseEndDate.format('YYYY-MM-DD')
-//       };
-
-//       if (currentTenant) {
-//         // Update tenant
-//         axios.put(`${apiUrl}/tenants/${currentTenant.id}`, tenantData)
-//           .then(() => {
-//             setTenants(tenants.map(t => t.id === currentTenant.id ? tenantData : t));
-//             setIsModalVisible(false);
-//           })
-//           .catch(error => {
-//             console.error("Error updating tenant:", error);
-//           });
-//       } else {
-//         // Add new tenant
-//         axios.post(`${apiUrl}/tenants`, tenantData)
-//           .then(response => {
-//             setTenants([...tenants, response.data]);
-//             setIsModalVisible(false);
-//           })
-//           .catch(error => {
-//             console.error("Error adding tenant:", error);
-//           });
-//       }
-//     });
-//   };
-
-//   const handleDeleteTenant = (tenantId) => {
-//     axios.delete(`${apiUrl}/tenants/${tenantId}`)
-//       .then(() => {
-//         setTenants(tenants.filter(t => t.id !== tenantId));
-//       })
-//       .catch(error => {
-//         console.error("Error deleting tenant:", error);
-//       });
-//   };
-
-//   return (
-//     <div style={{ marginTop: "75px" }}>
-//       <Row gutter={16}>
-//         {tenants.map((tenant) => (
-//           <Col key={tenant.id} xs={24} sm={12} md={8} lg={6} xl={4} style={{ marginBottom: 16 }}>
-//             <Card
-//               hoverable
-//               cover={<img alt={tenant.name} src={tenant.image || '/default-avatar.png'} />}
-//               actions={[
-//                 <EditOutlined key="edit" onClick={() => showModal(tenant)} />,
-//                 <Popconfirm
-//                   title="Are you sure to delete this tenant?"
-//                   onConfirm={() => handleDeleteTenant(tenant.id)}
-//                   okText="Yes"
-//                   cancelText="No"
-//                   icon={<ExclamationCircleOutlined style={{ color: "red" }} />}
-//                 >
-//                   <DeleteOutlined key="delete" />
-//                 </Popconfirm>,
-//               ]}
-//             >
-//               <Card.Meta title={tenant.name} description={tenant.email} />
-//             </Card>
-//           </Col>
-//         ))}
-//         <Col xs={24} sm={12} md={8} lg={6} xl={4} style={{ marginBottom: 16 }}>
-//           <Card
-//             hoverable
-//             onClick={() => showModal(null)}
-//             style={{ textAlign: "center", height: "100%" }}
-//           >
-//             <Button
-//               type="primary"
-//               shape="round"
-//               icon={<UserOutlined />}
-//               size="large"
-//             >
-//               Add Tenant
-//             </Button>
-//           </Card>
-//         </Col>
-//       </Row>
-
-//       <Modal
-//         title={currentTenant ? "Edit Tenant" : "Add Tenant"}
-//         visible={isModalVisible}
-//         onCancel={handleCancel}
-//         onOk={handleAddEditTenant}
-//         destroyOnClose
-//       >
-//         <Form form={form} layout="vertical">
-//           <Form.Item name="name" label="Name" rules={[{ required: true, message: "Please enter tenant's name!" }]}>
-//             <Input prefix={<UserOutlined />} />
-//           </Form.Item>
-//           <Form.Item name="image" label="Image">
-//             <Upload
-//               listType="picture"
-//               beforeUpload={(file) => {
-//                 const reader = new FileReader();
-//                 reader.onload = () => {
-//                   form.setFieldsValue({ image: reader.result });
-//                 };
-//                 reader.readAsDataURL(file);
-//                 return false;
-//               }}
-//             >
-//               <Button icon={<PictureOutlined />}>Upload Image</Button>
-//             </Upload>
-//           </Form.Item>
-//           <Form.Item name="email" label="Email Address" rules={[{ required: true, type: 'email', message: "Please enter a valid email address!" }]}>
-//             <Input />
-//           </Form.Item>
-//           <Form.Item name="phoneNumber" label="Phone Number" rules={[{ required: true, message: "Please enter the tenant's phone number!" }]}>
-//             <Input />
-//           </Form.Item>
-//           <Form.Item name="emergencyContact" label="Emergency Contact" rules={[{ required: true, message: "Please enter the emergency contact name and phone number!" }]}>
-//             <Input />
-//           </Form.Item>
-//           <Form.Item name="idNumber" label="Government ID Number" rules={[{ required: true, message: "Please enter the government ID number!" }]}>
-//             <Input prefix={<IdcardOutlined />} />
-//           </Form.Item>
-//           <Form.Item name="currentAddress" label="Current Address" rules={[{ required: true, message: "Please enter the current address!" }]}>
-//             <Input />
-//           </Form.Item>
-//           <Form.Item name="permanentAddress" label="Permanent Address" rules={[{ required: true, message: "Please enter the permanent address!" }]}>
-//             <Input />
-//           </Form.Item>
-//           <Form.Item name="leaseStartDate" label="Lease Start Date" rules={[{ required: true, message: "Please select the lease start date!" }]}>
-//             <DatePicker format="YYYY-MM-DD" />
-//           </Form.Item>
-//           <Form.Item name="leaseEndDate" label="Lease End Date" rules={[{ required: true, message: "Please select the lease end date!" }]}>
-//             <DatePicker format="YYYY-MM-DD" />
-//           </Form.Item>
-//           <Form.Item name="monthlyRent" label="Monthly Rent" rules={[{ required: true, message: "Please enter the monthly rent amount!" }]}>
-//             <Input prefix={<BankOutlined />} />
-//           </Form.Item>
-//           <Form.Item name="paymentMethod" label="Payment Method" rules={[{ required: true, message: "Please select the payment method!" }]}>
-//             <Select>
-//               <Option value="cash">Cash</Option>
-//               <Option value="bank_transfer">Bank Transfer</Option>
-//               <Option value="credit_card">Credit Card</Option>
-//               <Option value="digital_wallet">Digital Wallet</Option>
-//             </Select>
-//           </Form.Item>
-//           <Form.Item name="securityDeposit" label="Security Deposit" rules={[{ required: true, message: "Please enter the security deposit amount!" }]}>
-//             <Input prefix={<BankOutlined />} />
-//           </Form.Item>
-//           <Form.Item name="occupation" label="Occupation" rules={[{ required: true, message: "Please enter the tenant's occupation!" }]}>
-//             <Input />
-//           </Form.Item>
-//           <Form.Item name="employerName" label="Employer Name">
-//             <Input />
-//           </Form.Item>
-//           <Form.Item name="employerContact" label="Employer Contact">
-//             <Input />
-//           </Form.Item>
-//           <Form.Item name="nationality" label="Nationality" rules={[{ required: true, message: "Please enter the tenant's nationality!" }]}>
-//             <Input />
-//           </Form.Item>
-//           <Form.Item name="medicalConditions" label="Medical Conditions">
-//             <Input.TextArea />
-//           </Form.Item>
-//         </Form>
-//       </Modal>
-//     </div>
-//   );
-// };
-
-// export default TenantsList;
-import React, { useState } from "react";
-import {
-  Card,
-  Modal,
-  Button,
-  Row,
-  Col,
-  Typography,
-  Form,
-  Input,
-  Upload,
-  Select,
-  DatePicker,
-  Divider,
-  Popconfirm,
-} from "antd";
-import {
-  EditOutlined,
-  DeleteOutlined,
-  UserOutlined,
-  PictureOutlined,
-  ExclamationCircleOutlined,
-  IdcardOutlined,
-  BankOutlined,
-} from "@ant-design/icons";
+import React, { useState, useEffect } from 'react';
+import { List, Card, Avatar, Button, Modal, Form, Input, message, Popconfirm, Upload, Select, DatePicker } from 'antd';
+import { UserOutlined, MailOutlined, PhoneOutlined, HomeOutlined, BankOutlined, IdcardOutlined, FileImageOutlined, CalendarOutlined } from '@ant-design/icons';
+import axios from 'axios';
+import 'antd/dist/reset.css';
+import './TenantsList.css'; // Import the CSS file
 import moment from 'moment';
 
-const { Text, Title } = Typography;
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 const TenantsList = () => {
-  // Sample data based on db.json
-  const [rooms, setRooms] = useState([
-    {
-      id: "b469",
-      roomNumber: "201",
-      type: "Non-AC",
-      status: "Occupied",
-      rent: 1,
-      sharing: "2",
-      tenants: [
-        {
-          id: 1,
-          name: "John Doe",
-          image: "https://via.placeholder.com/150",
-          email: "john.doe@example.com",
-          phoneNumber: "1234567890",
-          emergencyContact: "Jane Doe - 0987654321",
-          idNumber: "A1234567",
-          currentAddress: "123 Main St",
-          permanentAddress: "456 Elm St",
-          leaseStartDate: moment("2024-01-01"),
-          leaseEndDate: moment("2024-12-31"),
-          monthlyRent: 500,
-          paymentMethod: "cash",
-          securityDeposit: 1000,
-          occupation: "Engineer",
-          employerName: "Tech Corp",
-          employerContact: "0987654321",
-          nationality: "American",
-          medicalConditions: "None",
-        },
-      ],
-    },
-    {
-      id: "2beb",
-      roomNumber: "206",
-      type: "Non-AC",
-      status: "Occupied",
-      rent: 2,
-      sharing: "2",
-      tenants: [],
-    },
-  ]);
-
-  // State for managing modal visibility and form data
+  const [tenants, setTenants] = useState([]);
+  const [rooms, setRooms] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [currentRoom, setCurrentRoom] = useState(null);
-  const [currentTenant, setCurrentTenant] = useState(null);
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+  const [selectedTenant, setSelectedTenant] = useState(null);
+  const [selectedRoom, setSelectedRoom] = useState(null);
   const [form] = Form.useForm();
+  const [addForm] = Form.useForm();
+  const [imagePreview, setImagePreview] = useState(null);
 
-  // Modal control functions
-  const showModal = (room, tenant) => {
-    setCurrentRoom(room);
-    setCurrentTenant(tenant);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const roomResponse = await axios.get('http://localhost:5000/rooms');
+        setRooms(roomResponse.data);
+
+        const tenantResponse = await axios.get('http://localhost:5000/tenants');
+        setTenants(tenantResponse.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        message.error('Failed to fetch data');
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const showDetailsModal = (tenant) => {
+    setSelectedTenant(tenant);
+    form.setFieldsValue({
+      ...tenant,
+      leaseStartDate: moment(tenant.leaseStartDate),
+      leaseEndDate: moment(tenant.leaseEndDate)
+    });
+    setImagePreview(tenant.image);
     setIsModalVisible(true);
-    if (tenant) {
-      form.setFieldsValue({
-        name: tenant.name,
-        image: tenant.image,
-        email: tenant.email,
-        phoneNumber: tenant.phoneNumber,
-        emergencyContact: tenant.emergencyContact,
-        idNumber: tenant.idNumber,
-        currentAddress: tenant.currentAddress,
-        permanentAddress: tenant.permanentAddress,
-        leaseStartDate: tenant.leaseStartDate,
-        leaseEndDate: tenant.leaseEndDate,
-        monthlyRent: tenant.monthlyRent,
-        paymentMethod: tenant.paymentMethod,
-        securityDeposit: tenant.securityDeposit,
-        occupation: tenant.occupation,
-        employerName: tenant.employerName,
-        employerContact: tenant.employerContact,
-        nationality: tenant.nationality,
-        medicalConditions: tenant.medicalConditions,
-      });
-    } else {
-      form.resetFields();
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const values = await form.validateFields();
+      let imageUrl = values.image;
+      if (typeof values.image === 'object') {
+        const formData = new FormData();
+        formData.append('file', values.image.file);
+        const uploadResponse = await axios.post('http://localhost:5000/upload', formData);
+        imageUrl = uploadResponse.data.url;
+      }
+      values.image = imageUrl;
+
+      await axios.put(`http://localhost:5000/tenants/${selectedTenant.id}`, values);
+      message.success('Tenant details updated successfully');
+      setIsModalVisible(false);
+
+      const response = await axios.get('http://localhost:5000/tenants');
+      setTenants(response.data);
+    } catch (error) {
+      console.error('Error updating tenant details:', error);
+      message.error('Failed to update tenant details');
     }
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    setIsAddModalVisible(false);
   };
 
-  const handleAddEditTenant = () => {
-    form.validateFields().then((values) => {
-      const updatedRooms = rooms.map((room) => {
-        if (room.id === currentRoom.id) {
-          if (currentTenant) {
-            return {
-              ...room,
-              tenants: room.tenants.map((t) =>
-                t.id === currentTenant.id ? { ...t, ...values } : t
-              ),
-            };
-          } else {
-            const newTenant = {
-              id: Date.now(),
-              ...values,
-            };
-            return {
-              ...room,
-              tenants: [...room.tenants, newTenant],
-            };
-          }
-        }
-        return room;
-      });
-      setRooms(updatedRooms);
-      setIsModalVisible(false);
-    });
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/tenants/${id}`);
+      message.success('Tenant deleted successfully');
+      
+      const response = await axios.get('http://localhost:5000/tenants');
+      setTenants(response.data);
+    } catch (error) {
+      console.error('Error deleting tenant:', error);
+      message.error('Failed to delete tenant');
+    }
   };
 
-  const handleDeleteTenant = (roomId, tenantId) => {
-    const updatedRooms = rooms.map((room) => {
-      if (room.id === roomId) {
-        return {
-          ...room,
-          tenants: room.tenants.filter((t) => t.id !== tenantId),
-        };
+  const showAddModal = (room) => {
+    setSelectedRoom(room);
+    setIsAddModalVisible(true);
+  };
+
+  const handleAdd = async () => {
+    try {
+      const values = await addForm.validateFields();
+      values.roomId = selectedRoom.id;
+
+      let imageUrl = values.image;
+      if (typeof values.image === 'object') {
+        const formData = new FormData();
+        formData.append('file', values.image.file);
+        const uploadResponse = await axios.post('http://localhost:5000/upload', formData);
+        imageUrl = uploadResponse.data.url;
       }
-      return room;
-    });
-    setRooms(updatedRooms);
+      values.image = imageUrl;
+
+      await axios.post('http://localhost:5000/tenants', values);
+      message.success('Tenant added successfully');
+      setIsAddModalVisible(false);
+
+      const response = await axios.get('http://localhost:5000/tenants');
+      setTenants(response.data);
+    } catch (error) {
+      console.error('Error adding tenant:', error);
+      message.error('Failed to add tenant');
+    }
+  };
+
+  const handleImageChange = (info) => {
+    if (info.file.status === 'done') {
+      setImagePreview(URL.createObjectURL(info.file.originFileObj));
+    }
   };
 
   return (
-    <div style={{ marginTop: "75px" }}>
-      {rooms.map((room) => (
-        <Card key={room.id} title={`Room ${room.roomNumber}`}>
-          <Row gutter={16}>
-            {room.tenants.length > 0 ? (
-              room.tenants.map((tenant) => (
-                <Col
-                  key={tenant.id}
-                  xs={24}
-                  sm={12}
-                  md={8}
-                  lg={6}
-                  xl={4}
-                  style={{ marginBottom: 16 }}
-                >
-                  <Card
-                    hoverable
-                    cover={<img alt={tenant.name} src={tenant.image} />}
-                    actions={[
-                      <EditOutlined
-                        key="edit"
-                        onClick={() => showModal(room, tenant)}
-                      />,
+    <div className="tenants-list-container" style={{ marginTop: "75px" }}>
+      {rooms.map(room => (
+        <div key={room.id} className="room-section">
+          <h2>Room {room.roomNumber} ({room.type})</h2>
+          <Button onClick={() => showAddModal(room)} type="primary" className="add-tenant-button">
+            Add Tenant
+          </Button>
+          <List
+            grid={{ gutter: 16, column: 3 }}
+            dataSource={tenants.filter(tenant => tenant.roomId === room.id)}
+            renderItem={tenant => (
+              <List.Item>
+                <Card
+                  title={tenant.name}
+                  cover={<Avatar src={tenant.image} size={64} />}
+                  extra={
+                    <div>
+                      <Button type="primary" onClick={() => showDetailsModal(tenant)}>
+                        View Details
+                      </Button>
                       <Popconfirm
                         title="Are you sure to delete this tenant?"
-                        onConfirm={() => handleDeleteTenant(room.id, tenant.id)}
+                        onConfirm={() => handleDelete(tenant.id)}
                         okText="Yes"
                         cancelText="No"
-                        icon={
-                          <ExclamationCircleOutlined style={{ color: "red" }} />
-                        }
                       >
-                        <DeleteOutlined key="delete" />
-                      </Popconfirm>,
-                    ]}
-                  >
-                    <Card.Meta title={tenant.name} />
-                  </Card>
-                </Col>
-              ))
-            ) : (
-              <Col
-                xs={24}
-                sm={12}
-                md={8}
-                lg={6}
-                xl={4}
-                style={{ marginBottom: 16 }}
-              >
-                <Card
-                  hoverable
-                  onClick={() => showModal(room)}
-                  style={{ textAlign: "center", height: "100%" }}
+                        <Button type="danger" className="delete-button">
+                          Delete
+                        </Button>
+                      </Popconfirm>
+                    </div>
+                  }
                 >
-                  <Button
-                    type="primary"
-                    shape="round"
-                    icon={<UserOutlined />}
-                    size="large"
-                  >
-                    Add Tenant
-                  </Button>
+                  <p><UserOutlined /> {tenant.name}</p>
+                  <p><MailOutlined /> {tenant.email}</p>
+                  <p><PhoneOutlined /> {tenant.phoneNumber}</p>
                 </Card>
-              </Col>
+              </List.Item>
             )}
-          </Row>
-        </Card>
+          />
+        </div>
       ))}
 
+      {/* Update Tenant Modal */}
       <Modal
-        title={currentTenant ? "Edit Tenant" : "Add Tenant"}
+        title="Tenant Details"
         visible={isModalVisible}
+        onOk={handleUpdate}
         onCancel={handleCancel}
-        onOk={handleAddEditTenant}
-        destroyOnClose
+        okText="Save"
+        cancelText="Cancel"
       >
-        <Form form={form} layout="vertical">
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item
-                name="name"
-                label="Name"
-                rules={[{ required: true, message: "Please enter tenant's name!" }]}
-              >
-                <Input prefix={<UserOutlined />} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item name="image" label="Image">
-                <Upload
-                  listType="picture"
-                  beforeUpload={(file) => {
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                      form.setFieldsValue({ image: reader.result });
-                    };
-                    reader.readAsDataURL(file);
-                    return false;
-                  }}
-                >
-                  <Button icon={<PictureOutlined />}>Upload Image</Button>
-                </Upload>
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="email"
-                label="Email Address"
-                rules={[{ required: true, type: 'email', message: "Please enter a valid email address!" }]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="phoneNumber"
-                label="Phone Number"
-                rules={[{ required: true, message: "Please enter the tenant's phone number!" }]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="emergencyContact"
-                label="Emergency Contact"
-                rules={[{ required: true, message: "Please enter the emergency contact name and phone number!" }]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="idNumber"
-                label="Government ID Number"
-                rules={[{ required: true, message: "Please enter the government ID number!" }]}
-              >
-                <Input prefix={<IdcardOutlined />} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="currentAddress"
-                label="Current Address"
-                rules={[{ required: true, message: "Please enter the current address!" }]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="permanentAddress"
-                label="Permanent Address"
-                rules={[{ required: true, message: "Please enter the permanent address!" }]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="leaseStartDate"
-                label="Lease Start Date"
-                rules={[{ required: true, message: "Please select the lease start date!" }]}
-              >
-                <DatePicker format="YYYY-MM-DD" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="leaseEndDate"
-                label="Lease End Date"
-                rules={[{ required: true, message: "Please select the lease end date!" }]}
-              >
-                <DatePicker format="YYYY-MM-DD" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="monthlyRent"
-                label="Monthly Rent"
-                rules={[{ required: true, message: "Please enter the monthly rent!" }]}
-              >
-                <Input type="number" prefix={<BankOutlined />} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="paymentMethod"
-                label="Payment Method"
-                rules={[{ required: true, message: "Please select the payment method!" }]}
-              >
-                <Select>
-                  <Option value="cash">Cash</Option>
-                  <Option value="bank">Bank Transfer</Option>
-                  <Option value="online">Online Payment</Option>
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="securityDeposit"
-                label="Security Deposit"
-                rules={[{ required: true, message: "Please enter the security deposit amount!" }]}
-              >
-                <Input type="number" prefix={<BankOutlined />} />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="occupation"
-                label="Occupation"
-                rules={[{ required: true, message: "Please enter the tenant's occupation!" }]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="employerName"
-                label="Employer Name"
-                rules={[{ required: true, message: "Please enter the employer's name!" }]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="employerContact"
-                label="Employer Contact"
-                rules={[{ required: true, message: "Please enter the employer's contact number!" }]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="nationality"
-                label="Nationality"
-                rules={[{ required: true, message: "Please enter the nationality!" }]}
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name="medicalConditions"
-                label="Medical Conditions"
-              >
-                <Input />
-              </Form.Item>
-            </Col>
-          </Row>
+        <Form form={form} layout="vertical" className="tenant-form">
+          <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Please enter the name' }]}>
+            <Input prefix={<UserOutlined />} />
+          </Form.Item>
+          <Form.Item name="email" label="Email" rules={[{ required: true, message: 'Please enter the email' }]}>
+            <Input prefix={<MailOutlined />} />
+          </Form.Item>
+          <Form.Item name="phoneNumber" label="Phone Number">
+            <Input prefix={<PhoneOutlined />} />
+          </Form.Item>
+          <Form.Item name="emergencyContact" label="Emergency Contact">
+            <Input prefix={<PhoneOutlined />} />
+          </Form.Item>
+          <Form.Item name="idNumber" label="ID Number">
+            <Input prefix={<IdcardOutlined />} />
+          </Form.Item>
+          <Form.Item name="currentAddress" label="Current Address">
+            <Input prefix={<HomeOutlined />} />
+          </Form.Item>
+          <Form.Item name="permanentAddress" label="Permanent Address">
+            <Input prefix={<HomeOutlined />} />
+          </Form.Item>
+          <Form.Item name="leaseStartDate" label="Lease Start Date">
+            <DatePicker prefix={<CalendarOutlined />} format="YYYY-MM-DD" />
+          </Form.Item>
+          <Form.Item name="leaseEndDate" label="Lease End Date">
+            <DatePicker prefix={<CalendarOutlined />} format="YYYY-MM-DD" />
+          </Form.Item>
+          <Form.Item name="monthlyRent" label="Monthly Rent">
+            <Input type="number" prefix={<BankOutlined />} />
+          </Form.Item>
+          <Form.Item name="paymentMethod" label="Payment Method">
+            <Select prefix={<BankOutlined />}>
+              <Option value="Cash">Cash</Option>
+              <Option value="Bank Transfer">Bank Transfer</Option>
+              <Option value="Cheque">Cheque</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="securityDeposit" label="Security Deposit">
+            <Input type="number" prefix={<BankOutlined />} />
+          </Form.Item>
+          <Form.Item name="occupation" label="Occupation">
+            <Input prefix={<UserOutlined />} />
+          </Form.Item>
+          <Form.Item name="employerName" label="Employer Name">
+            <Input prefix={<UserOutlined />} />
+          </Form.Item>
+          <Form.Item name="employerContact" label="Employer Contact">
+            <Input prefix={<PhoneOutlined />} />
+          </Form.Item>
+          <Form.Item name="nationality" label="Nationality">
+            <Select prefix={<IdcardOutlined />}>
+              <Option value="American">American</Option>
+              <Option value="Indian">Indian</Option>
+              <Option value="Other">Other</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="image" label="Profile Image" valuePropName="fileList" getValueFromEvent={e => e.fileList}>
+            <Upload
+              beforeUpload={() => false}
+              onChange={handleImageChange}
+              showUploadList={false}
+              listType="picture"
+            >
+              <Button>Upload Image</Button>
+            </Upload>
+            {imagePreview && <img src={imagePreview} alt="Profile Preview" style={{ width: '100px', marginTop: '10px' }} />}
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      {/* Add Tenant Modal */}
+      <Modal
+        title="Add New Tenant"
+        visible={isAddModalVisible}
+        onOk={handleAdd}
+        onCancel={handleCancel}
+        okText="Add"
+        cancelText="Cancel"
+      >
+        <Form form={addForm} layout="vertical" className="add-tenant-form">
+          <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Please enter the name' }]}>
+            <Input prefix={<UserOutlined />} />
+          </Form.Item>
+          <Form.Item name="email" label="Email" rules={[{ required: true, message: 'Please enter the email' }]}>
+            <Input prefix={<MailOutlined />} />
+          </Form.Item>
+          <Form.Item name="phoneNumber" label="Phone Number">
+            <Input prefix={<PhoneOutlined />} />
+          </Form.Item>
+          <Form.Item name="emergencyContact" label="Emergency Contact">
+            <Input prefix={<PhoneOutlined />} />
+          </Form.Item>
+          <Form.Item name="idNumber" label="ID Number">
+            <Input prefix={<IdcardOutlined />} />
+          </Form.Item>
+          <Form.Item name="currentAddress" label="Current Address">
+            <Input prefix={<HomeOutlined />} />
+          </Form.Item>
+          <Form.Item name="permanentAddress" label="Permanent Address">
+            <Input prefix={<HomeOutlined />} />
+          </Form.Item>
+          <Form.Item name="leaseStartDate" label="Lease Start Date">
+            <DatePicker prefix={<CalendarOutlined />} format="YYYY-MM-DD" />
+          </Form.Item>
+          <Form.Item name="leaseEndDate" label="Lease End Date">
+            <DatePicker prefix={<CalendarOutlined />} format="YYYY-MM-DD" />
+          </Form.Item>
+          <Form.Item name="monthlyRent" label="Monthly Rent">
+            <Input type="number" prefix={<BankOutlined />} />
+          </Form.Item>
+          <Form.Item name="paymentMethod" label="Payment Method">
+            <Select prefix={<BankOutlined />}>
+              <Option value="Cash">Cash</Option>
+              <Option value="Bank Transfer">Bank Transfer</Option>
+              <Option value="Cheque">Cheque</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="securityDeposit" label="Security Deposit">
+            <Input type="number" prefix={<BankOutlined />} />
+          </Form.Item>
+          <Form.Item name="occupation" label="Occupation">
+            <Input prefix={<UserOutlined />} />
+          </Form.Item>
+          <Form.Item name="employerName" label="Employer Name">
+            <Input prefix={<UserOutlined />} />
+          </Form.Item>
+          <Form.Item name="employerContact" label="Employer Contact">
+            <Input prefix={<PhoneOutlined />} />
+          </Form.Item>
+          <Form.Item name="nationality" label="Nationality">
+            <Select prefix={<IdcardOutlined />}>
+              <Option value="American">American</Option>
+              <Option value="Indian">Indian</Option>
+              <Option value="Other">Other</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="image" label="Profile Image" valuePropName="fileList" getValueFromEvent={e => e.fileList}>
+            <Upload
+              beforeUpload={() => false}
+              onChange={handleImageChange}
+              showUploadList={false}
+              listType="picture"
+            >
+              <Button>Upload Image</Button>
+            </Upload>
+            {imagePreview && <img src={imagePreview} alt="Profile Preview" style={{ width: '100px', marginTop: '10px' }} />}
+          </Form.Item>
         </Form>
       </Modal>
     </div>

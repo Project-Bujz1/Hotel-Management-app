@@ -30,7 +30,7 @@ const RentDueList = () => {
 
   // Fetch rent data from the API
   useEffect(() => {
-    fetch("http://localhost:5000/rentDue")
+    fetch("http://localhost:5000/tenants")
       .then(response => response.json())
       .then(data => setRentData(data))
       .catch(error => {
@@ -51,7 +51,7 @@ const RentDueList = () => {
 
   const handleFormSubmit = (values) => {
     if (currentTenant) {
-      fetch(`http://localhost:5000/rentDue/${currentTenant.key}`, {
+      fetch(`http://localhost:5000/tenants/${currentTenant.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -67,7 +67,7 @@ const RentDueList = () => {
         .then(updatedTenant => {
           setRentData(prevData =>
             prevData.map(tenant =>
-              tenant.key === currentTenant.key ? updatedTenant : tenant
+              tenant.id === currentTenant.id ? updatedTenant : tenant
             )
           );
           message.success("Details updated successfully");
@@ -81,7 +81,7 @@ const RentDueList = () => {
   };
 
   const handleMarkAsPaid = (tenant) => {
-    fetch(`http://localhost:5000/rentDue/${tenant.key}`, {
+    fetch(`http://localhost:5000/tenants/${tenant.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -92,7 +92,7 @@ const RentDueList = () => {
       .then(updatedTenant => {
         setRentData(prevData =>
           prevData.map(t =>
-            t.key === tenant.key ? updatedTenant : t
+            t.id === tenant.id ? updatedTenant : t
           )
         );
         message.success("Marked as paid");
@@ -104,7 +104,7 @@ const RentDueList = () => {
   };
 
   const handleMarkAsUnpaid = (tenant) => {
-    fetch(`http://localhost:5000/rentDue/${tenant.key}`, {
+    fetch(`http://localhost:5000/tenants/${tenant.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -115,7 +115,7 @@ const RentDueList = () => {
       .then(updatedTenant => {
         setRentData(prevData =>
           prevData.map(t =>
-            t.key === tenant.key ? updatedTenant : t
+            t.id === tenant.id ? updatedTenant : t
           )
         );
         message.error("Marked as unpaid");
@@ -130,7 +130,7 @@ const RentDueList = () => {
     <div style={{ marginTop: "75px" }}>
       <Row gutter={[16, 16]}>
         {rentData.map(tenant => (
-          <Col key={tenant.key} xs={24} sm={12} md={8} lg={6}>
+          <Col key={tenant.id} xs={24} sm={12} md={8} lg={6}>
             <Badge.Ribbon
               text={tenant.status}
               color={statusColors[tenant.status]}
