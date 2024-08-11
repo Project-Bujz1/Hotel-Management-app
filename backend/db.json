@@ -123,14 +123,14 @@
       "currentAddress": "d no-18-9-24 gandhi nagar samalkot  pin code- 533440 east godavari district andhra pradesh",
       "dueDate": "2024-08-12T18:30:00.000Z",
       "monthlyRent": 2500,
-      "status": "Not Paid",
+      "status": "Paid",
       "modeOfPayment": "Bank Transfer",
       "securityDeposit": "1",
       "roomId": "eb1b"
     }
   ],
   "complaints": [
-    {
+    { 
       "id": "1723378592205",
       "roomNumber": "201",
       "complaint": "Water",

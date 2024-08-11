@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { List, Card, DatePicker, Tag, Space, Button, message } from "antd";
+import { List, Card, DatePicker, Tag, Space, Button, message, Input } from "antd";
 import moment from "moment";
 import { jsPDF } from "jspdf";
 import orgLogo from "../assets/logo-1.png";
@@ -9,6 +9,7 @@ const PaymentHistory = () => {
   const [payments, setPayments] = useState([]);
   const [filteredPayments, setFilteredPayments] = useState([]);
   const [dateRange, setDateRange] = useState([null, null]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchPayments = async () => {
@@ -24,7 +25,6 @@ const PaymentHistory = () => {
         const activeRoomIds = new Set(roomsData.map(room => room.id));
         const filteredTenants = tenantsData.filter(tenant => activeRoomIds.has(tenant.roomId));
         
-        console.log(filteredTenants);
         setPayments(filteredTenants);
         setFilteredPayments(filteredTenants);
       } catch (error) {
@@ -36,37 +36,35 @@ const PaymentHistory = () => {
     fetchPayments();
   }, []);
 
-  const filterPaymentsByDateRange = (dates) => {
-    if (!dates || dates.length === 0) {
-      setFilteredPayments(payments);
-      return;
-    }
-    const [start, end] = dates;
+
+  const handleSearch = (value) => {
+    setSearchTerm(value);
+    const lowercasedValue = value.toLowerCase();
+
     setFilteredPayments(
       payments.filter(
         (payment) =>
-          moment(payment.dueDate).isSameOrAfter(start) &&
-          moment(payment.dueDate).isSameOrBefore(end)
+          payment.name.toLowerCase().includes(lowercasedValue) ||
+          payment.roomNumber.toLowerCase().includes(lowercasedValue)
       )
     );
   };
-
 
   const generatePDF = (payment) => {
     const doc = new jsPDF();
     
     // Add logo
-    doc.addImage(orgLogo, 'PNG', 10, 10, 40, 20); // Adjust the size and position as needed
+    doc.addImage(orgLogo, 'PNG', 10, 10, 40, 20);
     
     // Add title
     doc.setFontSize(18);
     doc.setFont('helvetica', 'bold');
-    doc.text('SriKrishna Men Hostel', 60, 20); // Adjust position based on logo
+    doc.text('SriKrishna Men Hostel', 60, 20);
     
     // Add header and section titles
     doc.setFontSize(14);
     doc.setFont('helvetica', 'normal');
-    doc.text('Rent Payment Receipt', 60, 30); // Adjust position
+    doc.text('Rent Payment Receipt', 60, 30);
     
     // Add dashed line
     doc.setLineWidth(0.5);
@@ -117,29 +115,27 @@ const PaymentHistory = () => {
     // Save the PDF
     doc.save(`${payment.name}_receipt.pdf`);
   };
-  
-  
 
   const handleDownload = (payment) => {
     generatePDF(payment);
   };
 
   const handleSendEmail = (payment) => {
-    // Implement sending email logic here
     message.info('Send email feature is not implemented.');
   };
 
   const handleSendWhatsApp = (payment) => {
-    // Implement sending via WhatsApp logic here
     message.info('Send WhatsApp feature is not implemented.');
   };
 
   return (
     <div className="payment-history" style={{ marginTop: "75px" }}>
-      <Space direction="vertical" size="large" style={{ marginBottom: 16, marginLeft: 1250 }}>
-        <DatePicker.RangePicker
-          onChange={(dates) => filterPaymentsByDateRange(dates)}
-          placeholder={["Start Date", "End Date"]}
+      <Space direction="vertical" size="small"  style={{ width: "150px", borderRadius: "5px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }}>
+        <Input.Search
+          placeholder="Search by tenant name or room number"
+          value={searchTerm}
+          onChange={(e) => handleSearch(e.target.value)}
+          style={{ width: 400 }}
         />
       </Space>
       <List
@@ -155,7 +151,7 @@ const PaymentHistory = () => {
                 <strong>Amount Paid:</strong> ${payment.monthlyRent}
               </p>
               <p>
-                <strong>Payment Date:</strong> {payment.dueDate}
+                <strong>Payment Date:</strong> {moment(payment.dueDate).format('YYYY-MM-DD')}
               </p>
               <p>
                 <strong>Mode of Payment:</strong> {payment.modeOfPayment}
@@ -175,4 +171,4 @@ const PaymentHistory = () => {
   );
 };
 
-export default PaymentHistory; 
+export default PaymentHistory;
