@@ -11,6 +11,18 @@ export const fetchRooms = async () => {
   return response.json();
 };
 
+// Check if room number exists
+export const checkRoomNumberExists = async (roomNumber) => {
+  const response = await fetch(`${ROOM_API_URL}?roomNumber=${encodeURIComponent(roomNumber)}`);
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  const data = await response.json();
+  // Check if there's any room with the given roomNumber
+  return data.length > 0;
+};
+
+
 export const addRoom = async (room) => {
   const response = await fetch(ROOM_API_URL, {
     method: 'POST',

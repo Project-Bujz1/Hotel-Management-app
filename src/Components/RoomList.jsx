@@ -11,6 +11,7 @@ import {
   Popconfirm,
   Select,
   Tag,
+  message,
 } from "antd";
 import {
   UploadOutlined,
@@ -23,7 +24,14 @@ import {
   UserOutlined,
   AppstoreAddOutlined,
 } from "@ant-design/icons";
-import { fetchRooms, fetchTenants, addRoom, updateRoom, deleteRoom } from "./apiservice";
+import {
+  fetchRooms,
+  fetchTenants,
+  addRoom,
+  updateRoom,
+  deleteRoom,
+  checkRoomNumberExists, // New API function to check if the room number exists
+} from "./apiservice";
 
 const { Option } = Select;
 
@@ -72,65 +80,77 @@ const RoomList = () => {
   };
 
   const handleAddEditRoom = () => {
-    form.validateFields().then((values) => {
-      const updatedValues = {
-        ...values,
-        status: (values.tenants || 0) >= values.sharing ? 'Occupied' : 'Vacant'
-      };
+    form.validateFields().then(async (values) => {
+      try {
+        if (!editingRoom) {
+          // Check if room number already exists before adding
+          const exists = await checkRoomNumberExists(values.roomNumber);
+          if (exists) {
+            message.error('Room number already exists!');
+            return;
+          }
+        }
 
-      const apiCall = editingRoom
-        ? updateRoom(editingRoom.id, updatedValues)
-        : addRoom(updatedValues);
+        const updatedValues = {
+          ...values,
+          status: 'Vacant', // Force status to 'Vacant' when adding new rooms
+        };
 
-      apiCall
-        .then(() => {
-          Promise.all([fetchRooms(), fetchTenants()])
-            .then(([roomResponse, tenantResponse]) => {
-              const tenantCountByRoom = tenantResponse.reduce((acc, tenant) => {
-                if (tenant.roomNumber) {
-                  acc[tenant.roomNumber] = (acc[tenant.roomNumber] || 0) + 1;
-                }
-                return acc;
-              }, {});
+        if (editingRoom) {
+          // For editing, calculate the status based on tenants
+          updatedValues.status = (values.tenants || 0) >= values.sharing ? 'Occupied' : 'Vacant';
+          await updateRoom(editingRoom.id, updatedValues);
+        } else {
+          await addRoom(updatedValues);
+        }
 
-              const updatedRooms = roomResponse.map((room) => ({
-                ...room,
-                tenants: tenantCountByRoom[room.roomNumber] || 0,
-                status: (tenantCountByRoom[room.roomNumber] || 0) >= room.sharing ? 'Occupied' : 'Vacant',
-              }));
+        // Refetch data
+        const [roomResponse, tenantResponse] = await Promise.all([fetchRooms(), fetchTenants()]);
+        const tenantCountByRoom = tenantResponse.reduce((acc, tenant) => {
+          if (tenant.roomNumber) {
+            acc[tenant.roomNumber] = (acc[tenant.roomNumber] || 0) + 1;
+          }
+          return acc;
+        }, {});
 
-              setRooms(updatedRooms);
-              setTenants(tenantResponse);
-            })
-            .catch((error) => console.error("Error fetching data:", error));
-          setIsModalVisible(false);
-        })
-        .catch((error) => console.error("Error saving room:", error));
+        const updatedRooms = roomResponse.map((room) => ({
+          ...room,
+          tenants: tenantCountByRoom[room.roomNumber] || 0,
+          status: (tenantCountByRoom[room.roomNumber] || 0) >= room.sharing ? 'Occupied' : 'Vacant',
+        }));
+
+        setRooms(updatedRooms);
+        setTenants(tenantResponse);
+        setIsModalVisible(false);
+      } catch (error) {
+        console.error("Error saving room:", error);
+      }
     });
   };
 
   const handleDelete = (id) => {
     deleteRoom(id)
-      .then(() => {
-        Promise.all([fetchRooms(), fetchTenants()])
-          .then(([roomResponse, tenantResponse]) => {
-            const tenantCountByRoom = tenantResponse.reduce((acc, tenant) => {
-              if (tenant.roomNumber) {
-                acc[tenant.roomNumber] = (acc[tenant.roomNumber] || 0) + 1;
-              }
-              return acc;
-            }, {});
+      .then(async () => {
+        try {
+          const [roomResponse, tenantResponse] = await Promise.all([fetchRooms(), fetchTenants()]);
+          const tenantCountByRoom = tenantResponse.reduce((acc, tenant) => {
+            if (tenant.roomNumber) {
+              acc[tenant.roomNumber] = (acc[tenant.roomNumber] || 0) + 1;
+            }
+            return acc;
+          }, {});
 
-            const updatedRooms = roomResponse.map((room) => ({
-              ...room,
-              tenants: tenantCountByRoom[room.roomNumber] || 0,
-              status: (tenantCountByRoom[room.roomNumber] || 0) >= room.sharing ? 'Occupied' : 'Vacant',
-            }));
+          const updatedRooms = roomResponse.map((room) => ({
+            ...room,
+            tenants: tenantCountByRoom[room.roomNumber] || 0,
+            status: (tenantCountByRoom[room.roomNumber] || 0) >= room.sharing ? 'Occupied' : 'Vacant',
+          }));
 
-            setRooms(updatedRooms);
-            setTenants(tenantResponse);
-          })
-          .catch((error) => console.error("Error fetching data:", error));
+          setRooms(updatedRooms);
+          setTenants(tenantResponse);
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
       })
       .catch((error) => console.error("Error deleting room:", error));
   };
@@ -292,6 +312,13 @@ const RoomList = () => {
             </Select>
           </Form.Item>
           <Form.Item
+            name="status"
+            label="Status"
+            style={{ display: "inline-block", width: "calc(50% - 8px)" }}
+          >
+            <Input disabled value="Vacant" />
+          </Form.Item>
+          <Form.Item
             name="rent"
             label="Rent"
             rules={[{ required: true, message: "Please input the rent amount!" }]}
@@ -319,32 +346,17 @@ const RoomList = () => {
               style={{ width: "100%" }}
             />
           </Form.Item>
-          <Form.Item
-            name="status"
-            label="Status"
-            style={{ display: "inline-block", width: "calc(50% - 8px)" }}
-          >
-            <Select disabled={!!editingRoom}>
-              <Option value="Vacant">Vacant</Option>
-              <Option value="Occupied">Occupied</Option>
-            </Select>
-          </Form.Item>
+
           <Form.Item
             name="imageUrl"
             label="Room Image"
             style={{ display: "inline-block", width: "calc(50% - 8px)" }}
           >
             <Upload
-              listType="picture-card"
-              showUploadList={false}
               beforeUpload={() => false}
-              customRequest={({ file, onSuccess }) => {
-                // Mock upload function - replace with your actual upload logic
-                setTimeout(() => {
-                  onSuccess("ok");
-                  form.setFieldsValue({ imageUrl: URL.createObjectURL(file.originFileObj) });
-                }, 1000);
-              }}
+              listType="picture"
+              maxCount={1}
+              accept=".jpg,.jpeg,.png"
             >
               <Button icon={<PictureOutlined />} >Upload</Button>
             </Upload>
