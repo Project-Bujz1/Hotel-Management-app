@@ -72,14 +72,13 @@ const TenantsList = () => {
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
-
       if (formMode === 'update') {
         await axios.put(`http://localhost:5000/tenants/${selectedTenant.id}`, values);
         message.success('Tenant details updated successfully');
       } else {
         // Check the current number of tenants in the room
         const tenantCount = tenants.filter(tenant => tenant.roomId === selectedRoom.id).length;
-        if (tenantCount >= room.sharing) { // using room.sharing to check capacity
+        if (tenantCount >= selectedRoom.sharing) { // using room.sharing to check capacity
           message.error('Cannot add more tenants. Room is at full capacity.');
           return;
         }
@@ -87,15 +86,15 @@ const TenantsList = () => {
         await axios.post('http://localhost:5000/tenants', values);
         message.success('Tenant added successfully');
       }
-
       setIsModalVisible(false);
       const response = await axios.get('http://localhost:5000/tenants');
       setTenants(response.data);
     } catch (error) {
       console.error(`Error ${formMode === 'update' ? 'updating' : 'adding'} tenant details:`, error);
-      message.error(`Failed to ${formMode === 'update' ? 'update' : 'add'} tenant details`);
+      message.error(`Failed to ${formMode === 'update' ? 'update' : 'add'} tenant details: ${error.response ? error.response.data : error.message}`);
     }
   };
+  
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -112,6 +111,38 @@ const TenantsList = () => {
       console.error('Error deleting tenant:', error);
       message.error('Failed to delete tenant');
     }
+  };
+
+  const validateIdNumber = (_, value) => {
+    if (!value) {
+      return Promise.resolve();
+    }
+
+    // Remove non-numeric characters
+    const cleanedValue = value.replace(/\D/g, '');
+
+    if (cleanedValue.length !== 12) {
+      return Promise.reject(new Error('ID Number must be exactly 12 digits'));
+    }
+
+    // Format value with spaces every 4 digits
+    const formattedValue = cleanedValue.replace(/(.{4})/g, '$1 ').trim();
+
+    // Set the formatted value back to the input
+    form.setFieldsValue({ idNumber: formattedValue });
+
+    return Promise.resolve();
+  };
+
+  const handleIdNumberChange = (e) => {
+    // Get the current value and remove any non-numeric characters
+    const value = e.target.value.replace(/\D/g, '');
+    
+    // Format the value with spaces every 4 digits
+    const formattedValue = value.replace(/(.{4})/g, '$1 ').trim();
+
+    // Update the input value
+    form.setFieldsValue({ idNumber: formattedValue });
   };
 
   return (
@@ -186,8 +217,8 @@ const TenantsList = () => {
           <Form.Item name="emergencyContact" label="Emergency Contact">
             <Input prefix={<PhoneOutlined />} />
           </Form.Item>
-          <Form.Item name="idNumber" label="ID Number">
-            <Input prefix={<IdcardOutlined />} />
+          <Form.Item name="idNumber" label="ID Number" rules={[{ validator: validateIdNumber }]}>
+            <Input prefix={<IdcardOutlined />} onChange={handleIdNumberChange} />
           </Form.Item>
           <Form.Item name="currentAddress" label="Address">
             <Input prefix={<HomeOutlined />} />
@@ -213,12 +244,6 @@ const TenantsList = () => {
           </Form.Item>
           <Form.Item name="securityDeposit" label="Security Deposit">
             <Input type="number" prefix={<BankOutlined />} />
-          </Form.Item>
-          <Form.Item name="leaseStartDate" label="Lease Start Date">
-            <DatePicker prefix={<CalendarOutlined />} format="YYYY-MM-DD" />
-          </Form.Item>
-          <Form.Item name="leaseEndDate" label="Lease End Date">
-            <DatePicker prefix={<CalendarOutlined />} format="YYYY-MM-DD" />
           </Form.Item>
           <Form.Item name="profileImage" label="Profile Image">
             <Upload

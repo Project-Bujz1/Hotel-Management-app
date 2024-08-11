@@ -1,5 +1,14 @@
 {
-  "rooms": [],
+  "rooms": [
+    {
+      "id": "41ba",
+      "roomNumber": "201",
+      "type": "AC",
+      "rent": 5000,
+      "sharing": 3,
+      "status": "Vacant"
+    }
+  ],
   "tenants": [
     {
       "id": "51b7",
@@ -62,6 +71,37 @@
         ]
       },
       "roomId": null
+    },
+    {
+      "id": "159d",
+      "name": "Akash Kumar Akash Kumar Kumar",
+      "email": "19mh1a0513@acoe.edu.in",
+      "roomNumber": "201",
+      "roomType": "AC",
+      "phoneNumber": "09553313334",
+      "emergencyContact": "9000109888",
+      "idNumber": "9702 2459 3861",
+      "currentAddress": "d no-18-9-24 gandhi nagar samalkot  pin code- 533440",
+      "dueDate": "2024-08-12T18:30:00.000Z",
+      "monthlyRent": 5000,
+      "status": "Paid",
+      "modeOfPayment": "Bank Transfer",
+      "securityDeposit": "1",
+      "roomId": "41ba"
+    },
+    {
+      "id": "eff9",
+      "name": "Akash Kumar Akash Kumar Kumar",
+      "email": "19mh1a0513@acoe.edu.in",
+      "roomNumber": "201",
+      "roomType": "AC",
+      "phoneNumber": "09553313334",
+      "emergencyContact": "9000109888",
+      "idNumber": "9702 2459 3861",
+      "currentAddress": "d no-18-9-24 gandhi nagar samalkot  pin code- 533440",
+      "dueDate": "2024-08-06T18:30:00.000Z",
+      "monthlyRent": 5000,
+      "roomId": "41ba"
     }
   ],
   "complaints": [
