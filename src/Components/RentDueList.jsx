@@ -55,7 +55,7 @@ const RentDueList = () => {
   const showEditForm = (tenant) => {
     setCurrentTenant(tenant);
     form.setFieldsValue({
-      dueDate: moment(tenant.dueDate),
+      dueDate: moment(tenant.dueDate, "YYYY-MM-DD"),
       modeOfPayment: tenant.modeOfPayment,
       status: tenant.status,
     });
@@ -153,7 +153,7 @@ const RentDueList = () => {
                   <strong>Tenant:</strong> {tenant.name}
                 </p>
                 <p>
-                  <strong>Due Date:</strong> {tenant.dueDate}
+                  <strong>Due Date:</strong> {moment(tenant.dueDate).format("YYYY-MM-DD")}
                 </p>
                 <p>
                   <strong>Payment Mode:</strong> {tenant.modeOfPayment}
