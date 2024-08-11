@@ -39,15 +39,30 @@ const ComplaintsList = () => {
   const [editingComplaint, setEditingComplaint] = useState(null);
 
   useEffect(() => {
-    // Fetch complaints from API
+    fetchComplaints();
+  }, []);
+
+  const fetchComplaints = () => {
     fetch("http://localhost:5000/complaints")
       .then((response) => response.json())
-      .then((data) => setComplaints(data))
+      .then((data) => {
+        // Filter out complaints related to deleted rooms
+        fetch("http://localhost:5000/rooms")
+          .then((response) => response.json())
+          .then((rooms) => {
+            const roomNumbers = rooms.map((room) => room.roomNumber);
+            setComplaints(data.filter((complaint) => roomNumbers.includes(complaint.roomNumber)));
+          })
+          .catch((error) => {
+            console.error("Error fetching rooms:", error);
+            message.error("Failed to load rooms");
+          });
+      })
       .catch((error) => {
         console.error("Error fetching complaints:", error);
         message.error("Failed to load complaints");
       });
-  }, []);
+  };
 
   const showModal = (complaint = null) => {
     setEditingComplaint(complaint);
@@ -79,14 +94,7 @@ const ComplaintsList = () => {
       })
         .then((response) => response.json())
         .then(() => {
-          // Update local state
-          if (editingComplaint) {
-            setComplaints(complaints.map((complaint) =>
-              complaint.id === editingComplaint.id ? { ...editingComplaint, ...values } : complaint
-            ));
-          } else {
-            setComplaints([...complaints, { id: Date.now().toString(), ...values }]);
-          }
+          fetchComplaints(); // Refresh complaints list after adding/editing
           setIsModalVisible(false);
           message.success("Complaint saved successfully");
         })
@@ -102,7 +110,7 @@ const ComplaintsList = () => {
       method: "DELETE",
     })
       .then(() => {
-        setComplaints(complaints.filter((complaint) => complaint.id !== id));
+        fetchComplaints(); // Refresh complaints list after deleting
         message.success("Complaint deleted successfully");
       })
       .catch((error) => {
@@ -120,13 +128,7 @@ const ComplaintsList = () => {
       body: JSON.stringify({ status: "Completed" }),
     })
       .then(() => {
-        setComplaints((prevData) =>
-          prevData.map((complaint) =>
-            complaint.id === id
-              ? { ...complaint, status: "Completed" }
-              : complaint
-          )
-        );
+        fetchComplaints(); // Refresh complaints list after marking as completed
         message.success("Complaint marked as completed");
       })
       .catch((error) => {

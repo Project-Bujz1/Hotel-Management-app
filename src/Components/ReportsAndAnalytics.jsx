@@ -21,7 +21,12 @@ const ReportsAndAnalytics = () => {
           complaintsResponse.json(),
           roomsResponse.json()
         ]);
-        setRentData(rentData);
+
+        // Remove tenants if rooms are deleted
+        const validRoomNumbers = roomsData.map(room => room.roomNumber);
+        const filteredTenants = rentData.filter(tenant => validRoomNumbers.includes(tenant.roomNumber));
+        
+        setRentData(filteredTenants);
         setComplaintsData(complaintsData);
         setRoomsData(roomsData);
       } catch (error) {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { List, Card, DatePicker, Button, Tag, Space, message } from "antd";
+import { List, Card, DatePicker, Tag, Space, Button, message } from "antd";
 import moment from "moment";
+import { jsPDF } from "jspdf";
 import "./PaymentHistory.css";
 
 const PaymentHistory = () => {
@@ -11,14 +12,20 @@ const PaymentHistory = () => {
   useEffect(() => {
     const fetchPayments = async () => {
       try {
-        const response = await fetch('http://localhost:5000/tenants');
-        if (!response.ok) {
+        const tenantsResponse = await fetch('http://localhost:5000/tenants');
+        const roomsResponse = await fetch('http://localhost:5000/rooms');
+        if (!tenantsResponse.ok || !roomsResponse.ok) {
           throw new Error('Network response was not ok');
         }
-        const data = await response.json();
-        console.log(data); // Add this line to check the fetched data
-        setPayments(data);
-        setFilteredPayments(data);
+        const tenantsData = await tenantsResponse.json();
+        const roomsData = await roomsResponse.json();
+        
+        const activeRoomIds = new Set(roomsData.map(room => room.id));
+        const filteredTenants = tenantsData.filter(tenant => activeRoomIds.has(tenant.roomId));
+        
+        console.log(filteredTenants);
+        setPayments(filteredTenants);
+        setFilteredPayments(filteredTenants);
       } catch (error) {
         console.error('Error fetching data:', error);
         message.error('Failed to fetch payment data');
@@ -27,18 +34,6 @@ const PaymentHistory = () => {
   
     fetchPayments();
   }, []);
-  
-
-  const filterPaymentsByDate = (date) => {
-    if (!date) {
-      setFilteredPayments(payments);
-      return;
-    }
-    const formattedDate = moment(date).format("YYYY-MM-DD");
-    setFilteredPayments(
-      payments.filter((payment) => payment.dueDate === formattedDate)
-    );
-  };
 
   const filterPaymentsByDateRange = (dates) => {
     if (!dates || dates.length === 0) {
@@ -55,6 +50,32 @@ const PaymentHistory = () => {
     );
   };
 
+  const generatePDF = (payment) => {
+    const doc = new jsPDF();
+    doc.text('Payment Receipt', 10, 10);
+    doc.text(`Organization Name: XYZ Hostel`, 10, 20);
+    doc.text(`Tenant Name: ${payment.name}`, 10, 30);
+    doc.text(`Date of Payment: ${payment.dueDate}`, 10, 40);
+    doc.text(`Mode of Payment: ${payment.modeOfPayment}`, 10, 50);
+    doc.text(`Amount Paid: $${payment.monthlyRent}`, 10, 60);
+    doc.text(`Time: ${moment().format("YYYY-MM-DD HH:mm:ss")}`, 10, 70);
+    doc.save(`${payment.name}_receipt.pdf`);
+  };
+
+  const handleDownload = (payment) => {
+    generatePDF(payment);
+  };
+
+  const handleSendEmail = (payment) => {
+    // Implement sending email logic here
+    message.info('Send email feature is not implemented.');
+  };
+
+  const handleSendWhatsApp = (payment) => {
+    // Implement sending via WhatsApp logic here
+    message.info('Send WhatsApp feature is not implemented.');
+  };
+
   return (
     <div className="payment-history" style={{ marginTop: "75px" }}>
       <Space direction="vertical" size="large" style={{ marginBottom: 16, marginLeft: 1250 }}>
@@ -69,7 +90,7 @@ const PaymentHistory = () => {
         renderItem={(payment) => (
           <List.Item>
             <Card 
-              title={payment.name} // Display tenant name
+              title={payment.name}
               extra={<Tag color={payment.status === "Paid" ? "green" : "red"}>{payment.status}</Tag>}
             >
               <p>
@@ -81,6 +102,13 @@ const PaymentHistory = () => {
               <p>
                 <strong>Mode of Payment:</strong> {payment.modeOfPayment}
               </p>
+              {payment.status === "Paid" && (
+                <Space>
+                  <Button onClick={() => handleDownload(payment)}>Download PDF</Button>
+                  <Button onClick={() => handleSendEmail(payment)}>Send Email</Button>
+                  <Button onClick={() => handleSendWhatsApp(payment)}>Send WhatsApp</Button>
+                </Space>
+              )}
             </Card>
           </List.Item>
         )}

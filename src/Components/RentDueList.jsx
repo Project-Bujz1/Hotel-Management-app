@@ -28,15 +28,28 @@ const RentDueList = () => {
   const [currentTenant, setCurrentTenant] = useState(null);
   const [form] = Form.useForm();
 
-  // Fetch rent data from the API
+  // Fetch room and tenant data from the API
   useEffect(() => {
-    fetch("http://localhost:5000/tenants")
-      .then(response => response.json())
-      .then(data => setRentData(data))
-      .catch(error => {
-        console.error("Error fetching rent data:", error);
-        message.error("Failed to load rent data");
-      });
+    const fetchData = async () => {
+      try {
+        const roomsResponse = await fetch("http://localhost:5000/rooms");
+        const roomsData = await roomsResponse.json();
+
+        const tenantsResponse = await fetch("http://localhost:5000/tenants");
+        const tenantsData = await tenantsResponse.json();
+
+        // Filter tenants based on existing rooms
+        const validTenantIds = new Set(roomsData.map(room => room.id));
+        const filteredTenants = tenantsData.filter(tenant => validTenantIds.has(tenant.roomId));
+
+        setRentData(filteredTenants);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        message.error("Failed to load data");
+      }
+    };
+
+    fetchData();
   }, []);
 
   const showEditForm = (tenant) => {
