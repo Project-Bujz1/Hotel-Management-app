@@ -54,7 +54,7 @@ const ReportsAndAnalytics = () => {
 
   const barData = rentData.map(tenant => ({
     name: tenant.name,
-    rent: Math.floor(Math.random() * 500) + 100
+    monthlyRent: tenant.monthlyRent
   }));
 
   const totalTenants = rentData.length;
@@ -67,7 +67,7 @@ const ReportsAndAnalytics = () => {
   const complaintsPending = complaintsData.filter(c => c.status === 'Pending').length;
   const complaintsInProgress = complaintsData.filter(c => c.status === 'In Progress').length;
 
-  const occupancyPercentage = Math.round((occupiedRooms / totalRooms) * 100);
+  const occupancyPercentage = totalRooms ? Math.round((occupiedRooms / totalRooms) * 100) : 0;
   const vacancyPercentage = 100 - occupancyPercentage;
 
   return (
@@ -106,7 +106,7 @@ const ReportsAndAnalytics = () => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="rent" fill="#82ca9d" />
+              <Bar dataKey="monthlyRent" fill="#82ca9d" />
             </BarChart>
           </Card>
         </Col>
@@ -122,15 +122,19 @@ const ReportsAndAnalytics = () => {
 
         <Col span={24} md={12} lg={6}>
           <Card title="Tenant Categories">
-            <Statistic title="Non-Native Tenants" value={rentData.filter(tenant => tenant.isNonNative).length} />
-            <Statistic title="Students" value={rentData.filter(tenant => tenant.category === 'Student').length} style={{ marginTop: '16px' }} />
-            <Statistic title="Employees" value={rentData.filter(tenant => tenant.category === 'Employee').length} style={{ marginTop: '16px' }} />
+            <Statistic title="Non-Native Tenants" value={rentData.filter(tenant => tenant.occupation !== 'Employee').length} />
+            <Statistic title="Students" value={rentData.filter(tenant => tenant.occupation === 'Student').length} style={{ marginTop: '16px' }} />
+            <Statistic title="Employees" value={rentData.filter(tenant => tenant.occupation === 'Employee').length} style={{ marginTop: '16px' }} />
           </Card>
         </Col>
 
         <Col span={24} md={12} lg={6}>
           <Card title="Long-Term Tenants">
-            <Statistic title="Tenants Staying Over 6 Months" value={rentData.filter(tenant => tenant.stayDuration > 180).length} />
+            <Statistic title="Tenants Staying Over 6 Months" value={rentData.filter(tenant => {
+              const dueDate = new Date(tenant.dueDate);
+              const today = new Date();
+              return (today - dueDate) > 6 * 30 * 24 * 60 * 60 * 1000;
+            }).length} />
           </Card>
         </Col>
 
@@ -145,9 +149,9 @@ const ReportsAndAnalytics = () => {
 
         <Col span={24} md={12} lg={6}>
           <Card title="Rent Payment Status">
-            <Progress percent={paidTenants / totalTenants * 100} status="active" />
-            <Progress percent={notPaidTenants / totalTenants * 100} status="exception" />
-            <Progress percent={dueSoonTenants / totalTenants * 100} status="normal" />
+            <Progress percent={totalTenants ? (paidTenants / totalTenants * 100) : 0} status="active" />
+            <Progress percent={totalTenants ? (notPaidTenants / totalTenants * 100) : 0} status="exception" />
+            <Progress percent={totalTenants ? (dueSoonTenants / totalTenants * 100) : 0} status="normal" />
           </Card>
         </Col>
       </Row>

@@ -63,16 +63,6 @@ const OrgSettings = () => {
               />
             </Form.Item>
           </Col>
-          <Col span={12}>
-            <Form.Item label="Current Occupancy">
-              <Input
-                type="number"
-                value={currentOccupancy}
-                onChange={(e) => setCurrentOccupancy(Number(e.target.value))}
-                placeholder="Enter current occupancy"
-              />
-            </Form.Item>
-          </Col>
         </Row>
         <Title level={4}>Hostel Information</Title>
         <Input.TextArea

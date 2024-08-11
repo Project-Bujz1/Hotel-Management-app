@@ -68,12 +68,12 @@ const PaymentHistory = () => {
         dataSource={filteredPayments}
         renderItem={(payment) => (
           <List.Item>
-            <Card
+            <Card 
               title={payment.name} // Display tenant name
               extra={<Tag color={payment.status === "Paid" ? "green" : "red"}>{payment.status}</Tag>}
             >
               <p>
-                <strong>Amount Paid:</strong> ${payment.amount}
+                <strong>Amount Paid:</strong> ${payment.monthlyRent}
               </p>
               <p>
                 <strong>Payment Date:</strong> {payment.dueDate}
