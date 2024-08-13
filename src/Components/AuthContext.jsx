@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => { 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
