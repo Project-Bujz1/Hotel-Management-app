@@ -1,6 +1,6 @@
 import axios from 'axios';
-const ROOM_API_URL = 'http://localhost:5000/rooms';
-const TENANT_API_URL = 'http://localhost:5000/tenants';
+const ROOM_API_URL = 'https://smart-hostel-management-json-server.onrender.com/rooms';
+const TENANT_API_URL = 'https://smart-hostel-management-json-server.onrender.com/tenants';
 
 // Room API functions
 export const fetchRooms = async () => {

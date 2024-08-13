@@ -43,11 +43,11 @@ const ComplaintsList = () => {
   }, []);
 
   const fetchComplaints = () => {
-    fetch("http://localhost:5000/complaints")
+    fetch("https://smart-hostel-management-json-server.onrender.com/complaints")
       .then((response) => response.json())
       .then((data) => {
         // Filter out complaints related to deleted rooms
-        fetch("http://localhost:5000/rooms")
+        fetch("https://smart-hostel-management-json-server.onrender.com/rooms")
           .then((response) => response.json())
           .then((rooms) => {
             const roomNumbers = rooms.map((room) => room.roomNumber);
@@ -82,8 +82,8 @@ const ComplaintsList = () => {
     form.validateFields().then((values) => {
       const method = editingComplaint ? "PUT" : "POST";
       const url = editingComplaint
-        ? `http://localhost:5000/complaints/${editingComplaint.id}`
-        : "http://localhost:5000/complaints";
+        ? `https://smart-hostel-management-json-server.onrender.com/complaints/${editingComplaint.id}`
+        : "https://smart-hostel-management-json-server.onrender.com/complaints";
 
       fetch(url, {
         method,
@@ -106,7 +106,7 @@ const ComplaintsList = () => {
   };
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/complaints/${id}`, {
+    fetch(`https://smart-hostel-management-json-server.onrender.com/complaints/${id}`, {
       method: "DELETE",
     })
       .then(() => {
@@ -120,7 +120,7 @@ const ComplaintsList = () => {
   };
 
   const handleMarkAsCompleted = (id) => {
-    fetch(`http://localhost:5000/complaints/${id}`, {
+    fetch(`https://smart-hostel-management-json-server.onrender.com/complaints/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
