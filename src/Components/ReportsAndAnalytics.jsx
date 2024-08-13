@@ -12,9 +12,9 @@ const ReportsAndAnalytics = () => {
     const fetchData = async () => {
       try {
         const [rentResponse, complaintsResponse, roomsResponse] = await Promise.all([
-          fetch('http://localhost:5000/tenants'),
-          fetch('http://localhost:5000/complaints'),
-          fetch('http://localhost:5000/rooms')
+          fetch('https://smart-hostel-management-json-server.onrender.com/tenants'),
+          fetch('https://smart-hostel-management-json-server.onrender.com/complaints'),
+          fetch('https://smart-hostel-management-json-server.onrender.com/rooms')
         ]);
         const [rentData, complaintsData, roomsData] = await Promise.all([
           rentResponse.json(),

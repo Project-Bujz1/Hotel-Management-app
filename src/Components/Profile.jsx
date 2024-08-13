@@ -11,7 +11,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/profile'); // Adjust the URL if needed
+        const response = await fetch('https://smart-hostel-management-json-server.onrender.com/profile'); // Adjust the URL if needed
         const data = await response.json();
         setProfile(data);
         form.setFieldsValue(data);
@@ -27,7 +27,7 @@ const Profile = () => {
   // Handle form submission
   const handleSubmit = async (values) => {
     try {
-      await fetch('http://localhost:5000/profile', {
+      await fetch('https://smart-hostel-management-json-server.onrender.com/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...profile, ...values, imageUrl }),

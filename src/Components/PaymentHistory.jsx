@@ -14,8 +14,8 @@ const PaymentHistory = () => {
   useEffect(() => {
     const fetchPayments = async () => {
       try {
-        const tenantsResponse = await fetch('http://localhost:5000/tenants');
-        const roomsResponse = await fetch('http://localhost:5000/rooms');
+        const tenantsResponse = await fetch('https://smart-hostel-management-json-server.onrender.com/tenants');
+        const roomsResponse = await fetch('https://smart-hostel-management-json-server.onrender.com/rooms');
         if (!tenantsResponse.ok || !roomsResponse.ok) {
           throw new Error('Network response was not ok');
         }

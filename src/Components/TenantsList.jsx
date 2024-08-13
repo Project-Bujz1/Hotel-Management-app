@@ -21,10 +21,10 @@ const TenantsList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const roomResponse = await axios.get('http://localhost:5000/rooms');
+        const roomResponse = await axios.get('https://smart-hostel-management-json-server.onrender.com/rooms');
         setRooms(roomResponse.data);
 
-        const tenantResponse = await axios.get('http://localhost:5000/tenants');
+        const tenantResponse = await axios.get('https://smart-hostel-management-json-server.onrender.com/tenants');
         setTenants(tenantResponse.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -73,7 +73,7 @@ const TenantsList = () => {
     try {
       const values = await form.validateFields();
       if (formMode === 'update') {
-        await axios.put(`http://localhost:5000/tenants/${selectedTenant.id}`, values);
+        await axios.put(`https://smart-hostel-management-json-server.onrender.com/tenants/${selectedTenant.id}`, values);
         message.success('Tenant details updated successfully');
       } else {
         // Check the current number of tenants in the room
@@ -83,11 +83,11 @@ const TenantsList = () => {
           return;
         }
         values.roomId = selectedRoom.id;
-        await axios.post('http://localhost:5000/tenants', values);
+        await axios.post('https://smart-hostel-management-json-server.onrender.com/tenants', values);
         message.success('Tenant added successfully');
       }
       setIsModalVisible(false);
-      const response = await axios.get('http://localhost:5000/tenants');
+      const response = await axios.get('https://smart-hostel-management-json-server.onrender.com/tenants');
       setTenants(response.data);
     } catch (error) {
       console.error(`Error ${formMode === 'update' ? 'updating' : 'adding'} tenant details:`, error);
@@ -102,10 +102,10 @@ const TenantsList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/tenants/${id}`);
+      await axios.delete(`https://smart-hostel-management-json-server.onrender.com/tenants/${id}`);
       message.success('Tenant deleted successfully');
       
-      const response = await axios.get('http://localhost:5000/tenants');
+      const response = await axios.get('https://smart-hostel-management-json-server.onrender.com/tenants');
       setTenants(response.data);
     } catch (error) {
       console.error('Error deleting tenant:', error);

@@ -32,10 +32,10 @@ const RentDueList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const roomsResponse = await fetch("http://localhost:5000/rooms");
+        const roomsResponse = await fetch("https://smart-hostel-management-json-server.onrender.com/rooms");
         const roomsData = await roomsResponse.json();
 
-        const tenantsResponse = await fetch("http://localhost:5000/tenants");
+        const tenantsResponse = await fetch("https://smart-hostel-management-json-server.onrender.com/tenants");
         const tenantsData = await tenantsResponse.json();
 
         // Filter tenants based on existing rooms
@@ -64,7 +64,7 @@ const RentDueList = () => {
 
   const handleFormSubmit = (values) => {
     if (currentTenant) {
-      fetch(`http://localhost:5000/tenants/${currentTenant.id}`, {
+      fetch(`https://smart-hostel-management-json-server.onrender.com/tenants/${currentTenant.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -94,7 +94,7 @@ const RentDueList = () => {
   };
 
   const handleMarkAsPaid = (tenant) => {
-    fetch(`http://localhost:5000/tenants/${tenant.id}`, {
+    fetch(`https://smart-hostel-management-json-server.onrender.com/tenants/${tenant.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -117,7 +117,7 @@ const RentDueList = () => {
   };
 
   const handleMarkAsUnpaid = (tenant) => {
-    fetch(`http://localhost:5000/tenants/${tenant.id}`, {
+    fetch(`https://smart-hostel-management-json-server.onrender.com/tenants/${tenant.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
