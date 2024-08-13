@@ -26,7 +26,7 @@ const MainMenu = () => {
   useEffect(() => {
     // Fetch the profile data including the image URL
     const fetchProfileData = async () => {
-      const response = await fetch('https://smart-hostel-management-json-server.onrender.com/profile');
+      const response = await fetch('http://localhost:5000/profile');
       const data = await response.json();
       setOrgLogo(data.imageUrl || ''); // Set the image URL from profile data
     };
