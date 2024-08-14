@@ -36,7 +36,6 @@ const PaymentHistory = () => {
     fetchPayments();
   }, []);
 
-
   const handleSearch = (value) => {
     setSearchTerm(value);
     const lowercasedValue = value.toLowerCase();
@@ -129,23 +128,24 @@ const PaymentHistory = () => {
   };
 
   return (
-    <div className="payment-history" style={{ marginTop: "75px" }}>
-      <Space direction="vertical" size="small"  style={{ width: "150px", borderRadius: "5px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }}>
+    <div className="payment-history">
+      <Space direction="vertical" size="small" style={{ marginBottom: 16 }}>
         <Input.Search
           placeholder="Search by tenant name or room number"
           value={searchTerm}
           onChange={(e) => handleSearch(e.target.value)}
-          style={{ width: 400 }}
+          style={{ width: '100%', maxWidth: 400 }}
         />
       </Space>
       <List
-        grid={{ gutter: 16, column: 3 }}
+        grid={{ gutter: 16, column: 1 }}
         dataSource={filteredPayments}
         renderItem={(payment) => (
           <List.Item>
             <Card 
               title={payment.name}
               extra={<Tag color={payment.status === "Paid" ? "green" : "red"}>{payment.status}</Tag>}
+              style={{ width: '100%' }}
             >
               <p>
                 <strong>Amount Paid:</strong> ${payment.monthlyRent}
@@ -157,10 +157,10 @@ const PaymentHistory = () => {
                 <strong>Mode of Payment:</strong> {payment.modeOfPayment}
               </p>
               {payment.status === "Paid" && (
-                <Space>
-                  <Button onClick={() => handleDownload(payment)}>Download PDF</Button>
-                  <Button onClick={() => handleSendEmail(payment)}>Send Email</Button>
-                  <Button onClick={() => handleSendWhatsApp(payment)}>Send WhatsApp</Button>
+                <Space direction="horizontal" size="small" style={{ flexWrap: 'wrap' }}>
+                  <Button onClick={() => handleDownload(payment)} style={{ flex: 1, minWidth: '120px' }}>Download PDF</Button>
+                  <Button onClick={() => handleSendEmail(payment)} style={{ flex: 1, minWidth: '120px' }}>Send Email</Button>
+                  <Button onClick={() => handleSendWhatsApp(payment)} style={{ flex: 1, minWidth: '120px' }}>Send WhatsApp</Button>
                 </Space>
               )}
             </Card>

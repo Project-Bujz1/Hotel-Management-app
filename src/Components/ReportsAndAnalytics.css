@@ -1,0 +1,78 @@
+/* Responsive styling for Reports and Analytics component */
+
+.ant-card {
+    margin-bottom: 20px;
+  }
+  
+  .ant-statistic-title {
+    font-size: 16px;
+  }
+  
+  .ant-statistic-content-value {
+    font-size: 20px;
+  }
+  
+  @media (max-width: 768px) {
+    .ant-card {
+      width: 100%;
+      margin: 0;
+    }
+  
+    .ant-row {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  
+    .ant-col {
+      padding: 0;
+    }
+  
+    .ant-card-body {
+      padding: 16px;
+    }
+  
+    .ant-statistic-title {
+      font-size: 14px;
+    }
+  
+    .ant-statistic-content-value {
+      font-size: 18px;
+    }
+  
+    .recharts-wrapper {
+      overflow-x: auto;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .ant-card {
+      width: 100%;
+      margin: 0;
+    }
+  
+    .ant-row {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  
+    .ant-col {
+      padding: 0;
+    }
+  
+    .ant-card-body {
+      padding: 12px;
+    }
+  
+    .ant-statistic-title {
+      font-size: 12px;
+    }
+  
+    .ant-statistic-content-value {
+      font-size: 16px;
+    }
+  
+    .recharts-wrapper {
+      overflow-x: auto;
+    }
+  }
+  

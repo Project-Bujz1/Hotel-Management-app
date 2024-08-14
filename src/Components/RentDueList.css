@@ -1,0 +1,23 @@
+/* RentDueList.css */
+
+@media (max-width: 576px) {
+    .ant-card {
+      width: 100%;
+    }
+  
+    .ant-btn {
+      flex: 1;
+      min-width: 0; /* Allow buttons to shrink */
+      font-size: 12px; /* Adjust font size */
+    }
+  
+    .ant-space {
+      flex-direction: column; /* Stack buttons vertically */
+      align-items: stretch; /* Make buttons take full width */
+    }
+  
+    .ant-space-item {
+      margin-bottom: 8px;
+    }
+  }
+  

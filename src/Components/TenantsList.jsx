@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { List, Card, Avatar, Button, Modal, Form, Input, message, Popconfirm, Select, DatePicker, Upload } from 'antd';
+import { List, Card, Avatar, Button, Modal, Form, Input, message, Popconfirm, Select, DatePicker, Upload, Row, Col } from 'antd';
 import { UserOutlined, MailOutlined, PhoneOutlined, HomeOutlined, BankOutlined, IdcardOutlined, PictureOutlined, CalendarOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import 'antd/dist/reset.css';
@@ -154,7 +154,7 @@ const TenantsList = () => {
             Add Tenant
           </Button>
           <List
-            grid={{ gutter: 16, column: 3 }}
+            grid={{ gutter: 16, column: 1 }}
             dataSource={tenants.filter(tenant => tenant.roomId === room.id)}
             renderItem={tenant => (
               <List.Item>
@@ -197,64 +197,77 @@ const TenantsList = () => {
         onCancel={handleCancel}
         okText={formMode === 'update' ? 'Save' : 'Add'}
         cancelText="Cancel"
+        width="80vw"
+        bodyStyle={{ padding: '20px' }}
       >
         <Form form={form} layout="vertical" className={formMode === 'update' ? "tenant-form" : "add-tenant-form"}>
-          <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Please enter the name' }]}>
-            <Input prefix={<UserOutlined />} />
-          </Form.Item>
-          <Form.Item name="email" label="Email" rules={[{ required: true, message: 'Please enter the email' }]}>
-            <Input prefix={<MailOutlined />} />
-          </Form.Item>
-          <Form.Item name="roomNumber" label="Room Number">
-            <Input prefix={<HomeOutlined />} disabled />
-          </Form.Item>
-          <Form.Item name="roomType" label="Room Type">
-            <Input prefix={<HomeOutlined />} disabled />
-          </Form.Item>
-          <Form.Item name="phoneNumber" label="Phone Number">
-            <Input prefix={<PhoneOutlined />} />
-          </Form.Item>
-          <Form.Item name="emergencyContact" label="Emergency Contact">
-            <Input prefix={<PhoneOutlined />} />
-          </Form.Item>
-          <Form.Item name="idNumber" label="ID Number" rules={[{ validator: validateIdNumber }]}>
-            <Input prefix={<IdcardOutlined />} onChange={handleIdNumberChange} />
-          </Form.Item>
-          <Form.Item name="currentAddress" label="Address">
-            <Input prefix={<HomeOutlined />} />
-          </Form.Item>
-          <Form.Item name="dueDate" label="Joining Date">
-            <DatePicker prefix={<CalendarOutlined />} format="YYYY-MM-DD" />
-          </Form.Item>
-          <Form.Item name="monthlyRent" label="Monthly Rent">
-            <Input type="number" prefix={<BankOutlined />} disabled />
-          </Form.Item>
-          <Form.Item name="status" label="Rent Paid/Unpaid">
-            <Select prefix={<BankOutlined />}>
-              <Option value="Paid">Paid</Option>
-              <Option value="Un Paid">Un Paid</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item name="modeOfPayment" label="Payment Method">
-            <Select prefix={<BankOutlined />}>
-              <Option value="Cash">Cash</Option>
-              <Option value="Bank Transfer">Bank Transfer</Option>
-              <Option value="Cheque">Cheque</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item name="securityDeposit" label="Security Deposit">
-            <Input type="number" prefix={<BankOutlined />} />
-          </Form.Item>
-          <Form.Item name="profileImage" label="Profile Image">
-            <Upload
-              name="profileImage"
-              showUploadList={false}
-              action="/upload"
-              listType="picture"
-            >
-              <Button icon={<PictureOutlined />}>Upload</Button>
-            </Upload>
-          </Form.Item>
+          <Row gutter={16}>
+            <Col xs={24} sm={12}>
+              <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Please enter the name' }]}>
+                <Input prefix={<UserOutlined />} />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={12}>
+              <Form.Item name="email" label="Email" rules={[{ required: true, message: 'Please enter the email' }]}>
+                <Input prefix={<MailOutlined />} />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={12}>
+              <Form.Item name="phoneNumber" label="Phone Number">
+                <Input prefix={<PhoneOutlined />} />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={12}>
+              <Form.Item name="idNumber" label="ID Number" rules={[{ required: true, validator: validateIdNumber }]}>
+                <Input prefix={<IdcardOutlined />} onChange={handleIdNumberChange} />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={12}>
+              <Form.Item name="roomNumber" label="Room Number">
+                <Input prefix={<HomeOutlined />} disabled={formMode === 'update'} />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={12}>
+              <Form.Item name="roomType" label="Room Type">
+                <Select prefix={<BankOutlined />} disabled={formMode === 'update'}>
+                  {rooms.map(room => (
+                    <Option key={room.id} value={room.type}>{room.type}</Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={12}>
+              <Form.Item name="monthlyRent" label="Monthly Rent">
+                <Input prefix={<BankOutlined />} type="number" />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={12}>
+              <Form.Item name="leaseStartDate" label="Lease Start Date">
+                <DatePicker prefix={<CalendarOutlined />} format="YYYY-MM-DD" />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={12}>
+              <Form.Item name="leaseEndDate" label="Lease End Date">
+                <DatePicker prefix={<CalendarOutlined />} format="YYYY-MM-DD" />
+              </Form.Item>
+            </Col>
+            <Col xs={24}>
+              <Form.Item name="imageUrl" label="Profile Picture">
+                <Upload
+                  listType="picture-card"
+                  showUploadList={false}
+                  beforeUpload={() => false}
+                  onChange={({ fileList }) => {
+                    if (fileList.length > 0) {
+                      form.setFieldsValue({ imageUrl: fileList[0].thumbUrl });
+                    }
+                  }}
+                >
+                  <Button icon={<PictureOutlined />}>Upload</Button>
+                </Upload>
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
       </Modal>
     </div>
@@ -262,3 +275,4 @@ const TenantsList = () => {
 };
 
 export default TenantsList;
+  

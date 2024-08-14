@@ -52,14 +52,14 @@ const About = () => {
     <div>
       <Carousel
         autoplay
-        style={{ width: "100vw", height: "100vh", overflow: "hidden" }}
+        style={{ width: "100%", height: "50vh", overflow: "hidden" }}
       >
         {carouselItems.map((item, index) => (
           <div key={index}>
             <div
               style={{
                 width: "100%",
-                height: "100vh",
+                height: "50vh",
                 backgroundImage: `url(${item.image})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
@@ -70,9 +70,9 @@ const About = () => {
                 textTransform: "uppercase",
                 fontFamily: "Playfair, Montserrat, sans-serif",
                 textShadow: "2px 2px 4px #000000",
-                fontSize: "70px",
+                fontSize: "2.5rem",
                 fontWeight: "900",
-                lineHeight: "130px",
+                lineHeight: "3rem",
               }}
             >
               <Typewriter text={item.text} />
@@ -81,8 +81,8 @@ const About = () => {
         ))}
       </Carousel>
       <Row justify="center" style={{ marginTop: 20 }}>
-        <Col span={16}>
-          <Title className="custom-title">
+        <Col xs={22} sm={20} md={16} lg={12} xl={10}>
+          <Title level={2} style={{ textAlign: "center" }}>
             Welcome to Sri Krishna Boys PG Hostel
           </Title>
           <Paragraph style={{ textAlign: "center" }}>
@@ -94,34 +94,40 @@ const About = () => {
         </Col>
       </Row>
       <Row justify="center" style={{ marginTop: 40 }}>
-        <Col span={8} className="custom-section">
-          <WifiOutlined className="custom-icon" />
-          <div className="custom-section-title">High-speed Internet</div>
-          <Paragraph className="custom-section-paragraph">
+        <Col xs={22} sm={20} md={16} lg={8} xl={8} style={{ textAlign: "center" }}>
+          <WifiOutlined style={{ fontSize: "2rem" }} />
+          <div style={{ fontSize: "1.2rem", fontWeight: "bold", marginTop: 10 }}>
+            High-speed Internet
+          </div>
+          <Paragraph style={{ marginTop: 10 }}>
             Stay connected with our high-speed internet available throughout the
             hostel.
           </Paragraph>
         </Col>
-        <Col span={8} className="custom-section">
-          <HomeOutlined className="custom-icon" />
-          <div className="custom-section-title">Spacious Rooms</div>
-          <Paragraph className="custom-section-paragraph">
+        <Col xs={22} sm={20} md={16} lg={8} xl={8} style={{ textAlign: "center" }}>
+          <HomeOutlined style={{ fontSize: "2rem" }} />
+          <div style={{ fontSize: "1.2rem", fontWeight: "bold", marginTop: 10 }}>
+            Spacious Rooms
+          </div>
+          <Paragraph style={{ marginTop: 10 }}>
             Enjoy spacious rooms with attached bathrooms for your comfort.
           </Paragraph>
         </Col>
-        <Col span={8} className="custom-section">
-          <SecurityScanOutlined className="custom-icon" />
-          <div className="custom-section-title">24/7 Security</div>
-          <Paragraph className="custom-section-paragraph">
+        <Col xs={22} sm={20} md={16} lg={8} xl={8} style={{ textAlign: "center" }}>
+          <SecurityScanOutlined style={{ fontSize: "2rem" }} />
+          <div style={{ fontSize: "1.2rem", fontWeight: "bold", marginTop: 10 }}>
+            24/7 Security
+          </div>
+          <Paragraph style={{ marginTop: 10 }}>
             Our hostel is equipped with 24/7 security and CCTV surveillance for
             your safety.
           </Paragraph>
         </Col>
       </Row>
-      <Footer style={{ textAlign: "center" }}>
-          <AppFooter />
-          PG Hostel Management System ©2024
-        </Footer>
+      <Footer style={{ textAlign: "center", padding: "20px" }}>
+        <AppFooter />
+        PG Hostel Management System ©2024
+      </Footer>
     </div>
   );
 };

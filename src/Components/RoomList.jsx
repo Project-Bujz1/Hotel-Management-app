@@ -12,6 +12,8 @@ import {
   Select,
   Tag,
   message,
+  Row,
+  Col
 } from "antd";
 import {
   UploadOutlined,
@@ -259,108 +261,100 @@ const RoomList = () => {
   ];
 
   return (
-    <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          marginBottom: 16,
-          marginTop: "75px",
-          marginRight: "20px"
-        }}
-      >
-        <Button
-          type="primary"
-          onClick={() => showModal()}
-          icon={<AppstoreAddOutlined />}
-        >
-          Add Room
-        </Button>
-      </div>
+    <div style={{ marginTop: "75px",
+    }}>
+      <Row justify="end" style={{ marginBottom: 16 }}>
+        <Col>
+          <Button
+          style={{margin : "5px"}}
+            type="primary"
+            onClick={() => showModal()}
+            icon={<AppstoreAddOutlined />}
+          >
+            Add Room
+          </Button>
+        </Col>
+      </Row>
 
-      <Table columns={columns} dataSource={rooms} />
+      <Table
+        columns={columns}
+        dataSource={rooms}
+        scroll={{ x: 1200 }} // Add horizontal scrolling for larger screens
+      />
+
       <Modal
         title={editingRoom ? "Edit Room" : "Add Room"}
         visible={isModalVisible}
         onCancel={handleCancel}
         onOk={handleAddEditRoom}
+        width={800} // Adjust modal width for better appearance on larger screens
       >
         <Form form={form} layout="vertical">
-          <Form.Item
-            name="roomNumber"
-            label="Room Number"
-            rules={[
-              { required: true, message: "Please input the room number!" },
-            ]}
-            style={{ display: "inline-block", width: "calc(50% - 8px)" }}
-          >
-            <Input prefix={<HomeOutlined style={{ color: "#1890ff" }} />} />
-          </Form.Item>
-          <Form.Item
-            name="type"
-            label="Type"
-            rules={[{ required: true, message: "Please select the room type!" }]}
-            style={{
-              display: "inline-block",
-              width: "calc(50% - 8px)",
-              margin: "0 8px",
-            }}
-          >
-            <Select prefix={<UserOutlined style={{ color: "#52c41a" }} />}>
-              <Option value="AC">A/C</Option>
-              <Option value="Non-Ac">Non-A/C</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="status"
-            label="Status"
-            style={{ display: "inline-block", width: "calc(50% - 8px)" }}
-          >
-            <Input disabled value="Vacant" />
-          </Form.Item>
-          <Form.Item
-            name="rent"
-            label="Rent"
-            rules={[{ required: true, message: "Please input the rent amount!" }]}
-            style={{ display: "inline-block", width: "calc(50% - 8px)" }}
-          >
-            <InputNumber
-              prefix={<DollarOutlined style={{ color: "#fa8c16" }} />}
-              min={0}
-              style={{ width: "100%" }}
-            />
-          </Form.Item>
-          <Form.Item
-            name="sharing"
-            label="Sharing"
-            rules={[{ required: true, message: "Please input the sharing details!" }]}
-            style={{
-              display: "inline-block",
-              width: "calc(50% - 8px)",
-              margin: "0 8px",
-            }}
-          >
-            <InputNumber
-              prefix={<TeamOutlined style={{ color: "#eb2f96" }} />}
-              min={1}
-              style={{ width: "100%" }}
-            />
-          </Form.Item>
-
-          <Form.Item
-            name="imageUrl"
-            label="Room Image"
-            style={{ display: "inline-block", width: "calc(50% - 8px)" }}
-          >
-            <Upload
-              beforeUpload={() => false}
-              listType="picture"
-              maxCount={1}
-              accept=".jpg,.jpeg,.png"
-            >
-              <Button icon={<PictureOutlined />} >Upload</Button>
-            </Upload>
-          </Form.Item>
+          <Row gutter={16}>
+            <Col xs={24} sm={12}>
+              <Form.Item
+                name="roomNumber"
+                label="Room Number"
+                rules={[
+                  { required: true, message: "Please input the room number!" },
+                ]}
+              >
+                <Input prefix={<HomeOutlined style={{ color: "#1890ff" }} />} />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={12}>
+              <Form.Item
+                name="type"
+                label="Type"
+                rules={[
+                  { required: true, message: "Please select the room type!" },
+                ]}
+              >
+                <Select
+                  placeholder="Select room type"
+                  suffixIcon={<AppstoreAddOutlined />}
+                >
+                  <Option value="AC">A/C</Option>
+                  <Option value="Non-Ac">Non-A/C</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={12}>
+              <Form.Item
+                name="rent"
+                label="Rent"
+                rules={[{ required: true, message: "Please input the rent amount!" }]}
+              >
+                <InputNumber
+                  prefix={<DollarOutlined style={{ color: "#fa8c16" }} />}
+                  style={{ width: '100%' }}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={12}>
+              <Form.Item
+                name="sharing"
+                label="Sharing"
+                rules={[{ required: true, message: "Please input the number of sharings!" }]}
+              >
+                <InputNumber
+                  min={1}
+                  style={{ width: '100%' }}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24}>
+              <Form.Item name="imageUrl" label="Image">
+                <Upload
+                  listType="picture-card"
+                  showUploadList={false}
+                  action="/upload" // Adjust upload URL as needed
+                >
+                  <Button icon={<UploadOutlined />}>Upload</Button>
+                </Upload>
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
       </Modal>
     </div>

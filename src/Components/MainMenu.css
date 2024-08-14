@@ -1,0 +1,55 @@
+.main-menu {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .logo {
+    height: 50px;
+    cursor: pointer;
+  }
+  
+  .org-logo {
+    height: 60px;
+    cursor: pointer;
+    margin-left: auto;
+  }
+  
+  .menu-button {
+    display: none; /* Hide menu button on larger screens */
+  }
+  
+  .desktop-menu {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    overflow-x: auto; /* Prevent horizontal overflow */
+  }
+  
+  @media (max-width: 768px) {
+    .desktop-menu {
+      display: none; /* Hide desktop menu on small screens */
+    }
+  
+    .menu-button {
+      display: block; /* Show menu button on small screens */
+      margin-left: auto;
+    }
+  
+    .logo {
+      height: 40px;
+    }
+  
+    .org-logo {
+      height: 50px;
+    }
+  }
+  

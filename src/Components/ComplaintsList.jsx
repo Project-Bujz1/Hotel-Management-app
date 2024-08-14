@@ -143,7 +143,7 @@ const ComplaintsList = () => {
         type="primary"
         icon={<PlusOutlined />}
         onClick={() => showModal()}
-        style={{ marginBottom: 16, marginLeft: 1350 }}
+        style={{ marginBottom: 16, display: 'block', margin: '0 auto' }}
       >
         Add Complaint
       </Button>
@@ -153,13 +153,13 @@ const ComplaintsList = () => {
         renderItem={(complaint) => (
           <List.Item
             actions={[
-              <Tooltip title="Edit">
+              <Tooltip title="Edit" key="edit">
                 <Button
                   icon={<EditOutlined />}
                   onClick={() => showModal(complaint)}
                 />
               </Tooltip>,
-              <Tooltip title="Delete">
+              <Tooltip title="Delete" key="delete">
                 <Popconfirm
                   title="Are you sure you want to delete this complaint?"
                   onConfirm={() => handleDelete(complaint.id)}
@@ -169,7 +169,7 @@ const ComplaintsList = () => {
                   <Button danger icon={<DeleteOutlined />} />
                 </Popconfirm>
               </Tooltip>,
-              <Tooltip title="Mark as Completed">
+              <Tooltip title="Mark as Completed" key="complete">
                 <Button
                   type="primary"
                   icon={<CheckOutlined />}
@@ -201,7 +201,7 @@ const ComplaintsList = () => {
                     <img
                       src={complaint.imageUrl}
                       alt="complaint"
-                      style={{ width: "100px", height: "100px", marginTop: 16 }}
+                      style={{ width: "100%", maxWidth: "200px", height: "auto", marginTop: 16 }}
                     />
                   )}
                 </div>
@@ -216,10 +216,13 @@ const ComplaintsList = () => {
         visible={isModalVisible}
         onCancel={handleCancel}
         onOk={handleAddEditComplaint}
+        okText="Save"
+        cancelText="Cancel"
+        width={800}
       >
         <Form form={form} layout="vertical">
           <Row gutter={16}>
-            <Col span={12}>
+            <Col xs={24} sm={12}>
               <Form.Item
                 name="roomNumber"
                 label="Room Number"
@@ -230,7 +233,7 @@ const ComplaintsList = () => {
                 <Input />
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col xs={24} sm={12}>
               <Form.Item
                 name="complaint"
                 label="Complaint"
@@ -243,7 +246,7 @@ const ComplaintsList = () => {
             </Col>
           </Row>
           <Row gutter={16}>
-            <Col span={12}>
+            <Col xs={24} sm={12}>
               <Form.Item
                 name="reportedDate"
                 label="Reported Date"
@@ -257,7 +260,7 @@ const ComplaintsList = () => {
                 <Input />
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col xs={24} sm={12}>
               <Form.Item
                 name="reportedBy"
                 label="Reported By"
@@ -273,7 +276,7 @@ const ComplaintsList = () => {
             </Col>
           </Row>
           <Row gutter={16}>
-            <Col span={12}>
+            <Col xs={24} sm={12}>
               <Form.Item
                 name="status"
                 label="Status"
@@ -288,7 +291,7 @@ const ComplaintsList = () => {
                 </Select>
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col xs={24} sm={12}>
               <Form.Item name="imageUrl" label="Image">
                 <Upload
                   listType="picture"
@@ -300,7 +303,6 @@ const ComplaintsList = () => {
                     reader.readAsDataURL(file);
                     return false;
                   }}
-                  maxCount={1}
                 >
                   <Button icon={<PictureOutlined />}>Upload</Button>
                 </Upload>

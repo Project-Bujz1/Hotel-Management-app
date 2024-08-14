@@ -140,7 +140,7 @@ const RentDueList = () => {
   };
 
   return (
-    <div style={{ marginTop: "75px" }}>
+    <div style={{ padding: '10px', marginTop: '75px' }}>
       <Row gutter={[16, 16]}>
         {rentData.map(tenant => (
           <Col key={tenant.id} xs={24} sm={12} md={8} lg={6}>
@@ -158,14 +158,14 @@ const RentDueList = () => {
                 <p>
                   <strong>Payment Mode:</strong> {tenant.modeOfPayment}
                 </p>
-                <Space>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                   <Popconfirm
                     title="Are you sure you want to mark this as paid?"
                     onConfirm={() => handleMarkAsPaid(tenant)}
                     okText="Yes"
                     cancelText="No"
                   >
-                    <Button type="primary">Mark as Paid</Button>
+                    <Button type="primary" style={{ flex: 1, minWidth: '120px' }}>Mark as Paid</Button>
                   </Popconfirm>
                   <Popconfirm
                     title="Are you sure you want to mark this as unpaid?"
@@ -173,16 +173,17 @@ const RentDueList = () => {
                     okText="Yes"
                     cancelText="No"
                   >
-                    <Button danger>Mark as Unpaid</Button>
+                    <Button danger style={{ flex: 1, minWidth: '120px' }}>Mark as Unpaid</Button>
                   </Popconfirm>
                   <Button
                     icon={<EditOutlined />}
                     onClick={() => showEditForm(tenant)}
                     type="default"
+                    style={{ flex: 1, minWidth: '120px' }}
                   >
                     Edit
                   </Button>
-                </Space>
+                </div>
               </Card>
             </Badge.Ribbon>
           </Col>
@@ -194,6 +195,8 @@ const RentDueList = () => {
         visible={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         onOk={() => form.submit()}
+        okText="Submit"
+        cancelText="Cancel"
       >
         <Form
           form={form}
@@ -205,14 +208,14 @@ const RentDueList = () => {
             label="Due Date"
             rules={[{ required: true, message: "Please select the due date" }]}
           >
-            <DatePicker format="YYYY-MM-DD" />
+            <DatePicker format="YYYY-MM-DD" style={{ width: '100%' }} />
           </Form.Item>
           <Form.Item
             name="modeOfPayment"
             label="Payment Mode"
             rules={[{ required: true, message: "Please select the payment mode" }]}
           >
-            <Select>
+            <Select style={{ width: '100%' }}>
               {paymentModeOptions.map(option => (
                 <Select.Option key={option.value} value={option.value}>
                   {option.label}
@@ -225,7 +228,7 @@ const RentDueList = () => {
             label="Payment Status"
             rules={[{ required: true, message: "Please select the payment status" }]}
           >
-            <Select>
+            <Select style={{ width: '100%' }}>
               {statusOptions.map(option => (
                 <Select.Option key={option.value} value={option.value}>
                   {option.label}

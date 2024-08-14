@@ -8,7 +8,6 @@ const ReportsAndAnalytics = () => {
   const [roomsData, setRoomsData] = useState([]);
 
   useEffect(() => {
-    // Fetch data from API
     const fetchData = async () => {
       try {
         const [rentResponse, complaintsResponse, roomsResponse] = await Promise.all([
@@ -22,7 +21,6 @@ const ReportsAndAnalytics = () => {
           roomsResponse.json()
         ]);
 
-        // Remove tenants if rooms are deleted
         const validRoomNumbers = roomsData.map(room => room.roomNumber);
         const filteredTenants = rentData.filter(tenant => validRoomNumbers.includes(tenant.roomNumber));
         
@@ -37,7 +35,6 @@ const ReportsAndAnalytics = () => {
     fetchData();
   }, []);
 
-  // Process data
   const totalRooms = roomsData.length;
   const occupiedRooms = roomsData.filter(room => room.status === 'Occupied').length;
 
@@ -78,14 +75,14 @@ const ReportsAndAnalytics = () => {
   return (
     <div style={{ padding: '20px', marginTop: '75px' }}>
       <Row gutter={[16, 16]}>
-        <Col span={24} md={12}>
+        <Col xs={24} md={12} lg={8}>
           <Card title="Payment Status Distribution">
-            <PieChart width={400} height={400}>
+            <PieChart width={300} height={300}>
               <Pie
                 data={pieData}
                 dataKey="value"
                 nameKey="name"
-                outerRadius={150}
+                outerRadius={120}
                 label
               >
                 {pieData.map((entry, index) => (
@@ -98,34 +95,36 @@ const ReportsAndAnalytics = () => {
           </Card>
         </Col>
 
-        <Col span={24} md={12}>
+        <Col xs={24} md={24} lg={16}>
           <Card title="Rent Amount by Tenant">
-            <BarChart
-              width={500}
-              height={300}
-              data={barData}
-              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="monthlyRent" fill="#82ca9d" />
-            </BarChart>
+            <div style={{ overflowX: 'auto' }}>
+              <BarChart
+                width={700}
+                height={300}
+                data={barData}
+                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="monthlyRent" fill="#82ca9d" />
+              </BarChart>
+            </div>
           </Card>
         </Col>
       </Row>
 
       <Row gutter={[16, 16]} style={{ marginTop: '20px' }}>
-        <Col span={24} md={12} lg={6}>
+        <Col xs={24} sm={12} lg={6}>
           <Card title="Occupancy & Vacancy">
             <Statistic title="Occupancy %" value={occupancyPercentage} suffix="%" />
             <Statistic title="Vacancy %" value={vacancyPercentage} suffix="%" style={{ marginTop: '16px' }} />
           </Card>
         </Col>
 
-        <Col span={24} md={12} lg={6}>
+        <Col xs={24} sm={12} lg={6}>
           <Card title="Tenant Categories">
             <Statistic title="Non-Native Tenants" value={rentData.filter(tenant => tenant.occupation !== 'Employee').length} />
             <Statistic title="Students" value={rentData.filter(tenant => tenant.occupation === 'Student').length} style={{ marginTop: '16px' }} />
@@ -133,7 +132,7 @@ const ReportsAndAnalytics = () => {
           </Card>
         </Col>
 
-        <Col span={24} md={12} lg={6}>
+        <Col xs={24} sm={12} lg={6}>
           <Card title="Long-Term Tenants">
             <Statistic title="Tenants Staying Over 6 Months" value={rentData.filter(tenant => {
               const dueDate = new Date(tenant.dueDate);
@@ -143,7 +142,7 @@ const ReportsAndAnalytics = () => {
           </Card>
         </Col>
 
-        <Col span={24} md={12} lg={6}>
+        <Col xs={24} sm={12} lg={6}>
           <Card title="Complaints Status">
             <Statistic title="Total Complaints" value={complaintsRaised} />
             <Statistic title="Resolved Complaints" value={complaintsResolved} style={{ marginTop: '16px' }} />
@@ -152,7 +151,7 @@ const ReportsAndAnalytics = () => {
           </Card>
         </Col>
 
-        <Col span={24} md={12} lg={6}>
+        <Col xs={24} sm={12} lg={6}>
           <Card title="Rent Payment Status">
             <Progress percent={totalTenants ? (paidTenants / totalTenants * 100) : 0} status="active" />
             <Progress percent={totalTenants ? (notPaidTenants / totalTenants * 100) : 0} status="exception" />

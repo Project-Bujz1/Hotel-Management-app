@@ -1,18 +1,36 @@
 .payment-history {
-    padding: 16px;
-    background: #f0f2f5;
-  }
-  
-  .payment-history h2 {
-    margin-bottom: 16px;
-  }
-  
+  padding: 16px;
+  background: #f0f2f5;
+}
+
+.ant-card {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ant-card-head-title {
+  font-weight: bold;
+}
+
+.ant-input-search {
+  width: 100%;
+  max-width: 400px;
+}
+
+@media (max-width: 576px) {
   .ant-card {
-    border-radius: 8px;
-    overflow: hidden;
+    width: 100%;
   }
-  
-  .ant-card-head-title {
-    font-weight: bold;
+
+  .ant-space {
+    flex-direction: column;
   }
-  
+
+  .ant-space-item {
+    margin-bottom: 8px;
+  }
+
+  .ant-list {
+    grid-template-columns: 1fr;
+  }
+}
