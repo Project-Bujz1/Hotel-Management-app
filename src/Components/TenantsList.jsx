@@ -1,6 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { List, Card, Avatar, Button, Modal, Form, Input, message, Popconfirm, Select, DatePicker, Upload, Row, Col } from 'antd';
-import { UserOutlined, MailOutlined, PhoneOutlined, HomeOutlined, BankOutlined, IdcardOutlined, PictureOutlined, CalendarOutlined } from '@ant-design/icons';
+import {
+  List,
+  Card,
+  Avatar,
+  Button,
+  Modal,
+  Form,
+  Input,
+  message,
+  Popconfirm,
+  Select,
+  DatePicker,
+  Upload,
+  Row,
+  Col,
+  Spin,
+} from 'antd';
+import {
+  UserOutlined,
+  MailOutlined,
+  PhoneOutlined,
+  HomeOutlined,
+  BankOutlined,
+  IdcardOutlined,
+  PictureOutlined,
+  CalendarOutlined,
+  LoadingOutlined,
+} from '@ant-design/icons';
 import axios from 'axios';
 import 'antd/dist/reset.css';
 import './TenantsList.css'; // Import the CSS file
@@ -16,10 +42,12 @@ const TenantsList = () => {
   const [formMode, setFormMode] = useState('add'); // 'add' or 'update'
   const [selectedTenant, setSelectedTenant] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState(null);
+  const [loading, setLoading] = useState(false); // To control the loading spinner
   const [form] = Form.useForm();
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const roomResponse = await axios.get('https://smart-hostel-management-json-server.onrender.com/rooms');
         setRooms(roomResponse.data);
@@ -29,6 +57,8 @@ const TenantsList = () => {
       } catch (error) {
         console.error('Error fetching data:', error);
         message.error('Failed to fetch data');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -70,6 +100,7 @@ const TenantsList = () => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     try {
       const values = await form.validateFields();
       if (formMode === 'update') {
@@ -92,15 +123,17 @@ const TenantsList = () => {
     } catch (error) {
       console.error(`Error ${formMode === 'update' ? 'updating' : 'adding'} tenant details:`, error);
       message.error(`Failed to ${formMode === 'update' ? 'update' : 'add'} tenant details: ${error.response ? error.response.data : error.message}`);
+    } finally {
+      setLoading(false);
     }
   };
-  
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
 
   const handleDelete = async (id) => {
+    setLoading(true);
     try {
       await axios.delete(`https://smart-hostel-management-json-server.onrender.com/tenants/${id}`);
       message.success('Tenant deleted successfully');
@@ -110,6 +143,8 @@ const TenantsList = () => {
     } catch (error) {
       console.error('Error deleting tenant:', error);
       message.error('Failed to delete tenant');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -145,12 +180,15 @@ const TenantsList = () => {
     form.setFieldsValue({ idNumber: formattedValue });
   };
 
+  // const spinnerIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+
   return (
     <div className="tenants-list-container" style={{ marginTop: "75px" }}>
+      <Spin spinning={loading} size="small" style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
       {rooms.map(room => (
         <div key={room.id} className="room-section">
           <h2>Room {room.roomNumber} ({room.type})</h2>
-          <Button onClick={() => showModal(null, 'add', room)} type="primary" className="add-tenant-button">
+          <Button onClick={() => showModal(null, 'add', room)} type="primary" className="add-tenant-button" loading={loading}>
             Add Tenant
           </Button>
           <List
@@ -163,7 +201,7 @@ const TenantsList = () => {
                   cover={<Avatar src={tenant.imageUrl} size={64} />}
                   extra={
                     <div>
-                      <Button type="primary" onClick={() => showModal(tenant, 'update')}>
+                      <Button type="primary" onClick={() => showModal(tenant, 'update')} loading={loading}>
                         View Details
                       </Button>
                       <Popconfirm
@@ -172,7 +210,7 @@ const TenantsList = () => {
                         okText="Yes"
                         cancelText="No"
                       >
-                        <Button type="danger" className="delete-button">
+                        <Button type="danger" className="delete-button" loading={loading}>
                           Delete
                         </Button>
                       </Popconfirm>
@@ -199,9 +237,19 @@ const TenantsList = () => {
         cancelText="Cancel"
         width="80vw"
         bodyStyle={{ padding: '20px' }}
+        footer={
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Button key="cancel" onClick={handleCancel} disabled={loading}>
+              Cancel
+            </Button>
+            <Button key="submit" type="primary" onClick={handleSubmit} loading={loading}>
+              {formMode === 'update' ? 'Save' : 'Add'}
+            </Button>
+          </div>
+        }
       >
         <Form form={form} layout="vertical" className={formMode === 'update' ? "tenant-form" : "add-tenant-form"}>
-          <Row gutter={16}>
+          <Row gutter={24}>
             <Col xs={24} sm={12}>
               <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Please enter the name' }]}>
                 <Input prefix={<UserOutlined />} />
@@ -275,4 +323,3 @@ const TenantsList = () => {
 };
 
 export default TenantsList;
-  
