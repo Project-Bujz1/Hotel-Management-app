@@ -180,52 +180,60 @@ const TenantsList = () => {
     form.setFieldsValue({ idNumber: formattedValue });
   };
 
-  // const spinnerIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-
   return (
     <div className="tenants-list-container" style={{ marginTop: "75px" }}>
-      <Spin spinning={loading} size="small" style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
-      {rooms.map(room => (
-        <div key={room.id} className="room-section">
-          <h2>Room {room.roomNumber} ({room.type})</h2>
-          <Button onClick={() => showModal(null, 'add', room)} type="primary" className="add-tenant-button" loading={loading}>
-            Add Tenant
-          </Button>
-          <List
-            grid={{ gutter: 16, column: 1 }}
-            dataSource={tenants.filter(tenant => tenant.roomId === room.id)}
-            renderItem={tenant => (
-              <List.Item>
-                <Card
-                  title={tenant.name}
-                  cover={<Avatar src={tenant.imageUrl} size={64} />}
-                  extra={
-                    <div>
-                      <Button type="primary" onClick={() => showModal(tenant, 'update')} loading={loading}>
-                        View Details
-                      </Button>
-                      <Popconfirm
-                        title="Are you sure to delete this tenant?"
-                        onConfirm={() => handleDelete(tenant.id)}
-                        okText="Yes"
-                        cancelText="No"
-                      >
-                        <Button type="danger" className="delete-button" loading={loading}>
-                          Delete
-                        </Button>
-                      </Popconfirm>
-                    </div>
-                  }
-                >
-                  <p><UserOutlined /> {tenant.name}</p>
-                  <p><MailOutlined /> {tenant.email}</p>
-                  <p><PhoneOutlined /> {tenant.phoneNumber}</p>
-                </Card>
-              </List.Item>
-            )}
-          />
+      <Spin spinning={loading} size="large" tip="Loading..." style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />
+      {rooms.length === 0 ? (
+        <div style={{ textAlign: 'center', marginTop: 50 }}>
+          <h2>No Rooms Available</h2>
         </div>
-      ))}
+      ) : tenants.length === 0 ? (
+        <div style={{ textAlign: 'center', marginTop: 50 }}>
+          <h2>No Tenants Found</h2>
+        </div>
+      ) : (
+        rooms.map(room => (
+          <div key={room.id} className="room-section">
+            <h2>Room {room.roomNumber} ({room.type})</h2>
+            <Button onClick={() => showModal(null, 'add', room)} type="primary" className="add-tenant-button" loading={loading}>
+              Add Tenant
+            </Button>
+            <List
+              grid={{ gutter: 16, column: 1 }}
+              dataSource={tenants.filter(tenant => tenant.roomId === room.id)}
+              renderItem={tenant => (
+                <List.Item>
+                  <Card
+                    title={tenant.name}
+                    cover={<Avatar src={tenant.imageUrl} size={64} />}
+                    extra={
+                      <div>
+                        <Button type="primary" onClick={() => showModal(tenant, 'update')} loading={loading}>
+                          View Details
+                        </Button>
+                        <Popconfirm
+                          title="Are you sure to delete this tenant?"
+                          onConfirm={() => handleDelete(tenant.id)}
+                          okText="Yes"
+                          cancelText="No"
+                        >
+                          <Button type="danger" className="delete-button" loading={loading}>
+                            Delete
+                          </Button>
+                        </Popconfirm>
+                      </div>
+                    }
+                  >
+                    <p><UserOutlined /> {tenant.name}</p>
+                    <p><MailOutlined /> {tenant.email}</p>
+                    <p><PhoneOutlined /> {tenant.phoneNumber}</p>
+                  </Card>
+                </List.Item>
+              )}
+            />
+          </div>
+        ))
+      )}
 
       {/* Tenant Modal */}
       <Modal
@@ -237,72 +245,116 @@ const TenantsList = () => {
         cancelText="Cancel"
         width="80vw"
         bodyStyle={{ padding: '20px' }}
+        confirmLoading={loading}
         footer={
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button key="cancel" onClick={handleCancel} disabled={loading}>
+            <Button onClick={handleCancel} style={{ marginRight: 10 }}>
               Cancel
             </Button>
-            <Button key="submit" type="primary" onClick={handleSubmit} loading={loading}>
+            <Button type="primary" onClick={handleSubmit} loading={loading}>
               {formMode === 'update' ? 'Save' : 'Add'}
             </Button>
           </div>
         }
       >
-        <Form form={form} layout="vertical" className={formMode === 'update' ? "tenant-form" : "add-tenant-form"}>
-          <Row gutter={24}>
-            <Col xs={24} sm={12}>
-              <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Please enter the name' }]}>
-                <Input prefix={<UserOutlined />} />
+        <Form form={form} layout="vertical" style={{ marginTop: 20 }}>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="name"
+                label="Name"
+                rules={[{ required: true, message: 'Please enter the tenant name' }]}
+              >
+                <Input placeholder="Enter tenant name" />
               </Form.Item>
             </Col>
-            <Col xs={24} sm={12}>
-              <Form.Item name="email" label="Email" rules={[{ required: true, message: 'Please enter the email' }]}>
-                <Input prefix={<MailOutlined />} />
+            <Col span={12}>
+              <Form.Item
+                name="idNumber"
+                label="ID Number"
+                rules={[{ required: true, message: 'Please enter the ID Number' }, { validator: validateIdNumber }]}
+              >
+                <Input placeholder="Enter 12-digit ID Number" onChange={handleIdNumberChange} />
               </Form.Item>
             </Col>
-            <Col xs={24} sm={12}>
-              <Form.Item name="phoneNumber" label="Phone Number">
-                <Input prefix={<PhoneOutlined />} />
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="email"
+                label="Email"
+                rules={[{ required: true, type: 'email', message: 'Please enter a valid email address' }]}
+              >
+                <Input placeholder="Enter tenant email" />
               </Form.Item>
             </Col>
-            <Col xs={24} sm={12}>
-              <Form.Item name="idNumber" label="ID Number" rules={[{ required: true, validator: validateIdNumber }]}>
-                <Input prefix={<IdcardOutlined />} onChange={handleIdNumberChange} />
+            <Col span={12}>
+              <Form.Item
+                name="phoneNumber"
+                label="Phone Number"
+                rules={[{ required: true, message: 'Please enter the phone number' }]}
+              >
+                <Input placeholder="Enter tenant phone number" />
               </Form.Item>
             </Col>
-            <Col xs={24} sm={12}>
-              <Form.Item name="roomNumber" label="Room Number">
-                <Input prefix={<HomeOutlined />} disabled={formMode === 'update'} />
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="roomNumber"
+                label="Room Number"
+              >
+                <Input disabled />
               </Form.Item>
             </Col>
-            <Col xs={24} sm={12}>
-              <Form.Item name="roomType" label="Room Type">
-                <Select prefix={<BankOutlined />} disabled={formMode === 'update'}>
-                  {rooms.map(room => (
-                    <Option key={room.id} value={room.type}>{room.type}</Option>
-                  ))}
-                </Select>
+            <Col span={12}>
+              <Form.Item
+                name="roomType"
+                label="Room Type"
+              >
+                <Input disabled />
               </Form.Item>
             </Col>
-            <Col xs={24} sm={12}>
-              <Form.Item name="monthlyRent" label="Monthly Rent">
-                <Input prefix={<BankOutlined />} type="number" />
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="leaseStartDate"
+                label="Lease Start Date"
+                rules={[{ required: true, message: 'Please select the lease start date' }]}
+              >
+                <DatePicker format="YYYY-MM-DD" />
               </Form.Item>
             </Col>
-            <Col xs={24} sm={12}>
-              <Form.Item name="leaseStartDate" label="Lease Start Date">
-                <DatePicker prefix={<CalendarOutlined />} format="YYYY-MM-DD" />
+            <Col span={12}>
+              <Form.Item
+                name="leaseEndDate"
+                label="Lease End Date"
+                rules={[{ required: true, message: 'Please select the lease end date' }]}
+              >
+                <DatePicker format="YYYY-MM-DD" />
               </Form.Item>
             </Col>
-            <Col xs={24} sm={12}>
-              <Form.Item name="leaseEndDate" label="Lease End Date">
-                <DatePicker prefix={<CalendarOutlined />} format="YYYY-MM-DD" />
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="monthlyRent"
+                label="Monthly Rent"
+                rules={[{ required: true, message: 'Please enter the monthly rent' }]}
+              >
+                <Input prefix={<BankOutlined />} type="number" placeholder="Enter monthly rent" />
               </Form.Item>
             </Col>
-            <Col xs={24}>
-              <Form.Item name="imageUrl" label="Profile Picture">
+            <Col span={12}>
+              <Form.Item
+                name="imageUrl"
+                label="Image URL"
+              >
                 <Upload
+                  name="avatar"
                   listType="picture-card"
+                  className="avatar-uploader"
                   showUploadList={false}
                   beforeUpload={() => false}
                   onChange={({ fileList }) => {

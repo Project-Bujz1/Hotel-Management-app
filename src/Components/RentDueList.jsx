@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Row, Col, Badge, Button, Space, Form, DatePicker, Select, message, Modal, Popconfirm, Spin } from "antd";
+import { Card, Row, Col, Badge, Button, Space, Form, DatePicker, Select, message, Modal, Popconfirm, Spin, Empty } from "antd";
 import { EditOutlined } from '@ant-design/icons';
 import moment from "moment";
 
@@ -159,59 +159,63 @@ const RentDueList = () => {
   return (
     <div style={{ padding: '10px', marginTop: '75px' }}>
       <Spin spinning={loading} size="small">
-        <Row gutter={[16, 16]}>
-          {rentData.map(tenant => (
-            <Col key={tenant.id} xs={24} sm={12} md={8} lg={6}>
-              <Badge.Ribbon
-                text={tenant.status}
-                color={statusColors[tenant.status]}
-              >
-                <Card title={`Room ${tenant.roomNumber}`} bordered={false}>
-                  <p>
-                    <strong>Tenant:</strong> {tenant.name}
-                  </p>
-                  <p>
-                    <strong>Due Date:</strong> {moment(tenant.dueDate).format("YYYY-MM-DD")}
-                  </p>
-                  <p>
-                    <strong>Payment Mode:</strong> {tenant.modeOfPayment}
-                  </p>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                    <Popconfirm
-                      title="Are you sure you want to mark this as paid?"
-                      onConfirm={() => handleMarkAsPaid(tenant)}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <Button type="primary" style={{ flex: 1, minWidth: '120px' }} loading={updating}>
-                        Mark as Paid
+        {rentData.length === 0 ? (
+          <Empty description="No data available" />
+        ) : (
+          <Row gutter={[16, 16]}>
+            {rentData.map(tenant => (
+              <Col key={tenant.id} xs={24} sm={12} md={8} lg={6}>
+                <Badge.Ribbon
+                  text={tenant.status}
+                  color={statusColors[tenant.status]}
+                >
+                  <Card title={`Room ${tenant.roomNumber}`} bordered={false}>
+                    <p>
+                      <strong>Tenant:</strong> {tenant.name}
+                    </p>
+                    <p>
+                      <strong>Due Date:</strong> {moment(tenant.dueDate).format("YYYY-MM-DD")}
+                    </p>
+                    <p>
+                      <strong>Payment Mode:</strong> {tenant.modeOfPayment}
+                    </p>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                      <Popconfirm
+                        title="Are you sure you want to mark this as paid?"
+                        onConfirm={() => handleMarkAsPaid(tenant)}
+                        okText="Yes"
+                        cancelText="No"
+                      >
+                        <Button type="primary" style={{ flex: 1, minWidth: '120px' }} loading={updating}>
+                          Mark as Paid
+                        </Button>
+                      </Popconfirm>
+                      <Popconfirm
+                        title="Are you sure you want to mark this as unpaid?"
+                        onConfirm={() => handleMarkAsUnpaid(tenant)}
+                        okText="Yes"
+                        cancelText="No"
+                      >
+                        <Button danger style={{ flex: 1, minWidth: '120px' }} loading={updating}>
+                          Mark as Unpaid
+                        </Button>
+                      </Popconfirm>
+                      <Button
+                        icon={<EditOutlined />}
+                        onClick={() => showEditForm(tenant)}
+                        type="default"
+                        style={{ flex: 1, minWidth: '120px' }}
+                        loading={updating}
+                      >
+                        Edit
                       </Button>
-                    </Popconfirm>
-                    <Popconfirm
-                      title="Are you sure you want to mark this as unpaid?"
-                      onConfirm={() => handleMarkAsUnpaid(tenant)}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <Button danger style={{ flex: 1, minWidth: '120px' }} loading={updating}>
-                        Mark as Unpaid
-                      </Button>
-                    </Popconfirm>
-                    <Button
-                      icon={<EditOutlined />}
-                      onClick={() => showEditForm(tenant)}
-                      type="default"
-                      style={{ flex: 1, minWidth: '120px' }}
-                      loading={updating}
-                    >
-                      Edit
-                    </Button>
-                  </div>
-                </Card>
-              </Badge.Ribbon>
-            </Col>
-          ))}
-        </Row>
+                    </div>
+                  </Card>
+                </Badge.Ribbon>
+              </Col>
+            ))}
+          </Row>
+        )}
       </Spin>
 
       <Modal
