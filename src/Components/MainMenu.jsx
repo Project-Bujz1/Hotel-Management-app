@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Menu, Input, Modal, Progress, Tooltip, Drawer, Button, Popover } from "antd";
-import { SearchOutlined, UserOutlined, MenuOutlined, QuestionCircleOutlined, MailOutlined } from "@ant-design/icons";
+import { SearchOutlined, UserOutlined, MenuOutlined, QuestionCircleOutlined, MailOutlined, SettingOutlined, LockOutlined, PoweroffOutlined } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import logo from "../assets/logo-transparent-png.png";
 import './MainMenu.css'; // Import the CSS file
@@ -10,6 +10,7 @@ const MainMenu = () => {
   const location = useLocation();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);
+  const [sideMenuVisible, setSideMenuVisible] = useState(false);
   const [orgLogo, setOrgLogo] = useState(''); // State to hold the organization logo URL
 
   const currentPath = location.pathname;
@@ -22,6 +23,10 @@ const MainMenu = () => {
     "/paymentHistory": "paymentHistory",
     "/complaints": "complaints",
     "/profile": "profile",
+    "/displaySettings": "displaySettings",
+    "/orgSettings": "orgSettings",
+    "/changePassword": "changePassword",
+    "/signout": "signOut",
   }[currentPath] || "home";
 
   useEffect(() => {
@@ -50,6 +55,10 @@ const MainMenu = () => {
     setDrawerVisible(false);
   };
 
+  const handleSideMenuToggle = () => {
+    setSideMenuVisible(!sideMenuVisible);
+  };
+
   const menuItems = (
     <Menu mode="inline">
       <Menu.Item key="home" onClick={() => navigate("/home")}>Home</Menu.Item>
@@ -59,10 +68,16 @@ const MainMenu = () => {
       <Menu.Item key="rentDue" onClick={() => navigate("/rentDue")}>Rent Due</Menu.Item>
       <Menu.Item key="paymentHistory" onClick={() => navigate("/paymentHistory")}>Payment History</Menu.Item>
       <Menu.Item key="complaints" onClick={() => navigate("/complaints")}>Complaints</Menu.Item>
-      <Menu.Item key="displaySettings" onClick={() => navigate("/displaySettings")}>Display Settings</Menu.Item>
-      <Menu.Item key="orgSettings" onClick={() => navigate("/orgSettings")}>Org Settings</Menu.Item>
-      <Menu.Item key="changePassword" onClick={() => navigate("/changePassword")}>Change Password</Menu.Item>
-      <Menu.Item key="signOut" onClick={() => navigate("/signout")}>Sign Out</Menu.Item>
+      <Menu.Item key="profile" onClick={() => navigate("/profile")}>Profile</Menu.Item>
+    </Menu>
+  );
+
+  const sideMenuItems = (
+    <Menu mode="inline">
+      <Menu.Item key="displaySettings" onClick={() => navigate("/displaySettings")} icon={<SettingOutlined />}>Display Settings</Menu.Item>
+      <Menu.Item key="orgSettings" onClick={() => navigate("/orgSettings")} icon={<SettingOutlined />}>Org Settings</Menu.Item>
+      <Menu.Item key="changePassword" onClick={() => navigate("/changePassword")} icon={<LockOutlined />}>Change Password</Menu.Item>
+      <Menu.Item key="signOut" onClick={() => navigate("/signout")} icon={<PoweroffOutlined />}>Sign Out</Menu.Item>
     </Menu>
   );
 
@@ -117,6 +132,19 @@ const MainMenu = () => {
           />
         </Popover>
       </Drawer>
+
+      {/* Side Menu */}
+      <Drawer
+        title="Settings"
+        placement="right"
+        closable
+        onClose={handleSideMenuToggle}
+        visible={sideMenuVisible}
+        width={250}
+      >
+        {sideMenuItems}
+      </Drawer>
+
       <div className="desktop-menu">
         <Menu
           mode="horizontal"
@@ -141,36 +169,48 @@ const MainMenu = () => {
           <Menu.Item key="rentDue" style={getMenuItemStyle(selectedKeys, "rentDue")} onClick={() => navigate("/rentDue")}>Rent Due</Menu.Item>
           <Menu.Item key="paymentHistory" style={getMenuItemStyle(selectedKeys, "paymentHistory")} onClick={() => navigate("/paymentHistory")}>Payment History</Menu.Item>
           <Menu.Item key="complaints" style={getMenuItemStyle(selectedKeys, "complaints")} onClick={() => navigate("/complaints")}>Complaints</Menu.Item>
+          <Menu.Item key="profile" style={getMenuItemStyle(selectedKeys, "profile")} icon={<UserOutlined />} onClick={() => navigate("/profile")}>Profile</Menu.Item>
+          <Menu.Item
+            key="settings"
+            style={{ marginLeft: "auto" }}
+            icon={<SettingOutlined />}
+            onClick={handleSideMenuToggle}
+          />
           <Tooltip title="Hostel capacity: 80%">
             <Menu.Item key="capacity" style={{ display: "flex", alignItems: "center", fontSize: "14px", color: "black", marginRight: "10px" }}>
               <Progress percent={80} strokeColor="#1890ff" style={{ width: "120px" }} />
             </Menu.Item>
           </Tooltip>
-          <Menu.Item key="search" style={{ display: "flex", alignItems: "center", fontSize: "14px", color: "black", marginLeft: "auto", marginRight: "10px" }}>
+          <Menu.Item key="search" style={{ display: "flex", alignItems: "center", fontSize: "14px", color: "black", marginLeft: "10px" }}>
             <Input prefix={<SearchOutlined />} placeholder="Search" size="small" style={{ width: "150px", borderRadius: "5px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }} />
           </Menu.Item>
-          <Menu.Item key="profile" style={getMenuItemStyle(selectedKeys, "profile")} icon={<UserOutlined />} onClick={() => navigate("/profile")}>Profile</Menu.Item>
         </Menu>
       </div>
       <img
         src={orgLogo}
         alt="Logo"
-        className="org-logo"
+        className="logo"
         onClick={handleLogoClick}
       />
-      <Modal visible={isModalVisible} footer={null} onCancel={handleModalClose} centered bodyStyle={{ textAlign: "center" }}>
-        <img src={orgLogo} alt="Logo" style={{ maxWidth: "100%", height: "auto" }} />
+      <Modal
+        title="Organization Logo"
+        visible={isModalVisible}
+        onOk={handleModalClose}
+        onCancel={handleModalClose}
+        footer={null}
+      >
+        <img src={orgLogo} alt="Organization Logo" style={{ width: "100%" }} />
       </Modal>
     </div>
   );
 };
 
 const getMenuItemStyle = (selectedKeys, key) => ({
-  fontSize: "14px",
-  color: selectedKeys === key ? "blue" : "black",
+  color: selectedKeys === key ? "#1890ff" : "black",
   fontWeight: selectedKeys === key ? "bold" : "normal",
-  borderBottom: selectedKeys === key ? "2px solid blue" : "none",
-  marginRight: "6px",
+  margin: "0 10px",
+  padding: "0 5px",
+  borderBottom: selectedKeys === key ? "2px solid #1890ff" : "none",
 });
 
 export default MainMenu;
