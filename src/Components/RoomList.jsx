@@ -16,14 +16,13 @@ import {
   Col
 } from "antd";
 import {
+  UserOutlined,
   UploadOutlined,
   EditOutlined,
   DeleteOutlined,
   HomeOutlined,
   DollarOutlined,
   TeamOutlined,
-  PictureOutlined,
-  UserOutlined,
   AppstoreAddOutlined,
 } from "@ant-design/icons";
 import {
@@ -32,7 +31,7 @@ import {
   addRoom,
   updateRoom,
   deleteRoom,
-  checkRoomNumberExists, // New API function to check if the room number exists
+  checkRoomNumberExists,
 } from "./apiservice";
 
 const { Option } = Select;
@@ -43,6 +42,7 @@ const RoomList = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const [editingRoom, setEditingRoom] = useState(null);
+  const [imagePreview, setImagePreview] = useState('');
 
   useEffect(() => {
     Promise.all([fetchRooms(), fetchTenants()])
@@ -71,14 +71,17 @@ const RoomList = () => {
     setIsModalVisible(true);
     if (room) {
       form.setFieldsValue(room);
+      setImagePreview(room.imageUrl || ''); // Set preview URL for editing
     } else {
       form.resetFields();
       form.setFieldsValue({ status: 'Vacant' });
+      setImagePreview(''); // Clear preview for adding new room
     }
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    setImagePreview(''); // Clear preview on modal close
   };
 
   const handleAddEditRoom = () => {
@@ -95,18 +98,16 @@ const RoomList = () => {
 
         const updatedValues = {
           ...values,
-          status: 'Vacant', // Force status to 'Vacant' when adding new rooms
+          status: 'Vacant',
         };
 
         if (editingRoom) {
-          // For editing, calculate the status based on tenants
           updatedValues.status = (values.tenants || 0) >= values.sharing ? 'Occupied' : 'Vacant';
           await updateRoom(editingRoom.id, updatedValues);
         } else {
           await addRoom(updatedValues);
         }
 
-        // Refetch data
         const [roomResponse, tenantResponse] = await Promise.all([fetchRooms(), fetchTenants()]);
         const tenantCountByRoom = tenantResponse.reduce((acc, tenant) => {
           if (tenant.roomNumber) {
@@ -124,6 +125,7 @@ const RoomList = () => {
         setRooms(updatedRooms);
         setTenants(tenantResponse);
         setIsModalVisible(false);
+        setImagePreview('');
       } catch (error) {
         console.error("Error saving room:", error);
       }
@@ -227,14 +229,15 @@ const RoomList = () => {
       title: "Image",
       dataIndex: "imageUrl",
       key: "imageUrl",
-      render: (text) =>
+      render: (text) => (
         text ? (
           <img
             src={text}
             alt="room"
             style={{ width: 100, height: 100, objectFit: 'cover' }}
           />
-        ) : null,
+        ) : null
+      ),
     },
     {
       title: "Action",
@@ -261,12 +264,11 @@ const RoomList = () => {
   ];
 
   return (
-    <div style={{ marginTop: "75px",
-    }}>
+    <div style={{ marginTop: "75px" }}>
       <Row justify="end" style={{ marginBottom: 16 }}>
         <Col>
           <Button
-          style={{margin : "5px"}}
+            style={{ margin: "5px" }}
             type="primary"
             onClick={() => showModal()}
             icon={<AppstoreAddOutlined />}
@@ -279,7 +281,7 @@ const RoomList = () => {
       <Table
         columns={columns}
         dataSource={rooms}
-        scroll={{ x: 1200 }} // Add horizontal scrolling for larger screens
+        scroll={{ x: 1200 }}
       />
 
       <Modal
@@ -287,70 +289,110 @@ const RoomList = () => {
         visible={isModalVisible}
         onCancel={handleCancel}
         onOk={handleAddEditRoom}
-        width={800} // Adjust modal width for better appearance on larger screens
+        okText={editingRoom ? "Update" : "Add"}
+        cancelText="Cancel"
+        width={800}
       >
-        <Form form={form} layout="vertical">
+        <Form
+          form={form}
+          layout="vertical"
+          initialValues={editingRoom}
+          hideRequiredMark
+        >
           <Row gutter={16}>
-            <Col xs={24} sm={12}>
+            <Col span={12}>
               <Form.Item
                 name="roomNumber"
                 label="Room Number"
-                rules={[
-                  { required: true, message: "Please input the room number!" },
-                ]}
+                rules={[{ required: true, message: "Please enter room number" }]}
               >
-                <Input prefix={<HomeOutlined style={{ color: "#1890ff" }} />} />
+                <Input placeholder="Room Number" />
               </Form.Item>
             </Col>
-            <Col xs={24} sm={12}>
+            <Col span={12}>
               <Form.Item
                 name="type"
                 label="Type"
-                rules={[
-                  { required: true, message: "Please select the room type!" },
-                ]}
+                rules={[{ required: true, message: "Please select room type" }]}
               >
-                <Select
-                  placeholder="Select room type"
-                  suffixIcon={<AppstoreAddOutlined />}
-                >
-                  <Option value="AC">A/C</Option>
-                  <Option value="Non-Ac">Non-A/C</Option>
+                <Select placeholder="Select Type">
+                  <Option value="Single">Single</Option>
+                  <Option value="Double">Double</Option>
+                  <Option value="Triple">Triple</Option>
                 </Select>
               </Form.Item>
             </Col>
-            <Col xs={24} sm={12}>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
               <Form.Item
                 name="rent"
                 label="Rent"
-                rules={[{ required: true, message: "Please input the rent amount!" }]}
+                rules={[{ required: true, message: "Please enter rent amount" }]}
               >
                 <InputNumber
-                  prefix={<DollarOutlined style={{ color: "#fa8c16" }} />}
-                  style={{ width: '100%' }}
+                  min={0}
+                  style={{ width: "100%" }}
+                  placeholder="Rent"
                 />
               </Form.Item>
             </Col>
-            <Col xs={24} sm={12}>
+            <Col span={12}>
               <Form.Item
                 name="sharing"
                 label="Sharing"
-                rules={[{ required: true, message: "Please input the number of sharings!" }]}
+                rules={[{ required: true, message: "Please enter sharing capacity" }]}
               >
                 <InputNumber
                   min={1}
-                  style={{ width: '100%' }}
+                  style={{ width: "100%" }}
+                  placeholder="Sharing"
                 />
               </Form.Item>
             </Col>
-            <Col xs={24}>
-              <Form.Item name="imageUrl" label="Image">
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="status"
+                label="Status"
+              >
+                <Select disabled>
+                  <Option value="Vacant">Vacant</Option>
+                  <Option value="Occupied">Occupied</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="imageUrl"
+                label="Room Image"
+              >
                 <Upload
                   listType="picture-card"
                   showUploadList={false}
-                  action="/upload" // Adjust upload URL as needed
+                  beforeUpload={(file) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      setImagePreview(reader.result);
+                      form.setFieldsValue({ imageUrl: reader.result });
+                    };
+                    reader.readAsDataURL(file);
+                    return false; // Prevent automatic upload
+                  }}
                 >
-                  <Button icon={<UploadOutlined />}>Upload</Button>
+                  {imagePreview ? (
+                    <img
+                      src={imagePreview}
+                      alt="Room"
+                      style={{ width: 100, height: 100, objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <div>
+                      <UploadOutlined />
+                      <div className="ant-upload-text">Upload Image</div>
+                    </div>
+                  )}
                 </Upload>
               </Form.Item>
             </Col>

@@ -132,7 +132,6 @@ const MainMenu = () => {
             margin: 0,
             padding: "0 10px",
             flex: 1,
-            overflowX: "auto", // Prevent horizontal overflow
           }}
         >
           <Menu.Item key="home" style={getMenuItemStyle(selectedKeys, "home")} onClick={() => navigate("/home")}>Home</Menu.Item>
