@@ -13,7 +13,8 @@ import {
   Tag,
   message,
   Row,
-  Col
+  Col,
+  Spin
 } from "antd";
 import {
   UserOutlined,
@@ -43,28 +44,37 @@ const RoomList = () => {
   const [form] = Form.useForm();
   const [editingRoom, setEditingRoom] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [loadingAction, setLoadingAction] = useState('');
 
   useEffect(() => {
-    Promise.all([fetchRooms(), fetchTenants()])
-      .then(([roomResponse, tenantResponse]) => {
-        const tenantCountByRoom = tenantResponse.reduce((acc, tenant) => {
-          if (tenant.roomNumber) {
-            acc[tenant.roomNumber] = (acc[tenant.roomNumber] || 0) + 1;
-          }
-          return acc;
-        }, {});
-
-        const updatedRooms = roomResponse.map((room) => ({
-          ...room,
-          tenants: tenantCountByRoom[room.roomNumber] || 0,
-          status: (tenantCountByRoom[room.roomNumber] || 0) >= room.sharing ? 'Occupied' : 'Vacant',
-        }));
-
-        setRooms(updatedRooms);
-        setTenants(tenantResponse);
-      })
-      .catch((error) => console.error("Error fetching data:", error));
+    fetchData();
   }, []);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const [roomResponse, tenantResponse] = await Promise.all([fetchRooms(), fetchTenants()]);
+      const tenantCountByRoom = tenantResponse.reduce((acc, tenant) => {
+        if (tenant.roomNumber) {
+          acc[tenant.roomNumber] = (acc[tenant.roomNumber] || 0) + 1;
+        }
+        return acc;
+      }, {});
+
+      const updatedRooms = roomResponse.map((room) => ({
+        ...room,
+        tenants: tenantCountByRoom[room.roomNumber] || 0,
+        status: (tenantCountByRoom[room.roomNumber] || 0) >= room.sharing ? 'Occupied' : 'Vacant',
+      }));
+
+      setRooms(updatedRooms);
+      setTenants(tenantResponse);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+    setLoading(false);
+  };
 
   const showModal = (room = null) => {
     setEditingRoom(room);
@@ -84,79 +94,53 @@ const RoomList = () => {
     setImagePreview(''); // Clear preview on modal close
   };
 
-  const handleAddEditRoom = () => {
-    form.validateFields().then(async (values) => {
-      try {
-        if (!editingRoom) {
-          // Check if room number already exists before adding
-          const exists = await checkRoomNumberExists(values.roomNumber);
-          if (exists) {
-            message.error('Room number already exists!');
-            return;
-          }
+  const handleAddEditRoom = async () => {
+    try {
+      setLoadingAction('save');
+      await form.validateFields();
+
+      const values = form.getFieldsValue();
+      if (!editingRoom) {
+        // Check if room number already exists before adding
+        const exists = await checkRoomNumberExists(values.roomNumber);
+        if (exists) {
+          message.error('Room number already exists!');
+          return;
         }
-
-        const updatedValues = {
-          ...values,
-          status: 'Vacant',
-        };
-
-        if (editingRoom) {
-          updatedValues.status = (values.tenants || 0) >= values.sharing ? 'Occupied' : 'Vacant';
-          await updateRoom(editingRoom.id, updatedValues);
-        } else {
-          await addRoom(updatedValues);
-        }
-
-        const [roomResponse, tenantResponse] = await Promise.all([fetchRooms(), fetchTenants()]);
-        const tenantCountByRoom = tenantResponse.reduce((acc, tenant) => {
-          if (tenant.roomNumber) {
-            acc[tenant.roomNumber] = (acc[tenant.roomNumber] || 0) + 1;
-          }
-          return acc;
-        }, {});
-
-        const updatedRooms = roomResponse.map((room) => ({
-          ...room,
-          tenants: tenantCountByRoom[room.roomNumber] || 0,
-          status: (tenantCountByRoom[room.roomNumber] || 0) >= room.sharing ? 'Occupied' : 'Vacant',
-        }));
-
-        setRooms(updatedRooms);
-        setTenants(tenantResponse);
-        setIsModalVisible(false);
-        setImagePreview('');
-      } catch (error) {
-        console.error("Error saving room:", error);
       }
-    });
+
+      const updatedValues = {
+        ...values,
+        status: 'Vacant',
+      };
+
+      if (editingRoom) {
+        updatedValues.status = (values.tenants || 0) >= values.sharing ? 'Occupied' : 'Vacant';
+        await updateRoom(editingRoom.id, updatedValues);
+      } else {
+        await addRoom(updatedValues);
+      }
+
+      await fetchData();
+      setIsModalVisible(false);
+      setImagePreview('');
+    } catch (error) {
+      console.error("Error saving room:", error);
+    } finally {
+      setLoadingAction('');
+    }
   };
 
-  const handleDelete = (id) => {
-    deleteRoom(id)
-      .then(async () => {
-        try {
-          const [roomResponse, tenantResponse] = await Promise.all([fetchRooms(), fetchTenants()]);
-          const tenantCountByRoom = tenantResponse.reduce((acc, tenant) => {
-            if (tenant.roomNumber) {
-              acc[tenant.roomNumber] = (acc[tenant.roomNumber] || 0) + 1;
-            }
-            return acc;
-          }, {});
-
-          const updatedRooms = roomResponse.map((room) => ({
-            ...room,
-            tenants: tenantCountByRoom[room.roomNumber] || 0,
-            status: (tenantCountByRoom[room.roomNumber] || 0) >= room.sharing ? 'Occupied' : 'Vacant',
-          }));
-
-          setRooms(updatedRooms);
-          setTenants(tenantResponse);
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      })
-      .catch((error) => console.error("Error deleting room:", error));
+  const handleDelete = async (id) => {
+    try {
+      setLoadingAction('delete');
+      await deleteRoom(id);
+      await fetchData();
+    } catch (error) {
+      console.error("Error deleting room:", error);
+    } finally {
+      setLoadingAction('');
+    }
   };
 
   const columns = [
@@ -272,17 +256,21 @@ const RoomList = () => {
             type="primary"
             onClick={() => showModal()}
             icon={<AppstoreAddOutlined />}
+            disabled={loadingAction === 'save'} // Disable while saving
           >
             Add Room
           </Button>
         </Col>
       </Row>
 
-      <Table
-        columns={columns}
-        dataSource={rooms}
-        scroll={{ x: 1200 }}
-      />
+      <Spin spinning={loading} size="small">
+        <Table
+          columns={columns}
+          dataSource={rooms}
+          scroll={{ x: 1200 }}
+          rowKey="id"
+        />
+      </Spin>
 
       <Modal
         title={editingRoom ? "Edit Room" : "Add Room"}
@@ -292,6 +280,7 @@ const RoomList = () => {
         okText={editingRoom ? "Update" : "Add"}
         cancelText="Cancel"
         width={800}
+        confirmLoading={loadingAction === 'save'} // Show loading spinner on confirm
       >
         <Form
           form={form}
@@ -316,10 +305,9 @@ const RoomList = () => {
                 rules={[{ required: true, message: "Please select room type" }]}
               >
                 <Select placeholder="Select Type">
-                  <Option value="Single">Single</Option>
-                  <Option value="Double">Double</Option>
-                  <Option value="Triple">Triple</Option>
-                </Select>
+                  <Option value="AC">A/C</Option>
+                  <Option value="Non-AC">Non-A/C</Option>
+\                </Select>
               </Form.Item>
             </Col>
           </Row>
