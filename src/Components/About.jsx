@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Row, Col, Carousel, Button, Layout, Statistic, Card } from 'antd';
+import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import logo from "../assets/logo-transparent-png.png";
 import {
   WifiOutlined,
@@ -74,43 +75,172 @@ const RealTimeHeader = () => {
     </Row>
   );
 };
+const FeatureCard = ({ feature, onClick }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  return (
+    <div
+      className="feature-card"
+      onMouseEnter={() => setIsFlipped(true)}
+      onMouseLeave={() => setIsFlipped(false)}
+      onClick={onClick}
+      style={{
+        perspective: '1000px',
+        width: '80%',
+        height: '200px',
+        cursor: 'pointer',
+      }}
+    >
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          height: '100%',
+          transition: 'transform 0.6s',
+          transformStyle: 'preserve-3d',
+          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            backfaceVisibility: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            background: 'black',
+            color: 'white',
+            borderRadius: '15px',
+          }}
+        >
+          <div style={{ fontSize: '3rem', marginBottom: '10px' }}>{feature.icon}</div>
+          <h3 style={{ margin: 0 }}>{feature.title}</h3>
+        </div>
+        <div
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            backfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            background: 'white',
+            color: 'black',
+            borderRadius: '15px',
+            padding: '10px',
+            textAlign: 'center',
+          }}
+        >
+          <p>{feature.description}</p>
+          <Button type="primary">Learn More</Button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Home = () => {
   const navigate = useNavigate();
 
+  const features = [
+    { icon: <WifiOutlined />, title: "Smart Room Management", description: "AI-powered room allocation and maintenance tracking", route: "/smart-room" },
+    { icon: <HomeOutlined />, title: "Tenant Harmony", description: "Personalized experiences and community building features", route: "/tenant-harmony" },
+    { icon: <SecurityScanOutlined />, title: "Predictive Analytics", description: "Forecast occupancy and optimize operations", route: "/predictive-analytics" },
+    { icon: <DollarOutlined />, title: "Financial Wizardry", description: "Automated invoicing and smart payment reminders", route: "/financial" },
+    { icon: <BarChartOutlined />, title: "Performance Insights", description: "Real-time dashboards for informed decision making", route: "/performance" },
+    { icon: <RocketOutlined />, title: "Continuous Innovation", description: "Regular updates with cutting-edge features", route: "/innovation" },
+  ];
+
   return (
     <div style={{ background: 'white', overflowX: 'hidden' }}>
       <RealTimeHeader />
-      <Carousel autoplay effect="fade" style={{ width: "100%", height: "60vh", overflow: "hidden" }}>
+      
+      {/* Enhanced Carousel */}
+      <Carousel
+        autoplay
+        effect="fade"
+        style={{
+          width: "100%",
+          height: "70vh",
+          overflow: "hidden",
+        }}
+      >
         {carouselItems.map((item, index) => (
           <div key={index}>
             <div
               style={{
                 width: "100%",
-                height: "60vh",
-                backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${item.image})`,
+                height: "70vh",
+                backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${item.image})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 display: "flex",
+                flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
                 color: "#fff",
-                textTransform: "uppercase",
-                fontFamily: "'Raleway', sans-serif",
-                textShadow: "2px 2px 4px #000000",
-                fontSize: "3rem",
-                fontWeight: "900",
-                lineHeight: "3.5rem",
+                textAlign: "center",
+                padding: "0 20px",
               }}
             >
-              <Typewriter text={item.text} />
+              <h2
+                style={{
+                  fontSize: "4rem",
+                  fontWeight: "900",
+                  textTransform: "uppercase",
+                  letterSpacing: "2px",
+                  marginBottom: "20px",
+                  fontFamily: "'Raleway', sans-serif",
+                  textShadow: "2px 2px 4px #000000",
+                }}
+              >
+                <Typewriter text={item.text} />
+              </h2>
+              <p
+                style={{
+                  fontSize: "1.5rem",
+                  maxWidth: "800px",
+                  lineHeight: "1.6",
+                  fontFamily: "'Montserrat', sans-serif",
+                }}
+              >
+                Experience the future of hostel management with our innovative solutions.
+              </p>
             </div>
           </div>
         ))}
       </Carousel>
-
-
-    <Row
+      <Row justify="center" style={{ marginBottom: 40, background: 'black', padding: '40px 0' }}>
+        <Col xs={22} sm={20} md={16} lg={12} xl={10}>
+          <Title level={2} style={{ textAlign: "center", color: 'white' }}>
+            Our Impact
+          </Title>
+          <Row gutter={16}>
+            <Col span={8}>
+              <Statistic 
+        title={<span style={{ color: 'white' }}>Happy Hostels</span>}
+        value={1000}  prefix={<HomeOutlined style={{ color: 'white' }} />} valueStyle={{ color: 'white' }} />
+            </Col>
+            <Col span={8}>
+              <Statistic 
+        title={<span style={{ color: 'white' }}>Satisfied Tenants</span>}
+        value={50000} prefix={<WifiOutlined style={{ color: 'white' }} />} valueStyle={{ color: 'white' }} />
+            </Col>
+            <Col span={8}>
+              <Statistic
+        title={<span style={{ color: 'white' }}>Cities</span>}
+        value={50} prefix={<RocketOutlined style={{ color: 'white' }} />} valueStyle={{ color: 'white' }} />
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+      <Row
   justify="center"
   style={{ 
     width: '100%', 
@@ -171,53 +301,49 @@ const Home = () => {
     </div>
   </Col>
 </Row>
-      <Row gutter={[16, 16]} justify="center" style={{ marginBottom: 40 }}>
-        {[
-          { icon: <WifiOutlined style={{ color: 'white' }} />, title: "Smart Room Management", description: "AI-powered room allocation and maintenance tracking" },
-          { icon: <HomeOutlined style={{ color: 'white' }} />, title: "Tenant Harmony", description: "Personalized experiences and community building features" },
-          { icon: <SecurityScanOutlined style={{ color: 'white' }} />, title: "Predictive Analytics", description: "Forecast occupancy and optimize operations" },
-          { icon: <DollarOutlined style={{ color: 'white' }} />, title: "Financial Wizardry", description: "Automated invoicing and smart payment reminders" },
-          { icon: <BarChartOutlined style={{ color: 'white' }} />, title: "Performance Insights", description: "Real-time dashboards for informed decision making" },
-          { icon: <RocketOutlined style={{ color: 'white' }} />, title: "Continuous Innovation", description: "Regular updates with cutting-edge features" },
-        ].map((feature, index) => (
-          <Col xs={20} sm={12} md={8} lg={6} xl={4} key={index}>
-            <Card 
-              hoverable 
-              style={{ height: '100%', textAlign: 'center', borderRadius: '15px', border: '1px solid black' }}
-              cover={<div style={{ fontSize: '3rem', padding: '20px', background: 'black', color: 'white' }}>{feature.icon}</div>}
-            >
-              <Card.Meta
-                title={<span style={{ fontSize: '18px', fontWeight: 'bold', color: 'black' }}>{feature.title}</span>}
-                description={<span style={{ fontSize: '14px', color: 'black' }}>{feature.description}</span>}
-              />
-            </Card>
-          </Col>
-        ))}
-      </Row>
-      <Row justify="center" style={{ marginBottom: 40, background: 'black', padding: '40px 0' }}>
-        <Col xs={22} sm={20} md={16} lg={12} xl={10}>
-          <Title level={2} style={{ textAlign: "center", color: 'white' }}>
-            Our Impact
+
+    
+
+      <Row justify="center" style={{ marginBottom: 40, padding: '40px 0px', background: '#f0f2f5' }}>
+        <Col span={22}>
+          <Title level={2} style={{ textAlign: "center", marginBottom: 40 }}>
+            Our Features
           </Title>
-          <Row gutter={16}>
-            <Col span={8}>
-              <Statistic 
-        title={<span style={{ color: 'white' }}>Happy Hostels</span>}
-        value={1000}  prefix={<HomeOutlined style={{ color: 'white' }} />} valueStyle={{ color: 'white' }} />
-            </Col>
-            <Col span={8}>
-              <Statistic 
-        title={<span style={{ color: 'white' }}>Satisfied Tenants</span>}
-        value={50000} prefix={<WifiOutlined style={{ color: 'white' }} />} valueStyle={{ color: 'white' }} />
-            </Col>
-            <Col span={8}>
-              <Statistic
-        title={<span style={{ color: 'white' }}>Cities</span>}
-        value={50} prefix={<RocketOutlined style={{ color: 'white' }} />} valueStyle={{ color: 'white' }} />
-            </Col>
-          </Row>
+          <Carousel
+            slidesToShow={3}
+            slidesToScroll={1}
+            dots={true}
+            arrows={true}
+            prevArrow={<CaretLeftOutlined />}
+            nextArrow={<CaretRightOutlined />}
+            responsive={[
+              {
+                breakpoint: 1024,
+                settings: {
+                  slidesToShow: 2,
+                }
+              },
+              {
+                breakpoint: 600,
+                settings: {
+                  slidesToShow: 1,
+                }
+              }
+            ]}
+          >
+            {features.map((feature, index) => (
+              <div key={index} style={{ padding: '10 10px' }}>
+                <FeatureCard 
+                  feature={feature} 
+                  onClick={() => navigate(feature.route)}
+                />
+              </div>
+            ))}
+          </Carousel>
+          
         </Col>
       </Row>
+      
       <Footer style={{ textAlign: "center", padding: "0px", background: 'black', color: 'white' }}>
         <AppFooter />
       </Footer>
