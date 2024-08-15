@@ -12,14 +12,13 @@ import {
   TeamOutlined,
   SettingOutlined 
 } from '@ant-design/icons';
-import viewPoint from '../assets/viewPoint.jpg';
-import arealView from '../assets/arealView.jpg';
 import view1 from '../assets/view-1.jpg';
 import view2 from '../assets/view-2.jpg';
 import view3 from '../assets/view-3.jpg';
 import view4 from '../assets/view-4.jpg';
 import view5 from '../assets/view-5.jpg';
 import view6 from '../assets/view-6.jpg';
+import view7 from '../assets/logo-png.png';
 import AppFooter from './AppFooter';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,14 +26,14 @@ const { Title, Paragraph } = Typography;
 const { Footer } = Layout;
 
 const carouselItems = [
+  { image: view7 },
   { text: "Revolutionizing Hostel Management", image: view1 },
   { text: "Smart Solutions for Modern Living", image: view2 },
   { text: "Smart Hostel Master - Your Digital Concierge", image: view3 },
   { text: "Effortless Room Management", image: view4 },
   { text: "Seamless Tenant Experiences", image: view5 },
   { text: "Data-Driven Decision Making", image: view6 },
-  { text: "Instant Issue Resolution", image: viewPoint },
-  { text: "Automated Financial Management", image: arealView },
+  { image: view7 },
 ];
 
 const Typewriter = ({ text }) => {
@@ -227,3 +226,4 @@ const Home = () => {
 };
 
 export default Home;
+  
