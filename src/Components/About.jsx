@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Typography, Row, Col, Carousel, Button, Layout, Statistic, Card } from 'antd';
 import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import logo from "../assets/logo-transparent-png.png";
+import styled from 'styled-components';
 import {
   WifiOutlined,
   HomeOutlined,
@@ -54,6 +55,25 @@ const Typewriter = ({ text }) => {
 
   return <span>{displayedText}</span>;
 };
+
+const StyledButton = styled(Button)`
+  border-radius: 50px;
+  padding: 0 40px;
+  height: 50px;
+  font-size: 18px;
+  background-color: black !important;
+  border-color: white !important;
+  color: white !important;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: white !important;
+    border-color: black !important;
+    color: black !important;
+  }
+`;
 
 const RealTimeHeader = () => {
   const [time, setTime] = useState(new Date());
@@ -138,7 +158,7 @@ const FeatureCard = ({ feature, onClick }) => {
           }}
         >
           <p>{feature.description}</p>
-          <Button type="primary">Learn More</Button>
+          <StyledButton type="primary">Learn More</StyledButton>
         </div>
       </div>
     </div>
@@ -210,7 +230,7 @@ const Home = () => {
                   fontFamily: "'Montserrat', sans-serif",
                 }}
               >
-                Experience the future of hostel management with our innovative solutions.
+                {/* Experience the future of hostel management with our innovative solutions. */}
               </p>
             </div>
           </div>
@@ -279,25 +299,14 @@ const Home = () => {
     </Paragraph>
 
     <div style={{ textAlign: 'center' }}>
-      <Button
-        type="primary"
-        size="large"
-        onClick={() => navigate('/login')}
-        style={{
-          borderRadius: '50px',
-          padding: '0 40px',
-          height: '50px',
-          fontSize: '18px',
-          backgroundColor: '#007bff',
-          borderColor: '#007bff',
-          color: 'white',
-          fontWeight: 600,
-          boxShadow: '0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08)',
-          transition: 'all 0.15s ease'
-        }}
-      >
-        Get Started with a Free Demo
-      </Button>
+    <StyledButton
+      type="primary"
+      size="large"
+      onClick={() => navigate('/login')}
+    >
+      Get Start your Journey
+    </StyledButton>
+
     </div>
   </Col>
 </Row>
