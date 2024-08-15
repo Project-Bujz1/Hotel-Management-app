@@ -61,7 +61,7 @@ const MainMenu = () => {
 
   const menuItems = (
     <Menu mode="inline">
-      <Menu.Item key="home" onClick={() => navigate("/home")}>Home</Menu.Item>
+      {/* <Menu.Item key="home" onClick={() => navigate("/home")}>Home</Menu.Item> */}
       <Menu.Item key="rooms" onClick={() => navigate("/rooms")}>Rooms</Menu.Item>
       <Menu.Item key="tenants" onClick={() => navigate("/tenants")}>Tenants</Menu.Item>
       <Menu.Item key="reports" onClick={() => navigate("/reports")}>Analytics</Menu.Item>
@@ -90,6 +90,10 @@ const MainMenu = () => {
       </a>
     </div>
   );
+
+  if (currentPath === "/home") {
+    return null; // Do not render the MainMenu component if on the home route
+  }
 
   return (
     <div className="main-menu">
@@ -162,7 +166,7 @@ const MainMenu = () => {
             flex: 1,
           }}
         >
-          <Menu.Item key="home" style={getMenuItemStyle(selectedKeys, "home")} onClick={() => navigate("/home")}>Home</Menu.Item>
+          {/* <Menu.Item key="home" style={getMenuItemStyle(selectedKeys, "home")} onClick={() => navigate("/home")}>Home</Menu.Item> */}
           <Menu.Item key="rooms" style={getMenuItemStyle(selectedKeys, "rooms")} onClick={() => navigate("/rooms")}>Rooms</Menu.Item>
           <Menu.Item key="tenants" style={getMenuItemStyle(selectedKeys, "tenants")} onClick={() => navigate("/tenants")}>Tenants</Menu.Item>
           <Menu.Item key="reports" style={getMenuItemStyle(selectedKeys, "reports")} onClick={() => navigate("/reports")}>Analytics</Menu.Item>
@@ -184,6 +188,7 @@ const MainMenu = () => {
           <Menu.Item key="search" style={{ display: "flex", alignItems: "center", fontSize: "14px", color: "black", marginLeft: "10px" }}>
             <Input prefix={<SearchOutlined />} placeholder="Search" size="small" style={{ width: "150px", borderRadius: "5px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }} />
           </Menu.Item>
+          <Menu.Item key="help" icon={<QuestionCircleOutlined />} />
         </Menu>
       </div>
       <img

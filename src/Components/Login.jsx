@@ -19,7 +19,7 @@ const Login = () => {
       const { access_token } = response.data;
       localStorage.setItem('token', access_token);
       message.success('Login successful!');
-      navigate('/home');
+      navigate('/rooms'); // Redirect to the home or dashboard page after login
     } catch (error) {
       console.error('Login error:', error);
       message.error('Login failed! Check your credentials.');
