@@ -38,6 +38,16 @@ const carouselItems = [
   { image: view7 },
 ];
 
+const StyledPrevArrow = styled(CaretLeftOutlined)`
+  font-size: 48px;
+  color: #000; /* Adjust color if needed */
+`;
+
+const StyledNextArrow = styled(CaretRightOutlined)`
+  font-size: 48px;
+  color: #000; /* Adjust color if needed */
+`;
+
 const Typewriter = ({ text }) => {
   const [displayedText, setDisplayedText] = useState("");
 
@@ -184,7 +194,8 @@ const Home = () => {
       {/* Enhanced Carousel */}
       <Carousel
         autoplay
-        effect="fade"
+        autoplaySpeed={3000}
+        // effect="fade"
         style={{
           width: "100%",
           height: "70vh",
@@ -319,12 +330,11 @@ const Home = () => {
             Our Features
           </Title>
           <Carousel
+          autoplay
+          autoplaySpeed={2000}
             slidesToShow={3}
             slidesToScroll={1}
             dots={true}
-            arrows={true}
-            prevArrow={<CaretLeftOutlined />}
-            nextArrow={<CaretRightOutlined />}
             responsive={[
               {
                 breakpoint: 1024,
