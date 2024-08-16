@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Typography, Row, Col, Carousel, Button, Layout, Statistic, Card, Modal } from 'antd';
 import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import logo from "../assets/logo-transparent-png.png";
+import hostelIcon from "../assets/left-background.png";
+import hostel from "../assets/right-background.png";
 import CountUp from 'react-countup';
 import styled from 'styled-components';
 import { FaRupeeSign } from "react-icons/fa";
+import YouTube from 'react-youtube';
 import {
   WifiOutlined,
   HomeOutlined,
@@ -13,7 +16,8 @@ import {
   BarChartOutlined,
   DashboardOutlined,
   TeamOutlined,
-  SettingOutlined 
+  SettingOutlined,
+  PlayCircleOutlined  
 } from '@ant-design/icons';
 import view1 from '../assets/view-1.jpg';
 import view2 from '../assets/view-2.jpg';
@@ -86,6 +90,7 @@ const StyledButton = styled(Button)`
   }
 `;
 
+
 const RealTimeHeader = () => {
 
 
@@ -96,6 +101,7 @@ const RealTimeHeader = () => {
         <span style={{ fontSize: '18px', fontWeight: 'bold' }}>Smart Annoyers</span>
       </Col>
       <Col>
+      <img src={hostelIcon} alt="Hostel-Logo" style={{ height: '40px', marginRight: '10px' }} />
         <span style={{ fontSize: '18px', fontWeight: 'bold' }}>Smart Hostel Master</span>
       </Col>
     </Row>
@@ -317,8 +323,7 @@ const SubscriptionSection = () => {
 const Home = () => {
   const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-
+  const [isVideoModalVisible, setIsVideoModalVisible] = useState(false);
   const features = [
     { icon: <WifiOutlined />, title: "Smart Room Management", description: "AI-powered room allocation and maintenance tracking", route: "/smart-room" },
     { icon: <HomeOutlined />, title: "Tenant Harmony", description: "Personalized experiences and community building features", route: "/tenant-harmony" },
@@ -333,6 +338,14 @@ const Home = () => {
 
   const handleModalCancel = () => {
     setIsModalVisible(false);
+  };
+
+  const showVideoModal = () => {
+    setIsVideoModalVisible(true);
+  };
+
+  const handleVideoModalCancel = () => {
+    setIsVideoModalVisible(false);
   };
 
   const handleFreeTrial = () => {
@@ -361,7 +374,7 @@ const Home = () => {
         // effect="fade"
         style={{
           width: "100%",
-          height: "70vh",
+          height: "90vh",
           overflow: "hidden",
         }}
       >
@@ -370,7 +383,7 @@ const Home = () => {
             <div
               style={{
                 width: "100%",
-                height: "70vh",
+                height: "90vh",
                 backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${item.image})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
@@ -486,6 +499,18 @@ const Home = () => {
           >
             Smart Hostel Master: The cutting-edge solution for modern hostel operations. Streamline your processes, enhance guest experiences, and boost your efficiency with our comprehensive management platform.
           </Paragraph>
+          <div style={{ textAlign: 'center' }}>
+          <StyledButton
+      type="primary"
+      onClick={showVideoModal}
+      style={{              marginBottom: '30px',
+      }}
+    >
+      <PlayCircleOutlined /> 
+      Play Demo
+    </StyledButton>
+
+          </div>
 
           <div style={{ textAlign: 'center' }}>
             <StyledButton
@@ -495,7 +520,9 @@ const Home = () => {
             >
               Get Started
             </StyledButton>
+
           </div>
+
         </Col>
       </Row>
       <Row justify="center" style={{ marginBottom: 40, padding: '40px 0px', background: '#f0f2f5' }}>
@@ -539,7 +566,7 @@ const Home = () => {
       <SubscriptionSection/>
 
 
-<Modal
+      <Modal
   title="Choose Your Path"
   visible={isModalVisible}
   onCancel={handleModalCancel}
@@ -581,6 +608,25 @@ const Home = () => {
     </Col>
   </Row>
 </Modal>
+
+      <Modal
+        title="Product Demo"
+        visible={isVideoModalVisible}
+        onCancel={handleVideoModalCancel}
+        footer={null}
+        width={800}
+      >
+        <YouTube
+          videoId="DQG6ldU-9WE"
+          opts={{
+            height: '450',
+            width: '100%',
+            playerVars: {
+              autoplay: 1,
+            },
+          }}
+        />
+      </Modal>
 
       <Footer style={{ textAlign: "center", padding: "0px", background: 'black', color: 'white' }}>
         <AppFooter />
