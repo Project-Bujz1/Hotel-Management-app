@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Typography, Divider, message } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import logo from "../assets/logo-transparent-png.png";
 import leftBackground from "../assets/left-background.png"; 
@@ -11,6 +11,14 @@ const { Title } = Typography;
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [isTrial, setIsTrial] = useState(false);
+
+  useEffect(() => {
+    if (location.state && location.state.isTrial) {
+      setIsTrial(true);
+    }
+  }, [location]);
 
   const onFinish = async (values) => {
     setLoading(true);
@@ -19,6 +27,10 @@ const Login = () => {
       const { access_token } = response.data;
       localStorage.setItem('token', access_token);
       message.success('Login successful!');
+      if (isTrial) {
+        // Start free trial logic here
+        message.info('Your 14-day free trial has started!');
+      }
       navigate('/rooms'); // Redirect to the home or dashboard page after login
     } catch (error) {
       console.error('Login error:', error);
@@ -33,7 +45,9 @@ const Login = () => {
       {/* Background images */}
       <img src={leftBackground} alt="leftBackground" className='left-background' />      
       <div className="auth-form">
-        <Title level={2} style={{ textAlign: 'center' }}>Login</Title>
+        <Title level={2} style={{ textAlign: 'center' }}>
+          {isTrial ? 'Start Your Free Trial' : 'Login'}
+        </Title>
         <img src={logo} alt="Logo" className="logo" />
         <Form
           name="login"
@@ -57,7 +71,7 @@ const Login = () => {
           </Form.Item>
           <Form.Item style={{ textAlign: 'center' }}>
             <Button type="primary" htmlType="submit" loading={loading}>
-              Login
+              {isTrial ? 'Start Free Trial' : 'Login'}
             </Button>
           </Form.Item>
           <Divider />

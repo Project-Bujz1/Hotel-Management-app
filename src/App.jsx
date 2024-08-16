@@ -27,6 +27,7 @@ import { AuthProvider } from "./Components/AuthContext";
 import PrivateRoute from "./Components/PrivateRoute";
 import ForgotPassword from "./ForgotPassword";
 import AppLayout from "./Components/AppLayout";
+import Subscribe from "./Components/Subscribe";
 
 const App = () => {
   return (
@@ -53,6 +54,7 @@ const App = () => {
             <Route path="/reports" element={<PrivateRoute element={ReportsAndAnalytics} />} /> 
             <Route path="/signout" element={<PrivateRoute element={SignOut} />} /> 
             <Route path="/changepassword" element={<PrivateRoute element={ChangePassword} />} /> 
+            <Route path="/subscribe" element={<Subscribe/>} /> 
           </Routes>
         </AppLayout>
       </Router>

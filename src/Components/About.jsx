@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Row, Col, Carousel, Button, Layout, Statistic, Card } from 'antd';
+import { Typography, Row, Col, Carousel, Button, Layout, Statistic, Card, Modal } from 'antd';
 import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import logo from "../assets/logo-transparent-png.png";
 import CountUp from 'react-countup';
@@ -316,6 +316,8 @@ const SubscriptionSection = () => {
 };
 const Home = () => {
   const navigate = useNavigate();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
 
   const features = [
     { icon: <WifiOutlined />, title: "Smart Room Management", description: "AI-powered room allocation and maintenance tracking", route: "/smart-room" },
@@ -325,6 +327,28 @@ const Home = () => {
     { icon: <BarChartOutlined />, title: "Performance Insights", description: "Real-time dashboards for informed decision making", route: "/performance" },
     { icon: <RocketOutlined />, title: "Continuous Innovation", description: "Regular updates with cutting-edge features", route: "/innovation" },
   ];
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleModalCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleFreeTrial = () => {
+    setIsModalVisible(false);
+    navigate('/login', { state: { isTrial: true } });
+  };
+
+  const handleSubscription = () => {
+    setIsModalVisible(false);
+    navigate('/subscribe');
+  };
+
+  const handleLogin = () => {
+    setIsModalVisible(false);
+    navigate('/login');
+  };
 
   return (
     <div style={{ background: 'white', overflowX: 'hidden' }}>
@@ -426,58 +450,54 @@ const Home = () => {
       </Col>
     </Row>
       <Row
-  justify="center"
-  style={{ 
-    width: '100%', 
-    padding: '60px 20px', 
-    backgroundColor: '#f8f9fa',
-    backgroundImage: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'
-  }}
->
-  <Col xs={24} sm={24} md={20} lg={18} xl={16}>
-    <Title
-      level={1}
-      style={{
-        textAlign: 'center',
-        fontFamily: "'Montserrat', sans-serif",
-        color: '#343a40',
-        marginBottom: '30px',
-        fontSize: '2.5rem',
-        fontWeight: 700,
-        letterSpacing: '-0.5px'
-      }}
-    >
-      Revolutionize Your Hostel Management
-    </Title>
-    <Paragraph
-      style={{
-        width: '100%',
-        fontSize: '18px',
-        color: '#495057',
-        textAlign: 'center',
-        margin: '0 auto 40px',
-        lineHeight: '1.8',
-        maxWidth: '800px'
-      }}
-    >
-      Smart Hostel Master: The cutting-edge solution for modern hostel operations. Streamline your processes, enhance guest experiences, and boost your efficiency with our comprehensive management platform.
-    </Paragraph>
+        justify="center"
+        style={{ 
+          width: '100%', 
+          padding: '60px 20px', 
+          backgroundColor: '#f8f9fa',
+          backgroundImage: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'
+        }}
+      >
+        <Col xs={24} sm={24} md={20} lg={18} xl={16}>
+          <Title
+            level={1}
+            style={{
+              textAlign: 'center',
+              fontFamily: "'Montserrat', sans-serif",
+              color: '#343a40',
+              marginBottom: '30px',
+              fontSize: '2.5rem',
+              fontWeight: 700,
+              letterSpacing: '-0.5px'
+            }}
+          >
+            Revolutionize Your Hostel Management
+          </Title>
+          <Paragraph
+            style={{
+              width: '100%',
+              fontSize: '18px',
+              color: '#495057',
+              textAlign: 'center',
+              margin: '0 auto 40px',
+              lineHeight: '1.8',
+              maxWidth: '800px'
+            }}
+          >
+            Smart Hostel Master: The cutting-edge solution for modern hostel operations. Streamline your processes, enhance guest experiences, and boost your efficiency with our comprehensive management platform.
+          </Paragraph>
 
-    <div style={{ textAlign: 'center' }}>
-    <StyledButton
-      type="primary"
-      size="large"
-      onClick={() => navigate('/login')}
-    >
-      Get Start your Journey
-    </StyledButton>
-
-    </div>
-  </Col>
-</Row>
-
-    
-
+          <div style={{ textAlign: 'center' }}>
+            <StyledButton
+              type="primary"
+              size="large"
+              onClick={showModal}
+            >
+              Get Started
+            </StyledButton>
+          </div>
+        </Col>
+      </Row>
       <Row justify="center" style={{ marginBottom: 40, padding: '40px 0px', background: '#f0f2f5' }}>
         <Col span={22}>
           <Title level={2} style={{ textAlign: "center", marginBottom: 40 }}>
@@ -517,6 +537,51 @@ const Home = () => {
         </Col>
       </Row>
       <SubscriptionSection/>
+
+
+<Modal
+  title="Choose Your Path"
+  visible={isModalVisible}
+  onCancel={handleModalCancel}
+  footer={null}
+>
+  <Row gutter={[16, 16]} justify="center">
+    <Col span={12}>
+      <Card
+        hoverable
+        onClick={handleFreeTrial}
+        style={{ textAlign: 'center' }}
+      >
+        <Title level={3}>Free Trial</Title>
+        <Paragraph>Try our platform for 14 days, no credit card required.</Paragraph>
+        <StyledButton size="small" type="primary">Start Free Trial</StyledButton>
+      </Card>
+    </Col>
+    <Col span={12}>
+      <Card
+        hoverable
+        onClick={handleSubscription}
+        style={{ textAlign: 'center' }}
+      >
+        <Title level={3}>Subscription</Title>
+        <Paragraph>Choose a plan that fits your needs and get full access.</Paragraph>
+        <StyledButton type="primary">View Plans</StyledButton>
+      </Card>
+    </Col>
+    <Col span={12}>
+      <Card
+        hoverable
+        onClick={handleLogin}
+        style={{ textAlign: 'center' }}
+      >
+        <Title level={3}>Login</Title>
+        <Paragraph>Already have an account? Sign in now.</Paragraph>
+        <StyledButton size="small" type="primary">Login</StyledButton>
+      </Card>
+    </Col>
+  </Row>
+</Modal>
+
       <Footer style={{ textAlign: "center", padding: "0px", background: 'black', color: 'white' }}>
         <AppFooter />
       </Footer>
@@ -525,4 +590,3 @@ const Home = () => {
 };
 
 export default Home;
-  
