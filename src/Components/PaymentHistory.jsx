@@ -5,6 +5,7 @@ import { jsPDF } from "jspdf";
 import orgLogo from "../assets/logo-1.png";
 import "./PaymentHistory.css";
 import { DownloadOutlined, MailOutlined, WhatsAppOutlined } from '@ant-design/icons';
+import styled from 'styled-components';
 
 const PaymentHistory = () => {
   const [payments, setPayments] = useState([]);
@@ -57,6 +58,24 @@ const PaymentHistory = () => {
       )
     );
   };
+
+  const StyledButton = styled(Button)`
+  border-radius: 50px;
+  padding: 0 20px;
+  height: 40px;
+  font-size: 14px;
+  background-color: black !important;
+  border-color: white !important;
+  color: white !important;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.15s ease;
+  &:hover {
+    background-color: white !important;
+    border-color: black !important;
+    color: black !important;
+  }
+`;
 
   const generatePDF = (payment) => {
     const doc = new jsPDF();
@@ -177,28 +196,28 @@ const PaymentHistory = () => {
                   </p>
                   {payment.status === "Paid" && (
                     <Space direction="horizontal" size="small" style={{ flexWrap: 'wrap' }}>
-<Button
+<StyledButton
   onClick={() => handleDownload(payment)}
   style={{ flex: 1, minWidth: '120px' }}
   loading={loadingPDF}
   icon={<DownloadOutlined />} // Add the icon here
 >
   Download
-</Button>
-                      <Button 
+</StyledButton>
+                      <StyledButton 
                         onClick={() => handleSendEmail(payment)} 
                         style={{ flex: 1, minWidth: '120px' }}
                         icon={<WhatsAppOutlined />} // Add the icon here
                       >
                         Send Email
-                      </Button>
-                      <Button 
+                      </StyledButton>
+                      <StyledButton 
                         onClick={() => handleSendWhatsApp(payment)} 
                         style={{ flex: 1, minWidth: '120px' }}
                         icon={<MailOutlined />} // Add the icon here
                       >
                         Send WhatsApp
-                      </Button>
+                      </StyledButton>
                     </Space>
                   )}
                 </Card>

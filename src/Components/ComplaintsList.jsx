@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import styled from 'styled-components';
 import {
   List,
   Avatar,
@@ -77,7 +78,24 @@ const ComplaintsList = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+  const StyledButton = styled(Button)`
+  border-radius: 50px;
+  padding: 0 20px;
+  height: 40px;
+  font-size: 14px;
+  background-color: black !important;
+  border-color: white !important;
+  color: white !important;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.15s ease;
 
+  &:hover {
+    background-color: white !important;
+    border-color: black !important;
+    color: black !important;
+  }
+`;
   const handleAddEditComplaint = () => {
     form.validateFields().then((values) => {
       const method = editingComplaint ? "PUT" : "POST";
@@ -139,14 +157,14 @@ const ComplaintsList = () => {
 
   return (
     <div className="complaints-list" style={{ marginTop: "75px" }}>
-      <Button
+      <StyledButton
         type="primary"
         icon={<PlusOutlined />}
         onClick={() => showModal()}
         style={{ marginBottom: 16, display: 'block', margin: '0 auto' }}
       >
         Add Complaint
-      </Button>
+      </StyledButton>
       <List
         itemLayout="horizontal"
         dataSource={complaints}
@@ -154,7 +172,7 @@ const ComplaintsList = () => {
           <List.Item
             actions={[
               <Tooltip title="Edit" key="edit">
-                <Button
+                <StyledButton
                   icon={<EditOutlined />}
                   onClick={() => showModal(complaint)}
                 />
@@ -166,11 +184,11 @@ const ComplaintsList = () => {
                   okText="Yes"
                   cancelText="No"
                 >
-                  <Button danger icon={<DeleteOutlined />} />
+                  <StyledButton danger icon={<DeleteOutlined />} />
                 </Popconfirm>
               </Tooltip>,
               <Tooltip title="Mark as Completed" key="complete">
-                <Button
+                <StyledButton
                   type="primary"
                   icon={<CheckOutlined />}
                   onClick={() => handleMarkAsCompleted(complaint.id)}
@@ -304,7 +322,7 @@ const ComplaintsList = () => {
                     return false;
                   }}
                 >
-                  <Button icon={<PictureOutlined />}>Upload</Button>
+                  <StyledButton icon={<PictureOutlined />}>Upload</StyledButton>
                 </Upload>
               </Form.Item>
             </Col>

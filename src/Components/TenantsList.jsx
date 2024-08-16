@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import {
   List,
   Card,
@@ -128,6 +129,25 @@ const TenantsList = () => {
     }
   };
 
+  const StyledButton = styled(Button)`
+  border-radius: 50px;
+  padding: 0 20px;
+  height: 40px;
+  font-size: 14px;
+  background-color: black !important;
+  border-color: white !important;
+  color: white !important;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: white !important;
+    border-color: black !important;
+    color: black !important;
+  }
+`;
+
   const handleCancel = () => {
     setIsModalVisible(false);
   };
@@ -195,9 +215,9 @@ const TenantsList = () => {
         rooms.map(room => (
           <div key={room.id} className="room-section">
             <h2>Room {room.roomNumber} ({room.type})</h2>
-            <Button onClick={() => showModal(null, 'add', room)} type="primary" className="add-tenant-button" loading={loading}>
+            <StyledButton onClick={() => showModal(null, 'add', room)} type="primary" className="add-tenant-button" loading={loading}>
               Add Tenant
-            </Button>
+            </StyledButton>
             <List
               grid={{ gutter: 16, column: 1 }}
               dataSource={tenants.filter(tenant => tenant.roomId === room.id)}
@@ -208,18 +228,18 @@ const TenantsList = () => {
                     cover={<Avatar src={tenant.imageUrl} size={64} />}
                     extra={
                       <div>
-                        <Button type="primary" onClick={() => showModal(tenant, 'update')} loading={loading}>
+                        <StyledButton type="primary" onClick={() => showModal(tenant, 'update')} loading={loading}>
                           View Details
-                        </Button>
+                        </StyledButton>
                         <Popconfirm
                           title="Are you sure to delete this tenant?"
                           onConfirm={() => handleDelete(tenant.id)}
                           okText="Yes"
                           cancelText="No"
                         >
-                          <Button type="danger" className="delete-button" loading={loading}>
+                          <StyledButton type="danger" className="delete-button" loading={loading}>
                             Delete
-                          </Button>
+                          </StyledButton>
                         </Popconfirm>
                       </div>
                     }
@@ -248,12 +268,12 @@ const TenantsList = () => {
         confirmLoading={loading}
         footer={
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Button onClick={handleCancel} style={{ marginRight: 10 }}>
+            <StyledButton onClick={handleCancel} style={{ marginRight: 10 }}>
               Cancel
-            </Button>
-            <Button type="primary" onClick={handleSubmit} loading={loading}>
+            </StyledButton>
+            <StyledButton type="primary" onClick={handleSubmit} loading={loading}>
               {formMode === 'update' ? 'Save' : 'Add'}
-            </Button>
+            </StyledButton>
           </div>
         }
       >

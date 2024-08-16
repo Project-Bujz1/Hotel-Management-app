@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import styled from 'styled-components';
 import {
   Table,
   Button,
@@ -131,6 +132,25 @@ const RoomList = () => {
     }
   };
 
+  const StyledButton = styled(Button)`
+  border-radius: 50px;
+  padding: 0 20px;
+  height: 40px;
+  font-size: 14px;
+  background-color: black !important;
+  border-color: white !important;
+  color: white !important;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: white !important;
+    border-color: black !important;
+    color: black !important;
+  }
+`;
+
   const handleDelete = async (id) => {
     try {
       setLoadingAction('delete');
@@ -251,7 +271,7 @@ const RoomList = () => {
     <div style={{ marginTop: "75px" }}>
       <Row justify="end" style={{ marginBottom: 16 }}>
         <Col>
-          <Button
+          <StyledButton
             style={{ margin: "5px" }}
             type="primary"
             onClick={() => showModal()}
@@ -259,7 +279,7 @@ const RoomList = () => {
             disabled={loadingAction === 'save'} // Disable while saving
           >
             Add Room
-          </Button>
+          </StyledButton>
         </Col>
       </Row>
 

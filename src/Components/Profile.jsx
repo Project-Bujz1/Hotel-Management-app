@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Upload, Button, Avatar, Form, Input, Card, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import styled from 'styled-components';
 
 const Profile = () => {
   const [imageUrl, setImageUrl] = useState(null);
@@ -39,6 +40,25 @@ const Profile = () => {
     }
   };
 
+  const StyledButton = styled(Button)`
+  border-radius: 50px;
+  padding: 0 20px;
+  height: 40px;
+  font-size: 14px;
+  background-color: black !important;
+  border-color: white !important;
+  color: white !important;
+  font-weight: 600;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: white !important;
+    border-color: black !important;
+    color: black !important;
+  }
+`;
+
   // Handle image change
   const handleImageChange = (info) => {
     if (info.file.status === 'done') {
@@ -67,9 +87,9 @@ const Profile = () => {
                 }, 1000);
               }}
             >
-              <Button icon={<UploadOutlined />} style={{ marginTop: 5 }}>
+              <StyledButton icon={<UploadOutlined />} style={{ marginTop: 5 }}>
                 Upload Picture
-              </Button>
+              </StyledButton>
             </Upload>
           </div>
         }
@@ -97,9 +117,9 @@ const Profile = () => {
             <Input placeholder="Enter your phone number" />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>
+            <StyledButton type="primary" htmlType="submit" block>
               Save Profile
-            </Button>
+            </StyledButton>
           </Form.Item>
         </Form>
       </Card>

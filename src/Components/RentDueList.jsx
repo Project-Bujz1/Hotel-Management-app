@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Row, Col, Badge, Button, Space, Form, DatePicker, Select, message, Modal, Popconfirm, Spin, Empty } from "antd";
 import { EditOutlined } from '@ant-design/icons';
+import styled from 'styled-components';
 import moment from "moment";
 
 const statusOptions = [
@@ -15,6 +16,25 @@ const paymentModeOptions = [
   { value: "Cheque", label: "Cheque" },
   { value: "Bank Transfer", label: "Bank Transfer" },
 ];
+
+const StyledButton = styled(Button)`
+border-radius: 50px;
+padding: 0 20px;
+height: 40px;
+font-size: 14px;
+background-color: black !important;
+border-color: white !important;
+color: white !important;
+font-weight: 600;
+box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+transition: all 0.15s ease;
+
+&:hover {
+  background-color: white !important;
+  border-color: black !important;
+  color: black !important;
+}
+`;
 
 export const statusColors = {
   Paid: "green",
@@ -186,9 +206,9 @@ const RentDueList = () => {
                         okText="Yes"
                         cancelText="No"
                       >
-                        <Button type="primary" style={{ flex: 1, minWidth: '120px' }} loading={updating}>
+                        <StyledButton type="primary" style={{ flex: 1, minWidth: '120px' }} loading={updating}>
                           Mark as Paid
-                        </Button>
+                        </StyledButton>
                       </Popconfirm>
                       <Popconfirm
                         title="Are you sure you want to mark this as unpaid?"
@@ -196,11 +216,11 @@ const RentDueList = () => {
                         okText="Yes"
                         cancelText="No"
                       >
-                        <Button danger style={{ flex: 1, minWidth: '120px' }} loading={updating}>
+                        <StyledButton danger style={{ flex: 1, minWidth: '120px' }} loading={updating}>
                           Mark as Unpaid
-                        </Button>
+                        </StyledButton>
                       </Popconfirm>
-                      <Button
+                      <StyledButton
                         icon={<EditOutlined />}
                         onClick={() => showEditForm(tenant)}
                         type="default"
@@ -208,7 +228,7 @@ const RentDueList = () => {
                         loading={updating}
                       >
                         Edit
-                      </Button>
+                      </StyledButton>
                     </div>
                   </Card>
                 </Badge.Ribbon>
