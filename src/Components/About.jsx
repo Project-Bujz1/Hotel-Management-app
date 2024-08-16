@@ -4,12 +4,12 @@ import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import logo from "../assets/logo-transparent-png.png";
 import CountUp from 'react-countup';
 import styled from 'styled-components';
+import { FaRupeeSign } from "react-icons/fa";
 import {
   WifiOutlined,
   HomeOutlined,
   SecurityScanOutlined,
   RocketOutlined,
-  DollarOutlined,
   BarChartOutlined,
   DashboardOutlined,
   TeamOutlined,
@@ -171,6 +171,149 @@ const FeatureCard = ({ feature, onClick }) => {
   );
 };
 
+const StyledSubscriptionCard = styled(Card)`
+  border-radius: 20px;
+  text-align: center;
+  background : black;
+  color: white;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+`;
+
+const SubscriptionButton = styled(Button)`
+  border-radius: 50px;
+  padding: 0 40px;
+  height: 50px;
+  font-size: 18px;
+  background-color: black !important;
+  border-color: white !important;
+  color: white !important;
+  font-weight: 600;
+  margin-top: 20px;
+
+  &:hover {
+    background-color: white !important;
+    border-color: black !important;
+    color: black !important;
+  }
+`;
+
+const SubscriptionSection = () => {
+  const navigate = useNavigate();
+
+  const subscriptionPlans = [
+    {
+      title: "Basic Plan",
+      price: "₹999",
+      duration: "Per Month",
+      features: [
+        "Manage up to 50 tenants",
+        "Basic reporting",
+        "Email support",
+      ],
+    },
+    {
+      title: "Pro Plan",
+      price: "₹1999",
+      duration: "Per Month",
+      features: [
+        "Manage up to 200 tenants",
+        "Advanced reporting",
+        "Priority email support",
+        "Custom branding",
+      ],
+    },
+    {
+      title: "Enterprise Plan",
+      price: "Contact Us",
+      duration: "Custom Pricing",
+      features: [
+        "Unlimited tenants",
+        "Full access to all features",
+        "Dedicated account manager",
+        "24/7 support",
+      ],
+    },
+  ];
+
+  return (
+    <Row
+      justify="center"
+      style={{ 
+        width: '100%', 
+        padding: '60px 20px', 
+        backgroundColor: '#e9ecef',
+      }}
+    >
+      <Col xs={24} sm={24} md={20} lg={18} xl={16}>
+        <Title
+          level={1}
+          style={{
+            textAlign: 'center',
+            fontFamily: "'Montserrat', sans-serif",
+            color: '#343a40',
+            marginBottom: '30px',
+            fontSize: '2.5rem',
+            fontWeight: 700,
+            letterSpacing: '-0.5px',
+          }}
+        >
+          Subscription Plans
+        </Title>
+        <Paragraph
+          style={{
+            width: '100%',
+            fontSize: '18px',
+            color: '#495057',
+            textAlign: 'center',
+            margin: '0 auto 40px',
+            lineHeight: '1.8',
+            maxWidth: '800px',
+          }}
+        >
+          Choose the plan that best fits your hostel management needs. Upgrade anytime to access more features and better support.
+        </Paragraph>
+
+        <Row gutter={[16, 16]} justify="center">
+          {subscriptionPlans.map((plan, index) => (
+            <Col xs={24} sm={12} md={8} key={index}>
+              <StyledSubscriptionCard>
+                <Title level={3} style={{ color: 'white', marginBottom: '20px' }}>
+                  {plan.title}
+                </Title>
+                <Title level={2} style={{ color: 'white' }}>
+                  {plan.price}
+                </Title>
+                <Paragraph style={{ color: 'white' }}>
+                  {plan.duration}
+                </Paragraph>
+                <ul style={{ color: 'white', textAlign: 'left', paddingLeft: '20px', marginBottom: '20px' }}>
+                  {plan.features.map((feature, i) => (
+                    <li key={i}>{feature}</li>
+                  ))}
+                </ul>
+                <SubscriptionButton
+                  type="primary"
+                  size="large"
+                  onClick={() => navigate('/subscribe')}
+                >
+                  Subscribe Now
+                </SubscriptionButton>
+              </StyledSubscriptionCard>
+            </Col>
+          ))}
+        </Row>
+        
+      </Col>
+    </Row>
+  );
+};
 const Home = () => {
   const navigate = useNavigate();
 
@@ -178,7 +321,7 @@ const Home = () => {
     { icon: <WifiOutlined />, title: "Smart Room Management", description: "AI-powered room allocation and maintenance tracking", route: "/smart-room" },
     { icon: <HomeOutlined />, title: "Tenant Harmony", description: "Personalized experiences and community building features", route: "/tenant-harmony" },
     { icon: <SecurityScanOutlined />, title: "Predictive Analytics", description: "Forecast occupancy and optimize operations", route: "/predictive-analytics" },
-    { icon: <DollarOutlined />, title: "Financial Wizardry", description: "Automated invoicing and smart payment reminders", route: "/financial" },
+    { icon: <FaRupeeSign  />, title: "Financial Wizardry", description: "Automated invoicing and smart payment reminders", route: "/financial" },
     { icon: <BarChartOutlined />, title: "Performance Insights", description: "Real-time dashboards for informed decision making", route: "/performance" },
     { icon: <RocketOutlined />, title: "Continuous Innovation", description: "Regular updates with cutting-edge features", route: "/innovation" },
   ];
@@ -373,7 +516,7 @@ const Home = () => {
           
         </Col>
       </Row>
-      
+      <SubscriptionSection/>
       <Footer style={{ textAlign: "center", padding: "0px", background: 'black', color: 'white' }}>
         <AppFooter />
       </Footer>
