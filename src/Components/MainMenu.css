@@ -50,6 +50,55 @@
   }
 
   .org-logo {
-    height: 20px;
+    height: 40px;
+    margin-left: auto;
   }
+}
+
+.ant-menu-item {
+  margin: 0 10px;
+  padding: 0 5px;
+}
+
+.ant-menu-horizontal > .ant-menu-item {
+  display: flex;
+  align-items: center;
+}
+
+.ant-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ant-drawer-title {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.ant-drawer-close {
+  padding: 0;
+  margin: 0;
+}
+
+.ant-progress {
+  margin-top: 16px;
+  width: 100%;
+}
+
+.ant-tooltip-inner {
+  color: black;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  padding: 5px 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ant-popover {
+  padding: 5px;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
 }

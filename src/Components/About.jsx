@@ -19,13 +19,13 @@ import {
   SettingOutlined,
   PlayCircleOutlined  
 } from '@ant-design/icons';
-import view1 from '../assets/view-1.jpg';
-import view2 from '../assets/view-2.jpg';
-import view3 from '../assets/view-3.jpg';
-import view4 from '../assets/view-4.jpg';
-import view5 from '../assets/view-5.jpg';
-import view6 from '../assets/view-6.jpg';
-import view7 from '../assets/logo-png.png';
+import view1 from '../assets/tech-8.png';
+import view2 from '../assets/tech-10.png';
+import view3 from '../assets/tech-3.jpg';
+import view4 from '../assets/tech-4.jpg';
+import view5 from '../assets/tech-5.png';
+import view6 from '../assets/tech-6.png';
+import view7 from '../assets/tech-9.webp';
 import AppFooter from './AppFooter';
 import { useNavigate } from 'react-router-dom';
 
@@ -33,14 +33,13 @@ const { Title, Paragraph } = Typography;
 const { Footer } = Layout;
 
 const carouselItems = [
-  { image: view7 },
   { text: "Revolutionizing Hostel Management", image: view1 },
   { text: "Smart Solutions for Modern Living", image: view2 },
   { text: "Smart Hostel Master - Your Digital Concierge", image: view3 },
   { text: "Effortless Room Management", image: view4 },
   { text: "Seamless Tenant Experiences", image: view5 },
   { text: "Data-Driven Decision Making", image: view6 },
-  { image: view7 },
+  { text: "Access from anywhere and at anytime",image: view7 },
 ];
 
 const StyledPrevArrow = styled(CaretLeftOutlined)`
@@ -370,7 +369,7 @@ const Home = () => {
       {/* Enhanced Carousel */}
       <Carousel
         autoplay
-        autoplaySpeed={3000}
+        autoplaySpeed={2000}
         // effect="fade"
         style={{
           width: "100%",
