@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Typography, Row, Col, Carousel, Button, Layout, Statistic, Card } from 'antd';
 import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import logo from "../assets/logo-transparent-png.png";
+import CountUp from 'react-countup';
 import styled from 'styled-components';
 import {
   WifiOutlined,
@@ -86,12 +87,7 @@ const StyledButton = styled(Button)`
 `;
 
 const RealTimeHeader = () => {
-  const [time, setTime] = useState(new Date());
 
-  useEffect(() => {
-    const timer = setInterval(() => setTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   return (
     <Row justify="space-between" align="middle" style={{ padding: '10px 20px', background: 'black', color: 'white' }}>
@@ -100,7 +96,7 @@ const RealTimeHeader = () => {
         <span style={{ fontSize: '18px', fontWeight: 'bold' }}>Smart Annoyers</span>
       </Col>
       <Col>
-        <span style={{ fontSize: '16px' }}>{time.toLocaleString()}</span>
+        <span style={{ fontSize: '18px', fontWeight: 'bold' }}>Smart Hostel Master</span>
       </Col>
     </Row>
   );
@@ -248,29 +244,44 @@ const Home = () => {
         ))}
       </Carousel>
       <Row justify="center" style={{ marginBottom: 40, background: 'black', padding: '40px 0' }}>
-        <Col xs={22} sm={20} md={16} lg={12} xl={10}>
-          <Title level={2} style={{ textAlign: "center", color: 'white' }}>
-            Our Impact
-          </Title>
-          <Row gutter={16}>
-            <Col span={8}>
-              <Statistic 
-        title={<span style={{ color: 'white' }}>Happy Hostels</span>}
-        value={1000}  prefix={<HomeOutlined style={{ color: 'white' }} />} valueStyle={{ color: 'white' }} />
-            </Col>
-            <Col span={8}>
-              <Statistic 
-        title={<span style={{ color: 'white' }}>Satisfied Tenants</span>}
-        value={50000} prefix={<WifiOutlined style={{ color: 'white' }} />} valueStyle={{ color: 'white' }} />
-            </Col>
-            <Col span={8}>
-              <Statistic
-        title={<span style={{ color: 'white' }}>Cities</span>}
-        value={50} prefix={<RocketOutlined style={{ color: 'white' }} />} valueStyle={{ color: 'white' }} />
-            </Col>
-          </Row>
-        </Col>
-      </Row>
+      <Col xs={22} sm={20} md={16} lg={12} xl={10}>
+        <Title level={2} style={{ textAlign: "center", color: 'white' }}>
+          Our Impact
+        </Title>
+        <Row gutter={16}>
+          <Col span={8}>
+            <Statistic
+              title={<span style={{ color: 'white' }}>Happy Hostels</span>}
+              valueRender={() => (
+                <CountUp end={1000} duration={3} />
+              )}
+              prefix={<HomeOutlined style={{ color: 'white' }} />}
+              valueStyle={{ color: 'white' }}
+            />
+          </Col>
+          <Col span={8}>
+            <Statistic
+              title={<span style={{ color: 'white' }}>Satisfied Tenants</span>}
+              valueRender={() => (
+                <CountUp end={50000} duration={3} />
+              )}
+              prefix={<WifiOutlined style={{ color: 'white' }} />}
+              valueStyle={{ color: 'white' }}
+            />
+          </Col>
+          <Col span={8}>
+            <Statistic
+              title={<span style={{ color: 'white' }}>Cities</span>}
+              valueRender={() => (
+                <CountUp end={50} duration={3} />
+              )}
+              prefix={<RocketOutlined style={{ color: 'white' }} />}
+              valueStyle={{ color: 'white' }}
+            />
+          </Col>
+        </Row>
+      </Col>
+    </Row>
       <Row
   justify="center"
   style={{ 
