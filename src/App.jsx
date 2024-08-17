@@ -29,6 +29,29 @@ import Subscribe from "./Components/Subscribe";
 import Settings from "./Components/Settings";
 import Notice from "./Components/Notice";
 import WeeklyFoodMenu from "./Components/WeeklyFoodMenu";
+import ParcelManagement from "./Components/ParcelManagement";
+import SuggestionBox from "./Components/SuggestionBox";
+import Feedback from "./Components/FeedbackCard";
+
+const feedbackList = [
+  {
+    id: 1,
+    content: "The common room needs more comfortable seating.",
+    category: "Facilities",
+    likes: 5,
+    dislikes: 1,
+    date: "2024-08-17",
+  },
+  {
+    id: 2,
+    content: "Please add more vegetarian options to the menu.",
+    category: "Food",
+    likes: 8,
+    dislikes: 2,
+    date: "2024-08-16",
+  },
+  // Add more feedback items as needed
+];
 const App = () => {
   return (
     <AuthProvider>
@@ -56,7 +79,9 @@ const App = () => {
             <Route path="/subscribe" element={<Subscribe/>} /> 
             <Route path="/notice" element={<PrivateRoute element={Notice} />} /> 
             <Route path="/foodMenu" element={<PrivateRoute element={WeeklyFoodMenu} />} /> 
-            WeeklyFoodMenu
+            <Route path="/parcelManagement" element={<PrivateRoute element={ParcelManagement} />} />
+            <Route path="/suggestionsBox" element={<PrivateRoute element={SuggestionBox} />} />  
+            <Route path="/feedback" element={<PrivateRoute element={Feedback} feedbackList={feedbackList} />} />  
           </Routes>
         </AppLayout>
       </Router>
