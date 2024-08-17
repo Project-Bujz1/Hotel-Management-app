@@ -14,7 +14,7 @@ const Signup = () => {
   const onFinish = async (values) => {
     setLoading(true);
     try {
-      await axios.post('http://127.0.0.1:5000/signup', values);
+      await axios.post('https://hotel-management-app-5.onrender.com/signup', values);
       message.success('Signup successful! Please log in.');
       navigate('/login');
     } catch (error) {

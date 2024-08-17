@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
         const token = localStorage.getItem('token');
         if (token) {
           // Example API call to validate token
-          const response = await axios.get('http://127.0.0.1:5000/protected', {
+          const response = await axios.get('https://hotel-management-app-5.onrender.com/protected', {
             headers: { Authorization: `Bearer ${token}` }
           });
           if (response.status === 200) {
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://127.0.0.1:5000/login', { email, password });
+      const response = await axios.post('https://hotel-management-app-5.onrender.com/login', { email, password });
       const { access_token } = response.data;
       localStorage.setItem('token', access_token);
       setIsAuthenticated(true);

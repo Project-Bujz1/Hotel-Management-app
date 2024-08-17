@@ -23,7 +23,7 @@ const Login = () => {
   const onFinish = async (values) => {
     setLoading(true);
     try {
-      const response = await axios.post('http://127.0.0.1:5000/login', values);
+      const response = await axios.post('https://hotel-management-app-5.onrender.com/login', values);
       const { access_token } = response.data;
       localStorage.setItem('token', access_token);
       message.success('Login successful!');

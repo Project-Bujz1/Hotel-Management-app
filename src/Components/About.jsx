@@ -19,9 +19,9 @@ import {
   SettingOutlined,
   PlayCircleOutlined  
 } from '@ant-design/icons';
-import view1 from '../assets/tech-8.png';
-import view2 from '../assets/tech-10.png';
-import view3 from '../assets/tech-3.jpg';
+import view1 from '../assets/tech-3.png';
+import view2 from '../assets/collect-slider-2.png';
+import view3 from '../assets/view-slider-1.png';
 import view4 from '../assets/tech-4.jpg';
 import view5 from '../assets/tech-5.png';
 import view6 from '../assets/tech-6.png';
@@ -33,7 +33,7 @@ const { Title, Paragraph } = Typography;
 const { Footer } = Layout;
 
 const carouselItems = [
-  { text: "Revolutionizing Hostel Management", image: view1 },
+  { text: "Revolutionize Hostel Management", image: view1 },
   { text: "Smart Solutions for Modern Living", image: view2 },
   { text: "Smart Hostel Master - Your Digital Concierge", image: view3 },
   { text: "Effortless Room Management", image: view4 },
@@ -369,7 +369,7 @@ const Home = () => {
       {/* Enhanced Carousel */}
       <Carousel
         autoplay
-        autoplaySpeed={2000}
+        autoplaySpeed={3000}
         // effect="fade"
         style={{
           width: "100%",
@@ -483,6 +483,7 @@ const Home = () => {
               letterSpacing: '-0.5px'
             }}
           >
+            
             Revolutionize Your Hostel Management
           </Title>
           <Paragraph

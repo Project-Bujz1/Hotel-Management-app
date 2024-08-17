@@ -12,7 +12,7 @@ const SignOut = () => {
     localStorage.removeItem('token');
 
     try {
-      // await axios.post('http://127.0.0.1:5000/signout', {}, {
+      // await axios.post('https://hotel-management-app-5.onrender.com/signout', {}, {
       //   headers: { Authorization: `Bearer ${token}` }
       // });
 

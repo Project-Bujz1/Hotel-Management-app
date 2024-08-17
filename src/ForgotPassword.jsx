@@ -15,7 +15,7 @@ const ForgotPassword = () => {
     setLoading(true);
     try {
       // Assuming you have an endpoint to handle forgot password
-      await axios.post('http://127.0.0.1:5000/forgot-password', values);
+      await axios.post('https://hotel-management-app-5.onrender.com/forgot-password', values);
       message.success('Password reset link sent to your email.');
       navigate('/login');
     } catch (error) {
