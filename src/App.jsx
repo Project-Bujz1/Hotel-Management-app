@@ -28,6 +28,7 @@ import AppLayout from "./Components/AppLayout";
 import Subscribe from "./Components/Subscribe";
 import Settings from "./Components/Settings";
 import Notice from "./Components/Notice";
+import WeeklyFoodMenu from "./Components/WeeklyFoodMenu";
 const App = () => {
   return (
     <AuthProvider>
@@ -54,6 +55,8 @@ const App = () => {
             <Route path="/changepassword" element={<PrivateRoute element={ChangePassword} />} /> 
             <Route path="/subscribe" element={<Subscribe/>} /> 
             <Route path="/notice" element={<PrivateRoute element={Notice} />} /> 
+            <Route path="/foodMenu" element={<PrivateRoute element={WeeklyFoodMenu} />} /> 
+            WeeklyFoodMenu
           </Routes>
         </AppLayout>
       </Router>
