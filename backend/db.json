@@ -17,6 +17,19 @@
       "sharing": 5
     }
   ],
+  "notices": [
+    {
+      "id": "55e2",
+      "noticeType": "rentDue",
+      "title": "Rent Due Notice",
+      "content": "This is a reminder that your rent is due. Please make the payment as soon as possible.",
+      "recipients": [
+        "51b7",
+        "159d"
+      ],
+      "createdAt": "2024-08-17T04:26:08.665Z"
+    }
+  ],
   "tenants": [
     {
       "id": "51b7",
@@ -130,7 +143,7 @@
     }
   ],
   "complaints": [
-    { 
+    {
       "id": "1723378592205",
       "roomNumber": "201",
       "complaint": "Water",
@@ -142,7 +155,7 @@
   "rentDue": [],
   "settings": [
     {
-      "id": 1,
+      "id": "1",
       "orgName": "Default Organization",
       "address": "Default Address",
       "totalRooms": 0,
@@ -159,10 +172,13 @@
       }
     }
   ],
-  "profile": {
-    "name": "Akash Kumar",
-    "email": "dakash5539@gmail.com",
-    "phone": "09553313334",
-    "imageUrl": "blob:http://localhost:5173/07d44685-fa93-4767-b3e5-2a0b70ccdb17"
-  }
+  "profile": [
+    {
+      "name": "Akash Kumar",
+      "email": "dakash5539@gmail.com",
+      "phone": "09553313334",
+      "imageUrl": "blob:http://localhost:5173/07d44685-fa93-4767-b3e5-2a0b70ccdb17",
+      "id": "373c"
+    }
+  ]
 }
