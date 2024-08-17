@@ -149,7 +149,14 @@
       "currentOccupancy": 0,
       "hostelInfo": "",
       "mealPlan": "basic",
-      "images": []
+      "images": [],
+      "screenManagement": {
+        "parcelManagement": true,
+        "suggestionsBox": false,
+        "feedback": true,
+        "notice": true,
+        "foodMenu": false
+      }
     }
   ],
   "profile": {

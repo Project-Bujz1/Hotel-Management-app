@@ -74,12 +74,18 @@ const MainMenu = () => {
 
   const sideMenuItems = (
     <Menu mode="inline">
-      <Menu.Item key="displaySettings" onClick={() => navigate("/displaySettings")} icon={<SettingOutlined />}>Display Settings</Menu.Item>
-      <Menu.Item key="orgSettings" onClick={() => navigate("/orgSettings")} icon={<SettingOutlined />}>Org Settings</Menu.Item>
+      <Menu.Item key="settings" onClick={() => navigate("/settings")} icon={<SettingOutlined />}>Settings</Menu.Item>      
+      <Menu.Divider />
+      <Menu.Item key="parcelManagement" onClick={() => navigate("/parcelManagement")} icon={<MailOutlined />}>Parcel Management</Menu.Item>
+      <Menu.Item key="suggestionsBox" onClick={() => navigate("/suggestionsBox")} icon={<QuestionCircleOutlined />}>Suggestions Box</Menu.Item>
+      <Menu.Item key="feedback" onClick={() => navigate("/feedback")} icon={<UserOutlined />}>Feedback</Menu.Item>
+      <Menu.Item key="notice" onClick={() => navigate("/notice")} icon={<QuestionCircleOutlined />}>Notice</Menu.Item>
+      <Menu.Item key="foodMenu" onClick={() => navigate("/foodMenu")} icon={<SettingOutlined />}>Food Menu</Menu.Item>
       <Menu.Item key="changePassword" onClick={() => navigate("/changePassword")} icon={<LockOutlined />}>Change Password</Menu.Item>
       <Menu.Item key="signOut" onClick={() => navigate("/signout")} icon={<PoweroffOutlined />}>Sign Out</Menu.Item>
     </Menu>
   );
+  
 
   const popoverContent = (
     <div>
@@ -122,12 +128,6 @@ const MainMenu = () => {
             <Progress percent={80} strokeColor="#1890ff" style={{ width: "100%" }} />
           </div>
         </Tooltip>
-        <Input
-          prefix={<SearchOutlined />}
-          placeholder="Search"
-          size="small"
-          style={{ width: "100%", marginTop: "16px", borderRadius: "5px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }}
-        />
         <Popover content={popoverContent} trigger="hover">
           <Button
             shape="circle"
@@ -185,9 +185,6 @@ const MainMenu = () => {
               <Progress percent={80} strokeColor="#1890ff" style={{ width: "120px" }} />
             </Menu.Item>
           </Tooltip>
-          <Menu.Item key="search" style={{ display: "flex", alignItems: "center", fontSize: "14px", color: "black", marginLeft: "10px" }}>
-            <Input prefix={<SearchOutlined />} placeholder="Search" size="small" style={{ width: "150px", borderRadius: "5px", boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)" }} />
-          </Menu.Item>
           <Menu.Item key="help" icon={<QuestionCircleOutlined />} />
         </Menu>
       </div>

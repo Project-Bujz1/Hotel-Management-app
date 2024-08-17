@@ -16,8 +16,6 @@ import PaymentHistory from "./Components/PaymentHistory";
 import ComplaintsList from "./Components/ComplaintsList";
 import AddComplaint from "./Components/AddComplaint";
 import Profile from "./Components/Profile";
-import DisplaySettings from "./Components/DisplaySettings";
-import OrgSettings from "./Components/OrgSettings";
 import ReportsAndAnalytics from "./Components/ReportsAndAnalytics";
 import SignOut from "./Components/SignOut";
 import ChangePassword from "./Components/ChangePassword";
@@ -28,6 +26,7 @@ import PrivateRoute from "./Components/PrivateRoute";
 import ForgotPassword from "./ForgotPassword";
 import AppLayout from "./Components/AppLayout";
 import Subscribe from "./Components/Subscribe";
+import Settings from "./Components/Settings";
 
 const App = () => {
   return (
@@ -49,8 +48,7 @@ const App = () => {
             <Route path="/complaints" element={<PrivateRoute element={ComplaintsList} />} />
             <Route path="/addComplaint" element={<PrivateRoute element={AddComplaint} />} />
             <Route path="/profile" element={<PrivateRoute element={Profile} />} />
-            <Route path="/displaySettings" element={<PrivateRoute element={DisplaySettings} />} />
-            <Route path="/orgSettings" element={<PrivateRoute element={OrgSettings} />} /> 
+            <Route path="/settings" element={<PrivateRoute element={Settings} />} />
             <Route path="/reports" element={<PrivateRoute element={ReportsAndAnalytics} />} /> 
             <Route path="/signout" element={<PrivateRoute element={SignOut} />} /> 
             <Route path="/changepassword" element={<PrivateRoute element={ChangePassword} />} /> 
