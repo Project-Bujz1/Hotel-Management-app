@@ -28,6 +28,11 @@
   display: none; /* Hide menu button on larger screens */
 }
 
+.settings-button {
+  display: block;
+  margin-left: auto;
+}
+
 .desktop-menu {
   flex: 1;
   display: flex;
@@ -52,6 +57,11 @@
   .org-logo {
     height: 40px;
     margin-left: auto;
+  }
+
+  .settings-button {
+    position: absolute;
+    right: 10px;
   }
 }
 
