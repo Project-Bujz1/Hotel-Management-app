@@ -133,7 +133,7 @@ const MainMenu = () => {
         closable
         onClose={handleSideMenuToggle}
         visible={sideMenuVisible}
-        width={250}
+        width={300}
       >
         {sideMenuItems}
       </Drawer>

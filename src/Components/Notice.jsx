@@ -16,32 +16,37 @@ const NoticeComponent = () => {
   const [loading, setLoading] = useState(true);
   const [visible, setVisible] = useState(false);
   const [selectedNotice, setSelectedNotice] = useState(null);
+  const [isFreeTrial, setIsFreeTrial] = useState(false);
 
   useEffect(() => {
-    fetchTenants();
-    fetchNotices();
+    // Check if the user is on a free trial
+    const freeTrialStatus = localStorage.getItem('isFreeTrial') === 'true';
+    setIsFreeTrial(freeTrialStatus);
+
+    if (freeTrialStatus) {
+      // message.warning('You have no access. Please upgrade.');
+      setLoading(false); // Set loading to false to prevent the rest of the content from rendering
+    } else {
+      // Fetch data if not on free trial
+      fetchData('tenants', setTenants);
+      fetchData('notices', setNotices);
+    }
   }, []);
 
-  const fetchTenants = async () => {
+  const fetchData = async (endpoint, setState) => {
     try {
-      const response = await axios.get('https://smart-hostel-management-json-server.onrender.com/tenants');
-      setTenants(response.data);
+      const response = await axios.get(`https://smart-hostel-management-json-server.onrender.com/${endpoint}`);
+      setState(response.data);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching tenants:', error);
-      message.error('Failed to fetch tenants. Please try again later.');
-      setLoading(false);
+      handleError(`Failed to fetch ${endpoint}. Please try again later.`);
     }
   };
 
-  const fetchNotices = async () => {
-    try {
-      const response = await axios.get('https://smart-hostel-management-json-server.onrender.com/notices');
-      setNotices(response.data);
-    } catch (error) {
-      console.error('Error fetching notices:', error);
-      message.error('Failed to fetch notices. Please try again later.');
-    }
+  const handleError = (messageText) => {
+    console.error(messageText);
+    message.error(messageText);
+    setLoading(false);
   };
 
   const onFinish = async (values) => {
@@ -49,37 +54,36 @@ const NoticeComponent = () => {
       const newNotice = {
         ...values,
         createdAt: new Date().toISOString(),
-        recipients: values.recipients.includes('all') 
-          ? tenants.map(t => t.id) 
-          : values.recipients,
+        recipients: values.recipients.includes('all') ? tenants.map(t => t.id) : values.recipients,
       };
       await axios.post('https://smart-hostel-management-json-server.onrender.com/notices', newNotice);
       message.success('Notice sent successfully!');
       form.resetFields();
-      fetchNotices();
+      fetchData('notices', setNotices);
     } catch (error) {
-      console.error('Error sending notice:', error);
-      message.error('Failed to send notice. Please try again.');
+      handleError('Failed to send notice. Please try again.');
     }
   };
 
   const handleNoticeTypeChange = (value) => {
     setNoticeType(value);
-    if (value === 'rentDue') {
-      form.setFieldsValue({
-        title: 'Rent Due Notice',
-        content: 'This is a reminder that your rent is due. Please make the payment as soon as possible.',
-      });
-    } else if (value === 'holiday') {
-      form.setFieldsValue({
-        title: 'Holiday Alert',
-        content: 'We hope you enjoy the upcoming holiday!',
-      });
-    } else {
-      form.setFieldsValue({
-        title: '',
-        content: '',
-      });
+    form.setFieldsValue(getNoticeTemplate(value));
+  };
+
+  const getNoticeTemplate = (type) => {
+    switch (type) {
+      case 'rentDue':
+        return {
+          title: 'Rent Due Notice',
+          content: 'This is a reminder that your rent is due. Please make the payment as soon as possible.',
+        };
+      case 'holiday':
+        return {
+          title: 'Holiday Alert',
+          content: 'We hope you enjoy the upcoming holiday!',
+        };
+      default:
+        return { title: '', content: '' };
     }
   };
 
@@ -87,10 +91,9 @@ const NoticeComponent = () => {
     try {
       await axios.delete(`https://smart-hostel-management-json-server.onrender.com/notices/${id}`);
       message.success('Notice deleted successfully!');
-      fetchNotices();
+      fetchData('notices', setNotices);
     } catch (error) {
-      console.error('Error deleting notice:', error);
-      message.error('Failed to delete notice. Please try again.');
+      handleError('Failed to delete notice. Please try again.');
     }
   };
 
@@ -148,6 +151,10 @@ const NoticeComponent = () => {
     );
   }
 
+  if (isFreeTrial) {
+    return <div style={{ padding: '2rem', textAlign: 'center', marginTop : "75px" }}>You have no access. Please upgrade.</div>;
+  }
+
   return (
     <div style={{ maxWidth: 800, margin: 'auto', marginTop: 75 }}>
       <Card title={<Title level={3}><BellOutlined /> Create Notice</Title>}>
@@ -159,19 +166,15 @@ const NoticeComponent = () => {
               <Option value="holiday">Holiday Alert</Option>
             </Select>
           </Form.Item>
-
           <Form.Item name="title" label="Title" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-
           <Form.Item name="content" label="Content" rules={[{ required: true }]}>
             <TextArea rows={4} />
           </Form.Item>
-
           <Form.Item name="dueDate" label="Due Date (if applicable)">
             <DatePicker style={{ width: '100%' }} />
           </Form.Item>
-
           <Form.Item name="recipients" label="Recipients" rules={[{ required: true }]}>
             <Select mode="multiple" placeholder="Select recipients">
               <Option value="all">All Tenants</Option>
@@ -182,7 +185,6 @@ const NoticeComponent = () => {
               ))}
             </Select>
           </Form.Item>
-
           <Form.Item>
             <Button type="primary" htmlType="submit" icon={<SendOutlined />}>
               Send Notice
@@ -190,11 +192,9 @@ const NoticeComponent = () => {
           </Form.Item>
         </Form>
       </Card>
-
       <Card title={<Title level={3}>Notice History</Title>} style={{ marginTop: 20 }}>
         <Table dataSource={notices} columns={columns} rowKey="id" />
       </Card>
-
       <Modal
         title="Notice Details"
         visible={visible}

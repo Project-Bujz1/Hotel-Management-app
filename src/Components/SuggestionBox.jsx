@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, List, Typography, Tag, Space, Modal, Button } from 'antd';
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons';
 
@@ -43,6 +43,17 @@ const SuggestionBox = () => {
       {text}
     </Space>
   );
+
+  const [isFreeTrial, setIsFreeTrial] = useState(true);
+
+  useEffect(() => {
+    const trialStatus = localStorage.getItem('isFreeTrial') === 'false';
+    setIsFreeTrial(trialStatus);
+  }, []);
+
+  if (!isFreeTrial) {
+    return <div style={{ padding: '2rem', textAlign: 'center', marginTop : "75px" }}>You have no access. Please upgrade.</div>;
+  }
 
   return (
     <Card

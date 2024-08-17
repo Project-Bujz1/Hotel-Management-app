@@ -155,6 +155,17 @@ const ComplaintsList = () => {
       });
   };
 
+  const [isFreeTrial, setIsFreeTrial] = useState(true);
+
+  useEffect(() => {
+    const trialStatus = localStorage.getItem('isFreeTrial') === 'false';
+    setIsFreeTrial(trialStatus);
+  }, []);
+
+  if (!isFreeTrial) {
+    return <div style={{ padding: '2rem', textAlign: 'center', marginTop : "75px" }}>You have no access. Please upgrade.</div>;
+  }
+
   return (
     <div className="complaints-list" style={{ marginTop: "75px" }}>
       <StyledButton

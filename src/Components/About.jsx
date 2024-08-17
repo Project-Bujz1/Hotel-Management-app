@@ -209,6 +209,174 @@ const SubscriptionButton = styled(Button)`
   }
 `;
 
+const PrivacyPolicySection = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  return (
+    <Row justify="center" style={{ padding: '60px 20px', backgroundColor: '#f8f9fa' }}>
+      <Col xs={24} sm={24} md={20} lg={18} xl={16}>
+        <Title level={2} style={{ textAlign: 'center', marginBottom: '30px' }}>
+          Privacy Policy
+        </Title>
+        <Paragraph style={{ textAlign: 'center', fontSize: '18px', marginBottom: '30px' }}>
+          We value your privacy and are committed to protecting your personal information.
+        </Paragraph>
+        <div style={{ textAlign: 'center' }}>
+          <StyledButton onClick={showModal}>Read Full Policy</StyledButton>
+        </div>
+        <Modal
+          title="Privacy Policy"
+          visible={isModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          width={800}
+        >
+          <p>Full privacy policy content goes here...</p>
+        </Modal>
+      </Col>
+    </Row>
+  );
+};
+
+const FAQSection = () => {
+  const [visibleFAQs, setVisibleFAQs] = useState(3);
+  const allFAQs = [
+    { question: "What is Smart Hostel Master?", answer: "Smart Hostel Master is a comprehensive hostel management platform..." },
+    { question: "How do I get started?", answer: "You can start by signing up for our free trial..." },
+    { question: "Is my data secure?", answer: "Yes, we use industry-standard encryption and security measures..." },
+    { question: "Can I upgrade my plan later?", answer: "Absolutely! You can upgrade your plan at any time..." },
+    { question: "Do you offer customer support?", answer: "Yes, we provide 24/7 customer support..." },
+    { question: "Is there a mobile app?", answer: "Yes, we have mobile apps for both iOS and Android..." },
+  ];
+
+  const showMore = () => {
+    setVisibleFAQs(prevVisible => 
+      prevVisible + 3 > allFAQs.length ? allFAQs.length : prevVisible + 3
+    );
+  };
+
+  const showLess = () => {
+    setVisibleFAQs(3);
+  };
+
+  return (
+    <Row justify="center" style={{ padding: '60px 20px', backgroundColor: '#ffffff' }}>
+      <Col xs={24} sm={24} md={20} lg={18} xl={16}>
+        <Title level={2} style={{ textAlign: 'center', marginBottom: '30px' }}>
+          Frequently Asked Questions
+        </Title>
+        {allFAQs.slice(0, visibleFAQs).map((faq, index) => (
+          <Card key={index} style={{ marginBottom: '20px' }}>
+            <Title level={4}>{faq.question}</Title>
+            <Paragraph>{faq.answer}</Paragraph>
+          </Card>
+        ))}
+        <div style={{ textAlign: 'center', marginTop: '30px' }}>
+          {visibleFAQs < allFAQs.length ? (
+            <StyledButton onClick={showMore}>View More</StyledButton>
+          ) : (
+            <StyledButton onClick={showLess}>Show Less</StyledButton>
+          )}
+        </div>
+      </Col>
+    </Row>
+  );
+};
+
+const TermsAndConditionsSection = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  return (
+    <Row justify="center" style={{ padding: '60px 20px', backgroundColor: '#e9ecef' }}>
+      <Col xs={24} sm={24} md={20} lg={18} xl={16}>
+        <Title level={2} style={{ textAlign: 'center', marginBottom: '30px' }}>
+          Terms and Conditions
+        </Title>
+        <Paragraph style={{ textAlign: 'center', fontSize: '18px', marginBottom: '30px' }}>
+          By using our service, you agree to the following terms and conditions.
+        </Paragraph>
+        <div style={{ textAlign: 'center' }}>
+          <StyledButton onClick={showModal}>Read Full Terms</StyledButton>
+        </div>
+        <Modal
+          title="Terms and Conditions"
+          visible={isModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          width={800}
+        >
+          <p>Full terms and conditions content goes here...</p>
+        </Modal>
+      </Col>
+    </Row>
+  );
+};
+
+const RefundPolicySection = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  return (
+    <Row justify="center" style={{ padding: '60px 20px', backgroundColor: '#f8f9fa' }}>
+      <Col xs={24} sm={24} md={20} lg={18} xl={16}>
+        <Title level={2} style={{ textAlign: 'center', marginBottom: '30px' }}>
+          Return, Refund and Cancellation Policy
+        </Title>
+        <Paragraph style={{ textAlign: 'center', fontSize: '18px', marginBottom: '30px' }}>
+          We strive to ensure your satisfaction. Please read our policy for details on returns, refunds, and cancellations.
+        </Paragraph>
+        <div style={{ textAlign: 'center' }}>
+          <StyledButton onClick={showModal}>Read Full Policy</StyledButton>
+        </div>
+        <Modal
+          title="Return, Refund and Cancellation Policy"
+          visible={isModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          width={800}
+        >
+          <p>Full return, refund and cancellation policy content goes here...</p>
+        </Modal>
+      </Col>
+    </Row>
+  );
+};
+
 const SubscriptionSection = () => {
   const navigate = useNavigate();
 
@@ -349,6 +517,7 @@ const Home = () => {
 
   const handleFreeTrial = () => {
     setIsModalVisible(false);
+    localStorage.setItem('isFreeTrial', 'true');
     navigate('/login', { state: { isTrial: true } });
   };
 
@@ -359,6 +528,7 @@ const Home = () => {
 
   const handleLogin = () => {
     setIsModalVisible(false);
+    localStorage.setItem('isFreeTrial', 'false');
     navigate('/login');
   };
 
@@ -627,7 +797,10 @@ const Home = () => {
           }}
         />
       </Modal>
-
+      <PrivacyPolicySection />
+      <FAQSection />
+      <TermsAndConditionsSection />
+      <RefundPolicySection />
       <Footer style={{ textAlign: "center", padding: "0px", background: 'black', color: 'white' }}>
         <AppFooter />
       </Footer>

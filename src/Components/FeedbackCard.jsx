@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, List, Typography, Empty, Tooltip, Badge } from 'antd';
 import { LikeOutlined, DislikeOutlined, StarOutlined } from '@ant-design/icons';
 
@@ -51,6 +51,17 @@ const getCategoryColor = (category) => {
 };
 
 const Feedback = ({ feedbackList }) => {
+  const [isFreeTrial, setIsFreeTrial] = useState(true);
+
+  useEffect(() => {
+    const trialStatus = localStorage.getItem('isFreeTrial') === 'false';
+    setIsFreeTrial(trialStatus);
+  }, []);
+
+  if (!isFreeTrial) {
+    return <div style={{ padding: '2rem', textAlign: 'center', marginTop : "75px" }}>You have no access. Please upgrade.</div>;
+  }
+
   return (
     <div style={{ padding: '2rem', marginTop : "75px" }}>
       <Title level={2}>Tenant Feedback</Title>
@@ -84,3 +95,4 @@ const Feedback = ({ feedbackList }) => {
 };
 
 export default Feedback;
+
