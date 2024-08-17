@@ -79,7 +79,6 @@ const MainMenu = () => {
       <Menu.Item key="reports" onClick={() => navigate("/reports")}>Analytics</Menu.Item>
       <Menu.Item key="rentDue" onClick={() => navigate("/rentDue")}>Rent Due</Menu.Item>
       <Menu.Item key="paymentHistory" onClick={() => navigate("/paymentHistory")}>Payment History</Menu.Item>
-      <Menu.Item key="complaints" onClick={() => navigate("/complaints")}>Complaints</Menu.Item>
       <Menu.Item key="profile" onClick={() => navigate("/profile")}>Profile</Menu.Item>
     </Menu>
   );
@@ -93,13 +92,13 @@ const MainMenu = () => {
       <Menu.Item key="reports" onClick={() => navigate("/reports")} icon={<TbDeviceDesktopAnalytics />}>Analytics</Menu.Item>
       <Menu.Item key="rentDue" onClick={() => navigate("/rentDue")} icon={<TbCalendarDue />}>Rent Due</Menu.Item>
       <Menu.Item key="paymentHistory" onClick={() => navigate("/paymentHistory")} icon={<GiPayMoney />}>Payment History</Menu.Item>
+      <Menu.Item key="foodMenu" onClick={() => navigate("/foodMenu")} icon={<FaBowlFood />}>Food Menu</Menu.Item>
       <Menu.Item key="complaints" onClick={() => navigate("/complaints")} icon={<GiAutoRepair />}>Complaints</Menu.Item>
-      <Menu.Item key="profile" onClick={() => navigate("/profile")} icon={<ImProfile />}>Profile</Menu.Item>
       <Menu.Item key="parcelManagement" onClick={() => navigate("/parcelManagement")} icon={<TbPackages />}>Parcel Management</Menu.Item>
       <Menu.Item key="suggestionsBox" onClick={() => navigate("/suggestionsBox")} icon={<QuestionCircleOutlined />}>Suggestions Box</Menu.Item>
       <Menu.Item key="feedback" onClick={() => navigate("/feedback")} icon={<VscFeedback />}>Feedback</Menu.Item>
       <Menu.Item key="notice" onClick={() => navigate("/notice")} icon={<NotificationOutlined />}>Notice</Menu.Item>
-      <Menu.Item key="foodMenu" onClick={() => navigate("/foodMenu")} icon={<FaBowlFood />}>Food Menu</Menu.Item>
+      <Menu.Item key="profile" onClick={() => navigate("/profile")} icon={<ImProfile />}>Profile</Menu.Item>
       <Menu.Item key="changePassword" onClick={() => navigate("/changePassword")} icon={<LockOutlined />}>Change Password</Menu.Item>
       <Menu.Item key="signOut" onClick={() => navigate("/signout")} icon={<PoweroffOutlined />}>Sign Out</Menu.Item>
     </Menu>
@@ -129,7 +128,7 @@ const MainMenu = () => {
         onClick={() => navigate("/home")}
       />
       <Drawer
-        title="Settings"
+        title="Manage"
         placement="right"
         closable
         onClose={handleSideMenuToggle}
@@ -161,7 +160,6 @@ const MainMenu = () => {
           <Menu.Item key="reports" style={getMenuItemStyle(selectedKeys, "reports")} onClick={() => navigate("/reports")}>Analytics</Menu.Item>
           <Menu.Item key="rentDue" style={getMenuItemStyle(selectedKeys, "rentDue")} onClick={() => navigate("/rentDue")}>Rent Due</Menu.Item>
           <Menu.Item key="paymentHistory" style={getMenuItemStyle(selectedKeys, "paymentHistory")} onClick={() => navigate("/paymentHistory")}>Payment History</Menu.Item>
-          <Menu.Item key="complaints" style={getMenuItemStyle(selectedKeys, "complaints")} onClick={() => navigate("/complaints")}>Complaints</Menu.Item>
           <Menu.Item key="profile" style={getMenuItemStyle(selectedKeys, "profile")} icon={<UserOutlined />} onClick={() => navigate("/profile")}>Profile</Menu.Item>
           <Tooltip title="Hostel capacity: 80%">
             <Menu.Item key="capacity" style={{ display: "flex", alignItems: "center", fontSize: "14px", color: "black", marginRight: "10px" }}>

@@ -27,7 +27,7 @@ import ForgotPassword from "./ForgotPassword";
 import AppLayout from "./Components/AppLayout";
 import Subscribe from "./Components/Subscribe";
 import Settings from "./Components/Settings";
-
+import Notice from "./Components/Notice";
 const App = () => {
   return (
     <AuthProvider>
@@ -53,6 +53,7 @@ const App = () => {
             <Route path="/signout" element={<PrivateRoute element={SignOut} />} /> 
             <Route path="/changepassword" element={<PrivateRoute element={ChangePassword} />} /> 
             <Route path="/subscribe" element={<Subscribe/>} /> 
+            <Route path="/notice" element={<PrivateRoute element={Notice} />} /> 
           </Routes>
         </AppLayout>
       </Router>
