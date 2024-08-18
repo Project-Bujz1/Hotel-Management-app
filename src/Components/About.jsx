@@ -293,9 +293,10 @@ const DeviceSwitch = styled.div`
   margin-bottom: 40px;
 `;
 
+
 const DeviceButton = styled.button`
-  background: ${props => props.active ? '#4ca1af' : 'transparent'};
-  color: ${props => props.active ? 'white' : '#4ca1af'};
+  background: ${props => props.active ? 'linear-gradient(135deg, #4ca1af 0%, #c4e0e5 100%)' : 'transparent'};
+  color: ${props => props.active ? 'white' : 'linear-gradient(135deg, #4ca1af 0%, #c4e0e5 100%)'};
   border: 2px solid #4ca1af;
   padding: 10px 20px;
   margin: 0 10px;
