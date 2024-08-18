@@ -64,7 +64,7 @@ const PaymentHistory = () => {
   padding: 0 20px;
   height: 40px;
   font-size: 14px;
-  background-color: black !important;
+  background: linear-gradient(135deg, #4ca1af 0%, #c4e0e5 100%);
   border-color: white !important;
   color: white !important;
   font-weight: 600;

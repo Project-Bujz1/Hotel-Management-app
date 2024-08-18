@@ -15,7 +15,7 @@ const { Title, Text } = Typography;
 const AppFooter = () => (
   <Footer
     style={{
-      backgroundColor: "#000",
+      background: 'linear-gradient(135deg, #4ca1af 0%, #c4e0e5 100%)',
       color: "#fff",
       padding: "40px 0",
       width: "100%",
@@ -28,7 +28,7 @@ const AppFooter = () => (
           <Title level={4} style={{ color: "#fff", marginBottom: "20px" }}>
             Smart Annoyers
           </Title>
-          <Text style={{ color: "#bbb" }}>
+          <Text style={{ color: "white" }}>
             Revolutionizing hostel management with cutting-edge software solutions.
           </Text>
           <div style={{ marginTop: "20px" }}>
@@ -53,7 +53,7 @@ const AppFooter = () => (
           <ul style={{ listStyleType: "none", padding: 0, margin: 0 }}>
             {["About Us", "Our Services", "Privacy Policy", "Affiliate Program"].map((item, index) => (
               <li key={index} style={{ marginBottom: "10px" }}>
-                <a href={`/${item.toLowerCase().replace(/\s+/g, '-')}`} style={{ color: "#bbb", textDecoration: "none", transition: "color 0.3s" }}>
+                <a href={`/${item.toLowerCase().replace(/\s+/g, '-')}`} style={{ color: "white", textDecoration: "none", transition: "color 0.3s" }}>
                   {item}
                 </a>
               </li>
@@ -66,7 +66,7 @@ const AppFooter = () => (
           </Title>
           <ul style={{ listStyleType: "none", padding: 0, margin: 0 }}>
             {["Smart Hostel Master", "Custom Software", "System Integration", "Consulting"].map((item, index) => (
-              <li key={index} style={{ marginBottom: "10px", color: "#bbb" }}>
+              <li key={index} style={{ marginBottom: "10px", color: "white" }}>
                 {item}
               </li>
             ))}
@@ -76,13 +76,13 @@ const AppFooter = () => (
           <Title level={4} style={{ color: "#fff", marginBottom: "20px" }}>
             Contact Us
           </Title>
-          <Text style={{ color: "#bbb", display: "block", marginBottom: "10px" }}>
+          <Text style={{ color: "white", display: "block", marginBottom: "10px" }}>
             <MailOutlined style={{ marginRight: "8px" }} /> info@smartannoyers.com
           </Text>
-          <Text style={{ color: "#bbb", display: "block", marginBottom: "10px" }}>
+          <Text style={{ color: "white", display: "block", marginBottom: "10px" }}>
             <PhoneOutlined style={{ marginRight: "8px" }} /> +91 95533 13334
           </Text>
-          <Text style={{ color: "#bbb" }}>
+          <Text style={{ color: "white" }}>
             Gandhi Nagar, Samalkot,<br />
             Andhra Pradesh, India
           </Text>
@@ -91,13 +91,13 @@ const AppFooter = () => (
       <Divider style={{ borderColor: "#333", margin: "30px 0" }} />
       <Row justify="space-between" align="middle">
         <Col>
-          <Text style={{ color: "#bbb" }}>
+          <Text style={{ color: "white" }}>
             © {new Date().getFullYear()} Smart Annoyers Software Solutions Pvt. Ltd. All rights reserved.
           </Text>
         </Col>
         <Col>
-          <a href="/terms" style={{ color: "#bbb", marginRight: "15px" }}>Terms of Service</a>
-          <a href="/privacy" style={{ color: "#bbb" }}>Privacy Policy</a>
+          <a href="/terms" style={{ color: "white", marginRight: "15px" }}>Terms of Service</a>
+          <a href="/privacy" style={{ color: "white" }}>Privacy Policy</a>
         </Col>
       </Row>
     </div>

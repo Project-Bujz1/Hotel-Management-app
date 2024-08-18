@@ -101,7 +101,8 @@ const RealTimeHeader = () => {
 
 
   return (
-    <Row justify="space-between" align="middle" style={{ padding: '10px 20px', background: 'black', color: 'white' }}>
+    <Row justify="space-between" align="middle" style={{ padding: '10px 20px',   background: 'linear-gradient(135deg, #4ca1af 0%, #c4e0e5 100%)'
+      , color: 'white' }}>
            <Col>
         <img src={logo} alt="Logo" style={{ height: '40px', marginRight: '10px' }} />
         <span style={{ fontSize: '18px', fontWeight: 'bold' }}>Smart Annoyers</span>
@@ -149,7 +150,7 @@ const FeatureCard = ({ feature, onClick }) => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            background: 'black',
+            background: 'linear-gradient(135deg, #4ca1af 0%, #c4e0e5 100%)',
             color: 'white',
             borderRadius: '15px',
           }}
@@ -266,7 +267,7 @@ const StepCard = styled(Card)`
 const IconWrapper = styled.div`
   font-size: 48px;
   margin-bottom: 20px;
-  color: #764ba2;
+  color: #4ca1af;
   animation: ${float} 3s ease-in-out infinite;
 `;
 
@@ -276,7 +277,7 @@ const StepNumber = styled.div`
   left: -4px;
   width: 40px;
   height: 40px;
-  background: #764ba2;
+  background: #4ca1af;
   color: white;
   border-radius: 50%;
   display: flex;
@@ -293,9 +294,9 @@ const DeviceSwitch = styled.div`
 `;
 
 const DeviceButton = styled.button`
-  background: ${props => props.active ? '#764ba2' : 'transparent'};
-  color: ${props => props.active ? 'white' : '#764ba2'};
-  border: 2px solid #764ba2;
+  background: ${props => props.active ? '#4ca1af' : 'transparent'};
+  color: ${props => props.active ? 'white' : '#4ca1af'};
+  border: 2px solid #4ca1af;
   padding: 10px 20px;
   margin: 0 10px;
   border-radius: 20px;
@@ -303,7 +304,7 @@ const DeviceButton = styled.button`
   transition: all 0.3s ease;
 
   &:hover {
-    background: #764ba2;
+    background: #4ca1af;
     color: white;
   }
 `;
@@ -408,7 +409,7 @@ const HowToUseSection = () => {
     <StyledSection>
       <Row justify="center">
         <Col xs={24} sm={24} md={20} lg={18} xl={16}>
-          <Title level={2} style={{ textAlign: 'center', marginBottom: '40px', color: '#764ba2' }}>
+          <Title level={2} style={{ textAlign: 'center', marginBottom: '40px', color: '#4ca1af' }}>
             How to Use Smart Hostel Master
           </Title>
           
@@ -452,7 +453,7 @@ const HowToUseSection = () => {
 const StyledSubscriptionCard = styled(Card)`
   border-radius: 20px;
   text-align: center;
-  background : black;
+  background: linear-gradient(135deg, #4ca1af 0%, #c4e0e5 100%);
   color: white;
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -469,9 +470,9 @@ const SubscriptionButton = styled(Button)`
   padding: 0 40px;
   height: 50px;
   font-size: 18px;
-  background-color: black !important;
+  background-color: white !important;
   border-color: white !important;
-  color: white !important;
+  color: #4ca1af !important;
   font-weight: 600;
   margin-top: 20px;
 
@@ -525,7 +526,7 @@ const PrivacyPolicySection = () => {
     <StyledSection>
       <Row justify="center" gutter={[32, 32]}>
         <Col xs={24} sm={24} md={20} lg={18} xl={16}>
-          <Title level={2} style={{ textAlign: 'center', marginBottom: '40px', color: '#FF6A88' }}>
+          <Title level={2} style={{ textAlign: 'center', marginBottom: '40px', color: '#4ca1af' }}>
             Your Privacy Matters to Us
           </Title>
           <Row gutter={[32, 32]}>
@@ -534,7 +535,7 @@ const PrivacyPolicySection = () => {
                 <IconBox>
                   <FileProtectOutlined />
                 </IconBox>
-                <Title level={4} style={{ color: '#FF6A88' }}>Protected</Title>
+                <Title level={4} style={{ color: '#4ca1af' }}>Protected</Title>
                 <Paragraph>Your data is safeguarded with industry-standard security measures.</Paragraph>
               </StyledCard>
             </Col>
@@ -543,7 +544,7 @@ const PrivacyPolicySection = () => {
                 <IconBox>
                   <EyeOutlined />
                 </IconBox>
-                <Title level={4} style={{ color: '#FF6A88' }}>Transparent</Title>
+                <Title level={4} style={{ color: '#4ca1af' }}>Transparent</Title>
                 <Paragraph>We're clear about how we collect and use your information.</Paragraph>
               </StyledCard>
             </Col>
@@ -552,7 +553,7 @@ const PrivacyPolicySection = () => {
                 <IconBox>
                   <LockOutlined />
                 </IconBox>
-                <Title level={4} style={{ color: '#FF6A88' }}>Control</Title>
+                <Title level={4} style={{ color: '#4ca1af' }}>Control</Title>
                 <Paragraph>You have full control over your personal data and preferences.</Paragraph>
               </StyledCard>
             </Col>
@@ -829,7 +830,7 @@ const PolicyCard = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  background: linear-gradient(45deg, #FF9A8B 0%, #FF6A88 55%, #FF99AC 100%);
+  background: linear-gradient(135deg, #4ca1af 0%, #c4e0e5 100%);
   border: none;
   height: 50px;
   font-size: 18px;
@@ -870,32 +871,32 @@ const RefundPolicySection = () => {
       <Row justify="center" gutter={[32, 32]}>
         <Col xs={24} sm={24} md={20} lg={18} xl={16}>
           <PolicyCard>
-            <Title level={2} style={{ textAlign: 'center', marginBottom: '40px', color: '#FF6A88' }}>
+            <Title level={2} style={{ textAlign: 'center', marginBottom: '40px', color: '#4ca1af' }}>
               Return, Refund and Cancellation Policy
             </Title>
             <Row gutter={[32, 32]}>
               <Col xs={24} md={8}>
-                <IconCircle>
+                <IconBox>
                   <RollbackOutlined />
-                </IconCircle>
+                </IconBox>
                 <Title level={4} style={{ textAlign: 'center' }}>Returns</Title>
                 <Paragraph style={{ textAlign: 'center' }}>
                   Learn about our return process and eligible items.
                 </Paragraph>
               </Col>
               <Col xs={24} md={8}>
-                <IconCircle>
+                <IconBox>
                   <DollarOutlined />
-                </IconCircle>
+                </IconBox>
                 <Title level={4} style={{ textAlign: 'center' }}>Refunds</Title>
                 <Paragraph style={{ textAlign: 'center' }}>
                   Understand our refund policy and processing times.
                 </Paragraph>
               </Col>
               <Col xs={24} md={8}>
-                <IconCircle>
+                <IconBox>
                   <CloseCircleOutlined />
-                </IconCircle>
+                </IconBox>
                 <Title level={4} style={{ textAlign: 'center' }}>Cancellations</Title>
                 <Paragraph style={{ textAlign: 'center' }}>
                   Find out how to cancel orders or subscriptions.
@@ -1166,7 +1167,7 @@ const Home = () => {
           </div>
         ))}
       </Carousel>
-      <Row justify="center" style={{ marginBottom: 40, background: 'black', padding: '40px 0' }}>
+      <Row justify="center" style={{ marginBottom: 40, background: 'linear-gradient(135deg, #4ca1af 0%, #c4e0e5 100%)', padding: '40px 0' }}>
       <Col xs={22} sm={20} md={16} lg={12} xl={10}>
         <Title level={2} style={{ textAlign: "center", color: 'white' }}>
           Our Impact
