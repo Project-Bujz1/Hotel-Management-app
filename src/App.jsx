@@ -32,6 +32,7 @@ import WeeklyFoodMenu from "./Components/WeeklyFoodMenu";
 import ParcelManagement from "./Components/ParcelManagement";
 import SuggestionBox from "./Components/SuggestionBox";
 import Feedback from "./Components/FeedbackCard";
+import HostelTourGuide from "./Components/HostelTourGuide";
 
 localStorage.setItem('isFreeTrial', 'false');
 
@@ -84,6 +85,7 @@ const App = () => {
             <Route path="/parcelManagement" element={<PrivateRoute element={ParcelManagement} />} />
             <Route path="/suggestionsBox" element={<PrivateRoute element={SuggestionBox} />} />  
             <Route path="/feedback" element={<PrivateRoute element={Feedback} feedbackList={feedbackList} />} />  
+            <Route path="/hostelTour" element={<PrivateRoute element={HostelTourGuide} />} />  
           </Routes>
         </AppLayout>
       </Router>

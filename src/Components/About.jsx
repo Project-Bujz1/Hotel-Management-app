@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Row, Col, Carousel, Button, Layout, Statistic, Card, Modal, Collapse,Tabs, Timeline } from 'antd';
+import { Typography, Row, Col, Carousel, Button, Layout, Statistic, Card, Modal, Collapse,Tabs, Timeline, Switch , Avatar, Tooltip } from 'antd';
 import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import logo from "../assets/logo-transparent-png.png";
 import hostelIcon from "../assets/left-background.png";
@@ -20,7 +20,9 @@ import {
   PlayCircleOutlined,
   FileProtectOutlined, SafetyOutlined, QuestionCircleOutlined, RollbackOutlined, DollarOutlined, CloseCircleOutlined , EyeOutlined, LockOutlined , PlusOutlined, MinusOutlined ,  UserOutlined, 
   MobileOutlined, 
-  LaptopOutlined,  
+  LaptopOutlined,
+  ClockCircleOutlined, 
+  GithubOutlined, LinkedinOutlined, TwitterOutlined 
 } from '@ant-design/icons';
 import view1 from '../assets/tech-3.png';
 import view2 from '../assets/collect-slider-2.png';
@@ -32,7 +34,7 @@ import view7 from '../assets/tech-9.webp';
 import AppFooter from './AppFooter';
 import { useNavigate } from 'react-router-dom';
 
-const { Title, Paragraph } = Typography;
+const { Title, Paragraph, Text } = Typography;
 const { Footer } = Layout;
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
@@ -181,7 +183,65 @@ const FeatureCard = ({ feature, onClick }) => {
   );
 };
 
+const TeamMember = ({ name, role, avatar, github, linkedin, twitter }) => (
+  <Card hoverable style={{ textAlign: 'center' }}>
+    <Avatar size={120} src={avatar} />
+    <Title level={4} style={{ marginTop: '20px', marginBottom: '5px' }}>{name}</Title>
+    <Text type="secondary">{role}</Text>
+    <div style={{ marginTop: '20px' }}>
+      {github && (
+        <Tooltip title="GitHub">
+          <a href={github} target="_blank" rel="noopener noreferrer">
+            <GithubOutlined style={{ fontSize: '24px', margin: '0 10px' }} />
+          </a>
+        </Tooltip>
+      )}
+      {linkedin && (
+        <Tooltip title="LinkedIn">
+          <a href={linkedin} target="_blank" rel="noopener noreferrer">
+            <LinkedinOutlined style={{ fontSize: '24px', margin: '0 10px' }} />
+          </a>
+        </Tooltip>
+      )}
+      {twitter && (
+        <Tooltip title="Twitter">
+          <a href={twitter} target="_blank" rel="noopener noreferrer">
+            <TwitterOutlined style={{ fontSize: '24px', margin: '0 10px' }} />
+          </a>
+        </Tooltip>
+      )}
+    </div>
+  </Card>
+);
 
+const AboutUsSection = () => {
+  const team = [
+    {
+      name: "Akash",
+      role: "Lead Developer",
+      avatar: "path_to_jane_image.jpg",
+      github: "https://github.com/Akash",
+      linkedin: "https://linkedin.com/in/Akash",
+      twitter: "https://twitter.com/Akash",
+    },
+    // Add more team members here
+  ];
+
+  return (
+    <div style={{ padding: '50px 0', background: '#ffffff' }}>
+      <Title level={2} style={{ textAlign: 'center', marginBottom: '50px' }}>
+        Meet the Innovators Behind Smart Hostel Master
+      </Title>
+      <Row gutter={[32, 32]} justify="center">
+        {team.map((member, index) => (
+          <Col xs={24} sm={12} md={8} lg={6} key={index}>
+            <TeamMember {...member} />
+          </Col>
+        ))}
+      </Row>
+    </div>
+  );
+};
 
 const float = keyframes`
   0% { transform: translateY(0px); }
@@ -247,6 +307,76 @@ const DeviceButton = styled.button`
     color: white;
   }
 `;
+
+const BenefitsSection = () => {
+  const [showAfter, setShowAfter] = useState(false);
+
+  const benefits = [
+    {
+      title: "Time Management",
+      before: "Hours spent on manual record-keeping",
+      after: "Automated systems save 70% of admin time",
+      icon: <ClockCircleOutlined />,
+    },
+    {
+      title: "Efficiency",
+      before: "Slow, error-prone processes",
+      after: "Streamlined operations with 99% accuracy",
+      icon: <RocketOutlined />,
+    },
+    {
+      title: "Tenant Satisfaction",
+      before: "Limited communication channels",
+      after: "24/7 digital support and feedback system",
+      icon: <TeamOutlined />,
+    },
+    {
+      title: "Insights",
+      before: "Guesswork in decision-making",
+      after: "Data-driven insights for smarter choices",
+      icon: <BarChartOutlined />,
+    },
+  ];
+
+  return (
+    <div style={{ padding: '50px 0', background: '#f0f2f5' }}>
+      <Title level={2} style={{ textAlign: 'center', marginBottom: '30px' }}>
+        Transform Your Hostel Experience
+      </Title>
+      <Row justify="center" style={{ marginBottom: '20px' }}>
+        <Switch
+          checkedChildren="After"
+          unCheckedChildren="Before"
+          onChange={setShowAfter}
+        />
+      </Row>
+      <Row gutter={[16, 16]} justify="center">
+        {benefits.map((benefit, index) => (
+          <Col xs={24} sm={12} md={6} key={index}>
+            <Card
+              hoverable
+              style={{ height: '100%', textAlign: 'center' }}
+              cover={
+                <div style={{ fontSize: '48px', padding: '24px', color: showAfter ? '#52c41a' : '#faad14' }}>
+                  {benefit.icon}
+                </div>
+              }
+            >
+              <Card.Meta
+                title={benefit.title}
+                description={
+                  <Typography.Text strong>
+                    {showAfter ? benefit.after : benefit.before}
+                    </Typography.Text>
+                }
+              />
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    </div>
+  );
+};
 
 const HowToUseSection = () => {
   const [activeDevice, setActiveDevice] = React.useState('desktop');
@@ -1246,7 +1376,9 @@ const Home = () => {
       <TermsAndConditionsSection />
       <RefundPolicySection />
       <HowToUseSection/>
-      <Footer style={{ textAlign: "center", padding: "0px", background: 'black', color: 'white' }}>
+      <BenefitsSection />
+      <AboutUsSection />
+       <Footer style={{ textAlign: "center", padding: "0px", background: 'black', color: 'white' }}>
         <AppFooter />
       </Footer>
     </div>
