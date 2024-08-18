@@ -5,7 +5,7 @@ import logo from "../assets/logo-transparent-png.png";
 import hostelIcon from "../assets/left-background.png";
 import hostel from "../assets/right-background.png";
 import CountUp from 'react-countup';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { FaRupeeSign } from "react-icons/fa";
 import YouTube from 'react-youtube';
 import {
@@ -18,7 +18,9 @@ import {
   TeamOutlined,
   SettingOutlined,
   PlayCircleOutlined,
-  FileProtectOutlined, SafetyOutlined, QuestionCircleOutlined, RollbackOutlined, DollarOutlined, CloseCircleOutlined , EyeOutlined, LockOutlined , PlusOutlined, MinusOutlined 
+  FileProtectOutlined, SafetyOutlined, QuestionCircleOutlined, RollbackOutlined, DollarOutlined, CloseCircleOutlined , EyeOutlined, LockOutlined , PlusOutlined, MinusOutlined ,  UserOutlined, 
+  MobileOutlined, 
+  LaptopOutlined,  
 } from '@ant-design/icons';
 import view1 from '../assets/tech-3.png';
 import view2 from '../assets/collect-slider-2.png';
@@ -179,6 +181,144 @@ const FeatureCard = ({ feature, onClick }) => {
   );
 };
 
+
+
+const float = keyframes`
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+`;
+
+
+const StepCard = styled(Card)`
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.9);
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  }
+`;
+
+const IconWrapper = styled.div`
+  font-size: 48px;
+  margin-bottom: 20px;
+  color: #764ba2;
+  animation: ${float} 3s ease-in-out infinite;
+`;
+
+const StepNumber = styled.div`
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 40px;
+  height: 40px;
+  background: #764ba2;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
+`;
+
+const DeviceSwitch = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+`;
+
+const DeviceButton = styled.button`
+  background: ${props => props.active ? '#764ba2' : 'transparent'};
+  color: ${props => props.active ? 'white' : '#764ba2'};
+  border: 2px solid #764ba2;
+  padding: 10px 20px;
+  margin: 0 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: #764ba2;
+    color: white;
+  }
+`;
+
+const HowToUseSection = () => {
+  const [activeDevice, setActiveDevice] = React.useState('desktop');
+
+  const steps = [
+    {
+      title: "Sign Up",
+      description: "Create your account on our website or mobile app.",
+      icon: <UserOutlined />,
+    },
+    {
+      title: "Set Up Your Hostel",
+      description: "Add your hostel details, rooms, and amenities.",
+      icon: <SettingOutlined />,
+    },
+    {
+      title: "Manage Residents",
+      description: "Add, remove, or update resident information easily.",
+      icon: <TeamOutlined />,
+    },
+    {
+      title: "Track Finances",
+      description: "Monitor rent payments, expenses, and generate reports.",
+      icon: <BarChartOutlined />,
+    },
+  ];
+
+  return (
+    <StyledSection>
+      <Row justify="center">
+        <Col xs={24} sm={24} md={20} lg={18} xl={16}>
+          <Title level={2} style={{ textAlign: 'center', marginBottom: '40px', color: '#764ba2' }}>
+            How to Use Smart Hostel Master
+          </Title>
+          
+          <DeviceSwitch>
+            <DeviceButton 
+              active={activeDevice === 'desktop'} 
+              onClick={() => setActiveDevice('desktop')}
+            >
+              <LaptopOutlined /> Desktop
+            </DeviceButton>
+            <DeviceButton 
+              active={activeDevice === 'mobile'} 
+              onClick={() => setActiveDevice('mobile')}
+            >
+              <MobileOutlined /> Mobile
+            </DeviceButton>
+          </DeviceSwitch>
+
+          <Row gutter={[32, 32]}>
+            {steps.map((step, index) => (
+              <Col xs={24} sm={12} md={12} lg={6} key={index}>
+                <StepCard>
+                  <StepNumber>{index + 1}</StepNumber>
+                  <IconWrapper>{step.icon}</IconWrapper>
+                  <Title level={4}>{step.title}</Title>
+                  <Paragraph>
+                    {activeDevice === 'desktop' 
+                      ? `On your computer: ${step.description}` 
+                      : `On your phone: ${step.description}`}
+                  </Paragraph>
+                </StepCard>
+              </Col>
+            ))}
+          </Row>
+        </Col>
+      </Row>
+    </StyledSection>
+  );
+};
+
 const StyledSubscriptionCard = styled(Card)`
   border-radius: 20px;
   text-align: center;
@@ -212,11 +352,7 @@ const SubscriptionButton = styled(Button)`
   }
 `;
 
-// const StyledSection = styled.section`
-//   background: linear-gradient(135deg, #6e8efb 0%, #a777e3 100%);
-//   padding: 80px 20px;
-//   color: #fff;
-// `;
+
 
 const StyledCard = styled.div`
   background-color: rgba(255, 255, 255, 0.1);
@@ -247,10 +383,6 @@ const StyledCard = styled.div`
 //   }
 // `;
 
-const IconWrapper = styled.div`
-  font-size: 48px;
-  margin-bottom: 20px;
-`;
 
 const PrivacyPolicySection = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -269,27 +401,27 @@ const PrivacyPolicySection = () => {
           <Row gutter={[32, 32]}>
             <Col xs={24} md={8}>
               <StyledCard>
-                <IconWrapper>
+                <IconBox>
                   <FileProtectOutlined />
-                </IconWrapper>
+                </IconBox>
                 <Title level={4} style={{ color: '#FF6A88' }}>Protected</Title>
                 <Paragraph>Your data is safeguarded with industry-standard security measures.</Paragraph>
               </StyledCard>
             </Col>
             <Col xs={24} md={8}>
               <StyledCard>
-                <IconWrapper>
+                <IconBox>
                   <EyeOutlined />
-                </IconWrapper>
+                </IconBox>
                 <Title level={4} style={{ color: '#FF6A88' }}>Transparent</Title>
                 <Paragraph>We're clear about how we collect and use your information.</Paragraph>
               </StyledCard>
             </Col>
             <Col xs={24} md={8}>
               <StyledCard>
-                <IconWrapper>
+                <IconBox>
                   <LockOutlined />
-                </IconWrapper>
+                </IconBox>
                 <Title level={4} style={{ color: '#FF6A88' }}>Control</Title>
                 <Paragraph>You have full control over your personal data and preferences.</Paragraph>
               </StyledCard>
@@ -331,97 +463,57 @@ const PrivacyPolicySection = () => {
   );
 };
 
-// const PrivacyPolicySection = () => {
-//   const [isModalVisible, setIsModalVisible] = useState(false);
 
-//   const showModal = () => {
-//     setIsModalVisible(true);
-//   };
+const FAQSection = () => {
+  const [visibleFAQs, setVisibleFAQs] = useState(3);
+  const allFAQs = [
+    { question: "What is Smart Hostel Master?", answer: "Smart Hostel Master is a comprehensive hostel management platform..." },
+    { question: "How do I get started?", answer: "You can start by signing up for our free trial..." },
+    { question: "Is my data secure?", answer: "Yes, we use industry-standard encryption and security measures..." },
+    { question: "Can I upgrade my plan later?", answer: "Absolutely! You can upgrade your plan at any time..." },
+    { question: "Do you offer customer support?", answer: "Yes, we provide 24/7 customer support..." },
+    { question: "Is there a mobile app?", answer: "Yes, we have mobile apps for both iOS and Android..." },
+  ];
 
-//   const handleOk = () => {
-//     setIsModalVisible(false);
-//   };
+  const showMore = () => {
+    setVisibleFAQs(prevVisible => 
+      prevVisible + 3 > allFAQs.length ? allFAQs.length : prevVisible + 3
+    );
+  };
 
-//   const handleCancel = () => {
-//     setIsModalVisible(false);
-//   };
+  const showLess = () => {
+    setVisibleFAQs(3);
+  };
 
-//   return (
-//     <Row justify="center" style={{ padding: '60px 20px', backgroundColor: '#f8f9fa' }}>
-//       <Col xs={24} sm={24} md={20} lg={18} xl={16}>
-//         <Title level={2} style={{ textAlign: 'center', marginBottom: '30px' }}>
-//           Privacy Policy
-//         </Title>
-//         <Paragraph style={{ textAlign: 'center', fontSize: '18px', marginBottom: '30px' }}>
-//           We value your privacy and are committed to protecting your personal information.
-//         </Paragraph>
-//         <div style={{ textAlign: 'center' }}>
-//           <StyledButton onClick={showModal}>Read Full Policy</StyledButton>
-//         </div>
-//         <Modal
-//           title="Privacy Policy"
-//           visible={isModalVisible}
-//           onOk={handleOk}
-//           onCancel={handleCancel}
-//           width={800}
-//         >
-//           <p>Full privacy policy content goes here...</p>
-//         </Modal>
-//       </Col>
-//     </Row>
-//   );
-// };
-
-// const FAQSection = () => {
-//   const [visibleFAQs, setVisibleFAQs] = useState(3);
-//   const allFAQs = [
-//     { question: "What is Smart Hostel Master?", answer: "Smart Hostel Master is a comprehensive hostel management platform..." },
-//     { question: "How do I get started?", answer: "You can start by signing up for our free trial..." },
-//     { question: "Is my data secure?", answer: "Yes, we use industry-standard encryption and security measures..." },
-//     { question: "Can I upgrade my plan later?", answer: "Absolutely! You can upgrade your plan at any time..." },
-//     { question: "Do you offer customer support?", answer: "Yes, we provide 24/7 customer support..." },
-//     { question: "Is there a mobile app?", answer: "Yes, we have mobile apps for both iOS and Android..." },
-//   ];
-
-//   const showMore = () => {
-//     setVisibleFAQs(prevVisible => 
-//       prevVisible + 3 > allFAQs.length ? allFAQs.length : prevVisible + 3
-//     );
-//   };
-
-//   const showLess = () => {
-//     setVisibleFAQs(3);
-//   };
-
-//   return (
-//     <Row justify="center" style={{ padding: '60px 20px', backgroundColor: '#ffffff' }}>
-//       <Col xs={24} sm={24} md={20} lg={18} xl={16}>
-//         <Title level={2} style={{ textAlign: 'center', marginBottom: '30px' }}>
-//           Frequently Asked Questions
-//         </Title>
-//         {allFAQs.slice(0, visibleFAQs).map((faq, index) => (
-//           <Card key={index} style={{ marginBottom: '20px' }}>
-//             <Title level={4}>{faq.question}</Title>
-//             <Paragraph>{faq.answer}</Paragraph>
-//           </Card>
-//         ))}
-//         <div style={{ textAlign: 'center', marginTop: '30px' }}>
-//           {visibleFAQs < allFAQs.length ? (
-//             <StyledButton onClick={showMore}>View More</StyledButton>
-//           ) : (
-//             <StyledButton onClick={showLess}>Show Less</StyledButton>
-//           )}
-//         </div>
-//       </Col>
-//     </Row>
-//   );
-// };
+  return (
+    <Row justify="center" style={{ padding: '60px 20px', backgroundColor: '#ffffff' }}>
+      <Col xs={24} sm={24} md={20} lg={18} xl={16}>
+        <Title level={2} style={{ textAlign: 'center', marginBottom: '30px' }}>
+          Frequently Asked Questions
+        </Title>
+        {allFAQs.slice(0, visibleFAQs).map((faq, index) => (
+          <Card key={index} style={{ marginBottom: '20px' }}>
+            <Title level={4}>{faq.question}</Title>
+            <Paragraph>{faq.answer}</Paragraph>
+          </Card>
+        ))}
+        <div style={{ textAlign: 'center', marginTop: '30px' }}>
+          {visibleFAQs < allFAQs.length ? (
+            <StyledButton onClick={showMore}>View More</StyledButton>
+          ) : (
+            <StyledButton onClick={showLess}>Show Less</StyledButton>
+          )}
+        </div>
+      </Col>
+    </Row>
+  );
+};
 
 
-const StyledSection = styled.section`
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  padding: 80px 20px;
-`;
+// const StyledSection = styled.section`
+//   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+//   padding: 80px 20px;
+// `;
 
 const FAQCard = styled(Card)`
   border-radius: 15px;
@@ -464,77 +556,12 @@ const FAQCard = styled(Card)`
 //   }
 // `;
 
-// const IconWrapper = styled.div`
-//   font-size: 24px;
-//   margin-right: 10px;
-// `;
 
-const FAQSection = () => {
-  const [visibleFAQs, setVisibleFAQs] = useState(3);
-  const allFAQs = [
-    { question: "What is Smart Hostel Master?", answer: "Smart Hostel Master is a comprehensive hostel management platform designed to streamline operations, enhance resident experience, and improve overall efficiency in hostel management." },
-    { question: "How do I get started?", answer: "You can start by signing up for our free trial on our website. Once registered, you'll have access to our platform and can begin exploring its features." },
-    { question: "Is my data secure?", answer: "Yes, we use industry-standard encryption and security measures to protect your data. We employ SSL encryption, regular security audits, and strict access controls to ensure the safety of your information." },
-    { question: "Can I upgrade my plan later?", answer: "Absolutely! You can upgrade your plan at any time through your account settings. Our flexible pricing allows you to scale your services as your needs grow." },
-    { question: "Do you offer customer support?", answer: "Yes, we provide 24/7 customer support through various channels including live chat, email, and phone. Our dedicated support team is always ready to assist you with any questions or issues." },
-    { question: "Is there a mobile app?", answer: "Yes, we have mobile apps for both iOS and Android platforms. These apps allow you to manage your hostel on-the-go, access important information, and stay connected with your residents." },
-  ];
 
-  const showMore = () => {
-    setVisibleFAQs(prevVisible => 
-      prevVisible + 3 > allFAQs.length ? allFAQs.length : prevVisible + 3
-    );
-  };
-
-  const showLess = () => {
-    setVisibleFAQs(3);
-  };
-
-  return (
-    <StyledSection>
-      <Row justify="center">
-        <Col xs={24} sm={24} md={20} lg={18} xl={16}>
-          <Title level={2} style={{ textAlign: 'center', marginBottom: '40px', color: '#1890ff' }}>
-            Frequently Asked Questions
-          </Title>
-          <Collapse 
-            expandIcon={({ isActive }) => 
-              isActive ? <MinusOutlined /> : <PlusOutlined />
-            }
-          >
-            {allFAQs.slice(0, visibleFAQs).map((faq, index) => (
-              <Panel 
-                header={
-                  <span>
-                    <IconWrapper>
-                      <QuestionCircleOutlined />
-                    </IconWrapper>
-                    {faq.question}
-                  </span>
-                } 
-                key={index}
-              >
-                <Paragraph>{faq.answer}</Paragraph>
-              </Panel>
-            ))}
-          </Collapse>
-          <div style={{ textAlign: 'center', marginTop: '30px' }}>
-            {visibleFAQs < allFAQs.length ? (
-              <StyledButton onClick={showMore}>View More FAQs</StyledButton>
-            ) : (
-              <StyledButton onClick={showLess}>Show Less</StyledButton>
-            )}
-          </div>
-        </Col>
-      </Row>
-    </StyledSection>
-  );
-};
-
-// const StyledSection = styled.section`
-//   background-color: #f0f2f5;
-//   padding: 80px 20px;
-// `;
+const StyledSection = styled.section`
+  background-color: #f0f2f5;
+  padding: 80px 20px;
+`;
 
 const GlassCard = styled.div`
   background: rgba(255, 255, 255, 0.7);
@@ -656,93 +683,7 @@ const TermsAndConditionsSection = () => {
   );
 };
 
-// const TermsAndConditionsSection = () => {
-//   const [isModalVisible, setIsModalVisible] = useState(false);
 
-//   const showModal = () => {
-//     setIsModalVisible(true);
-//   };
-
-//   const handleOk = () => {
-//     setIsModalVisible(false);
-//   };
-
-//   const handleCancel = () => {
-//     setIsModalVisible(false);
-//   };
-
-//   return (
-//     <Row justify="center" style={{ padding: '60px 20px', backgroundColor: '#e9ecef' }}>
-//       <Col xs={24} sm={24} md={20} lg={18} xl={16}>
-//         <Title level={2} style={{ textAlign: 'center', marginBottom: '30px' }}>
-//           Terms and Conditions
-//         </Title>
-//         <Paragraph style={{ textAlign: 'center', fontSize: '18px', marginBottom: '30px' }}>
-//           By using our service, you agree to the following terms and conditions.
-//         </Paragraph>
-//         <div style={{ textAlign: 'center' }}>
-//           <StyledButton onClick={showModal}>Read Full Terms</StyledButton>
-//         </div>
-//         <Modal
-//           title="Terms and Conditions"
-//           visible={isModalVisible}
-//           onOk={handleOk}
-//           onCancel={handleCancel}
-//           width={800}
-//         >
-//           <p>Full terms and conditions content goes here...</p>
-//         </Modal>
-//       </Col>
-//     </Row>
-//   );
-// };
-
-// const RefundPolicySection = () => {
-//   const [isModalVisible, setIsModalVisible] = useState(false);
-
-//   const showModal = () => {
-//     setIsModalVisible(true);
-//   };
-
-//   const handleOk = () => {
-//     setIsModalVisible(false);
-//   };
-
-//   const handleCancel = () => {
-//     setIsModalVisible(false);
-//   };
-
-//   return (
-//     <Row justify="center" style={{ padding: '60px 20px', backgroundColor: '#f8f9fa' }}>
-//       <Col xs={24} sm={24} md={20} lg={18} xl={16}>
-//         <Title level={2} style={{ textAlign: 'center', marginBottom: '30px' }}>
-//           Return, Refund and Cancellation Policy
-//         </Title>
-//         <Paragraph style={{ textAlign: 'center', fontSize: '18px', marginBottom: '30px' }}>
-//           We strive to ensure your satisfaction. Please read our policy for details on returns, refunds, and cancellations.
-//         </Paragraph>
-//         <div style={{ textAlign: 'center' }}>
-//           <StyledButton onClick={showModal}>Read Full Policy</StyledButton>
-//         </div>
-//         <Modal
-//           title="Return, Refund and Cancellation Policy"
-//           visible={isModalVisible}
-//           onOk={handleOk}
-//           onCancel={handleCancel}
-//           width={800}
-//         >
-//           <p>Full return, refund and cancellation policy content goes here...</p>
-//         </Modal>
-//       </Col>
-//     </Row>
-//   );
-// };
-
-
-// const StyledSection = styled.section`
-//   background: linear-gradient(45deg, #85FFBD 0%, #FFFB7D 100%);
-//   padding: 80px 20px;
-// `;
 
 const PolicyCard = styled.div`
   background-color: rgba(255, 255, 255, 0.9);
@@ -1304,6 +1245,7 @@ const Home = () => {
       <FAQSection />
       <TermsAndConditionsSection />
       <RefundPolicySection />
+      <HowToUseSection/>
       <Footer style={{ textAlign: "center", padding: "0px", background: 'black', color: 'white' }}>
         <AppFooter />
       </Footer>
