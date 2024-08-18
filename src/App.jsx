@@ -33,6 +33,8 @@ import ParcelManagement from "./Components/ParcelManagement";
 import SuggestionBox from "./Components/SuggestionBox";
 import Feedback from "./Components/FeedbackCard";
 
+localStorage.setItem('isFreeTrial', 'false');
+
 const feedbackList = [
   {
     id: 1,
