@@ -22,7 +22,7 @@ import {
   MobileOutlined, 
   LaptopOutlined,
   ClockCircleOutlined, 
-  GithubOutlined, LinkedinOutlined, TwitterOutlined 
+  GithubOutlined, LinkedinOutlined, TwitterOutlined,   
 } from '@ant-design/icons';
 import view1 from '../assets/tech-3.png';
 import view2 from '../assets/collect-slider-2.png';
@@ -1097,11 +1097,6 @@ const Home = () => {
     navigate('/login', { state: { isTrial: true } });
   };
 
-  const handleSubscription = () => {
-    setIsModalVisible(false);
-    navigate('/subscribe');
-  };
-
   const handleLogin = () => {
     setIsModalVisible(false);
     localStorage.setItem('isFreeTrial', 'false');
@@ -1322,7 +1317,10 @@ const Home = () => {
     <Col span={12}>
       <Card
         hoverable
-        onClick={handleFreeTrial}
+        onClick={() => {
+          handleFreeTrial();
+          localStorage.setItem('role', 'Free Trial');
+        }}
         style={{ textAlign: 'center' }}
       >
         <Title level={3}>Free Trial</Title>
@@ -1333,27 +1331,48 @@ const Home = () => {
     <Col span={12}>
       <Card
         hoverable
-        onClick={handleSubscription}
-        style={{ textAlign: 'center' }}
+        onClick={() => {
+          handleLogin();
+          localStorage.setItem('role', 'Manager');
+        }}
+          style={{ textAlign: 'center' }}
       >
-        <Title level={3}>Subscription</Title>
-        <Paragraph>Choose a plan that fits your needs and get full access.</Paragraph>
-        <StyledButton type="primary">View Plans</StyledButton>
+        <Title level={3}>Login as Manager</Title>
+        <Paragraph>Sign in to manage your hostel efficiently.</Paragraph>
+        <StyledButton size="small" type="primary">Manager Login</StyledButton>
       </Card>
     </Col>
     <Col span={12}>
       <Card
         hoverable
-        onClick={handleLogin}
+        onClick={() => {
+          handleLogin();
+          localStorage.setItem('role', 'Tenant');
+        }}
+         style={{ textAlign: 'center' }}
+      >
+        <Title level={3}>Login as Tenant</Title>
+        <Paragraph>Access your account and manage your stay.</Paragraph>
+        <StyledButton size="small" type="primary">Tenant Login</StyledButton>
+      </Card>
+    </Col>
+    <Col span={12}>
+      <Card
+        hoverable
+        onClick={() => {
+          handleLogin();
+          localStorage.setItem('role', 'Admin');
+        }}
         style={{ textAlign: 'center' }}
       >
-        <Title level={3}>Login</Title>
-        <Paragraph>Already have an account? Sign in now.</Paragraph>
-        <StyledButton size="small" type="primary">Login</StyledButton>
+        <Title level={3}>Login as Admin</Title>
+        <Paragraph>Administer the entire hostel management system.</Paragraph>
+        <StyledButton size="small" type="primary">Admin Login</StyledButton>
       </Card>
     </Col>
   </Row>
 </Modal>
+
 
       <Modal
         title="Product Demo"

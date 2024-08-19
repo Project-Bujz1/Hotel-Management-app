@@ -17,6 +17,7 @@ import { FaBowlFood } from "react-icons/fa6";
 import { MdViewCompact } from "react-icons/md";
 import { MdOutlineTour } from "react-icons/md";
 import MenuItem from "antd/es/menu/MenuItem";
+import { IoHomeOutline } from "react-icons/io5";
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -83,11 +84,13 @@ const MainMenu = () => {
       <Menu.Item key="profile" onClick={() => navigate("/profile")}>Profile</Menu.Item>
     </Menu>
   );
+  const userRole = localStorage.getItem('role'); 
 
   const sideMenuItems = (
     <Menu mode="inline">
       <Menu.Item key="settings" onClick={() => {navigate("/settings"); handleSideMenuToggle() }} icon={<SettingOutlined />}>Settings</Menu.Item>      
       <Menu.Divider />
+      <Menu.Item key="home" onClick={() => {navigate("/home");handleSideMenuToggle() }} icon={<IoHomeOutline />}>Home</Menu.Item>
       <Menu.Item key="rooms" onClick={() => {navigate("/rooms");handleSideMenuToggle() }} icon={<MdMeetingRoom />}>Rooms</Menu.Item>
       <Menu.Item key="tenants" onClick={() => {navigate("/tenants"); handleSideMenuToggle()}} icon={<FaPersonShelter />}>Tenants</Menu.Item>
       <Menu.Item key="reports" onClick={() => {navigate("/reports"); handleSideMenuToggle()}} icon={<TbDeviceDesktopAnalytics />}>Analytics</Menu.Item>
@@ -96,10 +99,41 @@ const MainMenu = () => {
       <Menu.Item key="foodMenu" onClick={() => {navigate("/foodMenu"); handleSideMenuToggle()}} icon={<FaBowlFood />}>Food Menu</Menu.Item>
       <Menu.Item key="hostelTour" onClick={() => {navigate("/hostelTour"); handleSideMenuToggle()}} icon={<MdOutlineTour />}>Hostel Tour/Guide</Menu.Item>
       <Menu.Item key="complaints" onClick={() => {navigate("/complaints"); handleSideMenuToggle()}} icon={<GiAutoRepair />}>Complaints</Menu.Item>
-      <Menu.Item key="parcelManagement" onClick={() => {navigate("/parcelManagement"); handleSideMenuToggle()}} icon={<TbPackages />}>Parcel Management</Menu.Item>
-      <Menu.Item key="suggestionsBox" onClick={() => {navigate("/suggestionsBox"); handleSideMenuToggle()}} icon={<QuestionCircleOutlined />}>Suggestions Box</Menu.Item>
-      <Menu.Item key="feedback" onClick={() => {navigate("/feedback"); handleSideMenuToggle()}} icon={<VscFeedback />}>Feedback</Menu.Item>
-      <Menu.Item key="notice" onClick={() => {navigate("/notice"); handleSideMenuToggle()}} icon={<NotificationOutlined />}>Notice</Menu.Item>
+      {userRole !== "Tenant" ? (
+        <Menu.Item key="parcelManagement" onClick={() => {navigate("/parcelManagement"); handleSideMenuToggle()}} icon={<TbPackages />}>Parcel Management</Menu.Item>   ) : (<Menu.Item key="tenantParcelManagement" onClick={() => {navigate("/tenantParcelManagement"); handleSideMenuToggle()}} icon={<TbPackages />}>Parcel Management</Menu.Item>  
+      )}      
+      
+      {userRole !== "Tenant" ? (
+        <Menu.Item key="suggestionsBox" onClick={() => {navigate("/suggestionsBox"); handleSideMenuToggle()}} icon={<QuestionCircleOutlined />}>Suggestions Box</Menu.Item>  ) : (<Menu.Item key="tenantSuggestionBox" onClick={() => {navigate("/tenantSuggestionBox"); handleSideMenuToggle()}} icon={<QuestionCircleOutlined />}>Suggestions Box</Menu.Item>  
+      )}      
+      
+      {userRole !== "Tenant" ? (
+ <Menu.Item key="feedback" onClick={() => {navigate("/feedback"); handleSideMenuToggle()}} icon={<VscFeedback />}>Feedback</Menu.Item>      ) : (<Menu.Item key="tenantFeedback" onClick={() => {navigate("/tenantFeedback"); handleSideMenuToggle()}} icon={<VscFeedback />}>Feedback</Menu.Item>  
+)}      
+
+      {userRole !== "Tenant" ? (
+        <Menu.Item
+          key="notice"
+          onClick={() => {
+            navigate("/notice");
+            handleSideMenuToggle();
+          }}
+          icon={<NotificationOutlined />}
+        >
+          Notice
+        </Menu.Item>
+      ) : (
+        <Menu.Item
+          key="tenantNotice"
+          onClick={() => {
+            navigate("/tenantNotice");
+            handleSideMenuToggle();
+          }}
+          icon={<NotificationOutlined />}
+        >
+          Notice
+        </Menu.Item>
+      )}      
       <Menu.Item key="profile" onClick={() => {navigate("/profile"); handleSideMenuToggle()}} icon={<ImProfile />}>Profile</Menu.Item>
       <Menu.Item key="changePassword" onClick={() => {navigate("/changePassword"); handleSideMenuToggle()}} icon={<LockOutlined />}>Change Password</Menu.Item>
       <Menu.Item key="signOut" onClick={() => {navigate("/signout"); handleSideMenuToggle()}} icon={<PoweroffOutlined />}>Sign Out</Menu.Item>
