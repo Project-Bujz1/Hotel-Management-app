@@ -171,9 +171,8 @@ const Home = () => {
   </Col>
 </Row>
 
-
 <Row justify="center" style={{ marginBottom: 40, padding: '40px 0px', background: '#f0f2f5' }}>
-  <Col span={22} xs={24}>
+  <Col span={22}>
     <Title level={2} style={{ textAlign: "center", marginBottom: 40 }}>Our Features</Title>
     <Carousel
       autoplay
@@ -197,21 +196,9 @@ const Home = () => {
           }
         }
       ]}
-      style={{
-        '.ant-carousel': {
-          textAlign: 'center',
-        },
-        '.ant-carousel .slick-slide': {
-          display: 'flex',
-          justifyContent: 'center',
-        },
-        '.ant-carousel .slick-dots': {
-          bottom: '-30px',
-        },
-      }}
     >
       {features.map((feature, index) => (
-        <div key={index} style={{ padding: '10px' }}>
+        <div key={index} style={{ padding: '10px', textAlign: 'center' }}>
           <FeatureCard feature={feature} onClick={() => navigate(feature.route)} />
         </div>
       ))}
@@ -220,13 +207,14 @@ const Home = () => {
 </Row>
 
 
-      <SubscriptionSection />
+
       <PrivacyPolicySection />
       <FAQSection />
       <TermsAndConditionsSection />
       <RefundPolicySection />
       <HowToUseSection />
       <BenefitsSection />
+      <SubscriptionSection />
       <AboutUsSection />
 
       <Modal

@@ -46,7 +46,7 @@ const AboutUsSection = () => {
             <Col xs={24} sm={12} md={6}>
               <GlassCard>
                 <IconBox>
-                  <InfoCircleOutlined style={{ fontSize: '32px', color: '#1890ff' }} />
+                  <InfoCircleOutlined style={{ fontSize: '32px', color: 'white' }} />
                 </IconBox>
                 <Title level={4} style={{ textAlign: 'center' }}>Customer Service</Title>
                 <Paragraph>
@@ -57,7 +57,7 @@ const AboutUsSection = () => {
             <Col xs={24} sm={12} md={6}>
               <GlassCard>
                 <IconBox>
-                  <SmileOutlined style={{ fontSize: '32px', color: '#52c41a' }} />
+                  <SmileOutlined style={{ fontSize: '32px', color: 'white' }} />
                 </IconBox>
                 <Title level={4} style={{ textAlign: 'center' }}>Customer Feedback</Title>
                 <Paragraph>
@@ -68,7 +68,7 @@ const AboutUsSection = () => {
             <Col xs={24} sm={12} md={6}>
               <GlassCard>
                 <IconBox>
-                  <LockOutlined style={{ fontSize: '32px', color: '#faad14' }} />
+                  <LockOutlined style={{ fontSize: '32px', color: 'white' }} />
                 </IconBox>
                 <Title level={4} style={{ textAlign: 'center' }}>Honesty & Due Diligence</Title>
                 <Paragraph>
@@ -79,7 +79,7 @@ const AboutUsSection = () => {
             <Col xs={24} sm={12} md={6}>
               <GlassCard>
                 <IconBox>
-                  <CheckCircleOutlined style={{ fontSize: '32px', color: '#eb2f96' }} />
+                  <CheckCircleOutlined style={{ fontSize: '32px', color: 'white' }} />
                 </IconBox>
                 <Title level={4} style={{ textAlign: 'center' }}>Quality Delivered</Title>
                 <Paragraph>

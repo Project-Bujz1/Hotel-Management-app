@@ -50,9 +50,15 @@ const BenefitsSection = () => {
             <Col xs={24} sm={12} md={6} key={index}>
               <Card
                 hoverable
-                style={{ height: '100%', textAlign: 'center' }}
-                cover={
-                  <div style={{ fontSize: '48px', padding: '24px', color: showAfter ? '#52c41a' : '#faad14' }}>
+                style={{
+                  height: '100%',
+                  textAlign: 'center',
+                  background: 'linear-gradient(135deg, #4ca1af 0%, #c4e0e5 100%)',
+                  border: 'none',
+                  borderRadius : "10px",
+                  color: '#fff'
+              }}                cover={
+                  <div style={{ fontSize: '48px', padding: '24px', color: showAfter ? 'white' : 'black' }}>
                     {benefit.icon}
                   </div>
                 }
