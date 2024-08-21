@@ -5,6 +5,7 @@ import axios from 'axios';
 import logo from "../assets/logo-transparent-png.png";
 import leftBackground from "../assets/left-background.png"; 
 import rightBackground from "../assets/right-background.png"; 
+import './Login.css'; // Import your CSS file here
 
 const { Title } = Typography;
 

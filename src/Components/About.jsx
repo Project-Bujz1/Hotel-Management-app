@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Row, Col, Carousel, Button, Layout, Statistic, Card, Modal, Collapse,Tabs, Timeline, Switch , Avatar, Tooltip } from 'antd';
+import { Typography, Row, Col, Carousel, Button, Layout, Statistic, Card, Modal, Collapse,Tabs, Timeline, Switch , Avatar, Tooltip, Space } from 'antd';
 import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import logo from "../assets/logo-transparent-png.png";
 import hostelIcon from "../assets/left-background.png";
@@ -22,15 +22,15 @@ import {
   MobileOutlined, 
   LaptopOutlined,
   ClockCircleOutlined, 
-  GithubOutlined, LinkedinOutlined, TwitterOutlined,   
+  GithubOutlined, LinkedinOutlined, TwitterOutlined,   LoginOutlined , InfoCircleOutlined, SmileOutlined, CheckCircleOutlined
 } from '@ant-design/icons';
-import view1 from '../assets/tech-3.png';
-import view2 from '../assets/collect-slider-2.png';
-import view3 from '../assets/view-slider-1.png';
-import view4 from '../assets/tech-4.jpg';
-import view5 from '../assets/tech-5.png';
-import view6 from '../assets/tech-6.png';
-import view7 from '../assets/tech-9.webp';
+import view1 from '../assets/tech-1.jpg';
+import view2 from '../assets/view-4.jpg';
+import view3 from '../assets/view-2.jpg';
+import view4 from '../assets/view-1.jpg';
+import view5 from '../assets/view-3.jpg';
+import view6 from '../assets/view-5.jpg';
+import view7 from '../assets/view-6.jpg';
 import AppFooter from './AppFooter';
 import { useNavigate } from 'react-router-dom';
 
@@ -77,43 +77,153 @@ const Typewriter = ({ text }) => {
   return <span>{displayedText}</span>;
 };
 
-// const StyledButton = styled(Button)`
-//   border-radius: 50px;
-//   padding: 0 40px;
-//   height: 50px;
-//   font-size: 18px;
-//   background-color: black !important;
-//   border-color: white !important;
-//   color: white !important;
-//   font-weight: 600;
-//   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-//   transition: all 0.15s ease;
 
-//   &:hover {
-//     background-color: white !important;
-//     border-color: black !important;
-//     color: black !important;
-//   }
-// `;
+  const RealTimeHeader = () => {
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const navigate = useNavigate();
 
 
-const RealTimeHeader = () => {
+    const showModal = () => {
+      setIsModalVisible(true);
+    };
+    const handleModalCancel = () => {
+      setIsModalVisible(false);
+    };
 
+    const handleFreeTrial = () => {
+      setIsModalVisible(false);
+      localStorage.setItem('isFreeTrial', 'true');
+      navigate('/login', { state: { isTrial: true } });
+    };
 
-  return (
-    <Row justify="space-between" align="middle" style={{ padding: '10px 20px',   background: 'linear-gradient(135deg, #4ca1af 0%, #c4e0e5 100%)'
-      , color: 'white' }}>
-           <Col>
-        <img src={logo} alt="Logo" style={{ height: '40px', marginRight: '10px' }} />
-        <span style={{ fontSize: '18px', fontWeight: 'bold' }}>Smart Annoyers</span>
+    const handleLogin = () => {
+      setIsModalVisible(false);
+      localStorage.setItem('isFreeTrial', 'false');
+      navigate('/login');
+    };
+
+    return (
+      <>
+      <Row
+        justify="space-between"
+        align="middle"
+        style={{
+          padding: '10px 20px',
+          background:
+            'linear-gradient(135deg, #4ca1af 0%, #c4e0e5 100%)',
+          color: 'white'
+        }}
+      >
+        <Col>
+          <img
+            src={logo}
+            alt="Logo"
+            style={{ height: '40px', marginRight: '10px' }}
+          />
+          <span style={{ fontSize: '18px', fontWeight: 'bold' }}>
+            Smart Annoyers
+          </span>
+        </Col>
+        <Col>
+  <Button
+    onClick={showModal}
+    type="primary"
+    shape="round"
+    size="small"
+    icon={<LoginOutlined />}
+    style={{
+      color: "black",
+      background: "white",
+      border: "none",
+      boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+      transition: "all 0.3s ease",
+      marginLeft: '850px',
+      cursor: "pointer", // Cursor effect
+    }}
+    className="styled-button"
+  >
+  </Button>
+        </Col>
+        <Col>
+          <img
+            src={hostelIcon}
+            alt="Hostel-Logo"
+            style={{ height: '40px', marginRight: '10px' }}
+          />
+          <span style={{ fontSize: '18px', fontWeight: 'bold' }}>
+            Smart Hostel Master
+          </span>
+        </Col>
+      </Row>
+      <Modal
+    title="Choose Your Path"
+    visible={isModalVisible}
+    onCancel={handleModalCancel}
+    footer={null}
+  >
+    <Row gutter={[16, 16]} justify="center">
+      <Col span={12}>
+        <Card
+          hoverable
+          onClick={() => {
+            handleFreeTrial();
+            localStorage.setItem('role', 'Free Trial');
+          }}
+          style={{ textAlign: 'center' }}
+        >
+          <Title level={3}>Free Trial</Title>
+          <Paragraph>Try our platform for 14 days, no credit card required.</Paragraph>
+          <StyledButton size="small" type="primary">Start Free Trial</StyledButton>
+        </Card>
       </Col>
-      <Col>
-      <img src={hostelIcon} alt="Hostel-Logo" style={{ height: '40px', marginRight: '10px' }} />
-        <span style={{ fontSize: '18px', fontWeight: 'bold' }}>Smart Hostel Master</span>
+      <Col span={12}>
+        <Card
+          hoverable
+          onClick={() => {
+            handleLogin();
+            localStorage.setItem('role', 'Manager');
+          }}
+            style={{ textAlign: 'center' }}
+        >
+          <Title level={3}>Login as Manager</Title>
+          <Paragraph>Sign in to manage your hostel efficiently.</Paragraph>
+          <StyledButton size="small" type="primary">Manager Login</StyledButton>
+        </Card>
+      </Col>
+      <Col span={12}>
+        <Card
+          hoverable
+          onClick={() => {
+            handleLogin();
+            localStorage.setItem('role', 'Tenant');
+          }}
+          style={{ textAlign: 'center' }}
+        >
+          <Title level={3}>Login as Tenant</Title>
+          <Paragraph>Access your account and manage your stay.</Paragraph>
+          <StyledButton size="small" type="primary">Tenant Login</StyledButton>
+        </Card>
+      </Col>
+      <Col span={12}>
+        <Card
+          hoverable
+          onClick={() => {
+            handleLogin();
+            localStorage.setItem('role', 'Admin');
+          }}
+          style={{ textAlign: 'center' }}
+        >
+          <Title level={3}>Login as Admin</Title>
+          <Paragraph>Administer the entire hostel management system.</Paragraph>
+          <StyledButton size="small" type="primary">Admin Login</StyledButton>
+        </Card>
       </Col>
     </Row>
-  );
-};
+  </Modal>
+      </>
+    );
+  };
+
 const FeatureCard = ({ feature, onClick }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -220,19 +330,85 @@ const AboutUsSection = () => {
     {
       name: "Akash",
       role: "Lead Developer",
-      avatar: "path_to_jane_image.jpg",
+      avatar: "path_to_akash_image.jpg",
       github: "https://github.com/Akash",
       linkedin: "https://linkedin.com/in/Akash",
       twitter: "https://twitter.com/Akash",
     },
+    {
+      name: "Akash",
+      role: "Lead Developer",
+      avatar: "path_to_akash_image.jpg",
+      github: "https://github.com/Akash",
+      linkedin: "https://linkedin.com/in/Akash",
+      twitter: "https://twitter.com/Akash",
+    },
+    {
+      name: "Akash",
+      role: "Lead Developer",
+      avatar: "path_to_akash_image.jpg",
+      github: "https://github.com/Akash",
+      linkedin: "https://linkedin.com/in/Akash",
+      twitter: "https://twitter.com/Akash",
+    },
+    
     // Add more team members here
   ];
 
   return (
-    <div style={{ padding: '50px 0', background: '#ffffff' }}>
-      <Title level={2} style={{ textAlign: 'center', marginBottom: '50px' }}>
-        Meet the Innovators Behind Smart Hostel Master
-      </Title>
+    <StyledSection style={{ background: '#f5f5f5' }}>
+      <div style={{ textAlign: 'center', padding: '50px 0' }}>
+        <Title level={2}>About Us</Title>
+        <Paragraph style={{ marginBottom: '50px' }}>
+          We innovate every day to make life easier for our customers.
+        </Paragraph>
+        <Row gutter={[32, 32]} justify="center">
+          <Col xs={24} sm={12} md={6}>
+            <GlassCard>
+              <IconBox>
+                <InfoCircleOutlined style={{ fontSize: '32px', color: '#1890ff' }} />
+              </IconBox>
+              <Title level={4} style={{ textAlign: 'center' }}>Customer Service</Title>
+              <Paragraph>
+                Customer Service And Delight Are Smart Annoyers's Core Values.
+              </Paragraph>
+            </GlassCard>
+          </Col>
+          <Col xs={24} sm={12} md={6}>
+            <GlassCard>
+              <IconBox>
+                <SmileOutlined style={{ fontSize: '32px', color: '#52c41a' }} />
+              </IconBox>
+              <Title level={4} style={{ textAlign: 'center' }}>Customer Feedback</Title>
+              <Paragraph>
+                Smart Annoyers is developed with customer feedback and ideas, fitting well with the co-living industry.
+              </Paragraph>
+            </GlassCard>
+          </Col>
+          <Col xs={24} sm={12} md={6}>
+            <GlassCard>
+              <IconBox>
+                <LockOutlined style={{ fontSize: '32px', color: '#faad14' }} />
+              </IconBox>
+              <Title level={4} style={{ textAlign: 'center' }}>Honesty & Due Diligence</Title>
+              <Paragraph>
+                All our contracts and agreements are verified and certified. We ensure data protection and privacy.
+              </Paragraph>
+            </GlassCard>
+          </Col>
+          <Col xs={24} sm={12} md={6}>
+            <GlassCard>
+              <IconBox>
+                <CheckCircleOutlined style={{ fontSize: '32px', color: '#eb2f96' }} />
+              </IconBox>
+              <Title level={4} style={{ textAlign: 'center' }}>Quality Delivered</Title>
+              <Paragraph>
+                World-class quality output is provided 24x7 with a customer-centric focus.
+              </Paragraph>
+            </GlassCard>
+          </Col>
+        </Row>
+        <Title level={3} style={{ marginTop: '50px' }}>Meet the Innovators Behind Smart Hostel Master </Title>
       <Row gutter={[32, 32]} justify="center">
         {team.map((member, index) => (
           <Col xs={24} sm={12} md={8} lg={6} key={index}>
@@ -241,6 +417,7 @@ const AboutUsSection = () => {
         ))}
       </Row>
     </div>
+  </StyledSection>
   );
 };
 
@@ -498,22 +675,6 @@ const StyledCard = styled.div`
   }
 `;
 
-// const StyledButton = styled(Button)`
-//   background-color: #fff;
-//   color: #6e8efb;
-//   border: none;
-//   height: 50px;
-//   font-size: 18px;
-//   font-weight: bold;
-//   border-radius: 25px;
-//   padding: 0 30px;
-//   transition: all 0.3s ease;
-
-//   &:hover {
-//     background-color: #a777e3;
-//     color: #fff;
-//   }
-// `;
 
 
 const PrivacyPolicySection = () => {
@@ -565,7 +726,7 @@ const PrivacyPolicySection = () => {
         </Col>
       </Row>
       <Modal
-        title="Smart Annoyers Software Solutions Privacy Policy"
+        title="Smart Annoyers Privacy Policy"
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -578,16 +739,57 @@ const PrivacyPolicySection = () => {
       >
         <Collapse accordion>
           <Panel header="Information Collection and Use" key="1">
-            <p>Smart Annoyers Software Solutions collects and uses personal information for providing and improving our services. We do not share your information with third parties except as described in this Privacy Policy.</p>
+            <p>
+              Smart Annoyers technologies pvt ltd built the Hostel Master. This SERVICE is provided by Smart Annoyers technologies pvt ltd at no cost to end user and is intended for use as is.
+            </p>
+            <p>
+              Smart Annoyers is used by Administrators of University & Private Hostels. The hostel administration need identification data for a better experience & safety of other residents, while using our Service, they ask for following data, however not all data is mandatory always. We may require you to provide us with certain personally identifiable information, including but not limited to Name, mobile number, address, location (ONLY Limited For emergency support by your community).
+            </p>
+            <p>
+              Resident's Profile image: For identification and mandated by all governments, these hostels may ask you to upload your profile image.
+            </p>
+            <p>
+              Academic information: The University hostel administrators may ask you to update your academic information like course, branch, year for identification & communication purposes.
+            </p>
+            <p>
+              The information that we request will be retained by us and used as described in this privacy policy. At NO stage of business, we share or exchange your information to vendor or third party.
+            </p>
           </Panel>
-          <Panel header="Data Protection" key="2">
-            <p>We implement robust security measures to protect your personal information from unauthorized access, alteration, disclosure, or destruction.</p>
+          <Panel header="Log Data - ERROR / Technical faults" key="2">
+            <p>
+              We inform you that during use of our Service, in case of an error in the app we collect data and information (through internal debugging solution) on your phone called Log Data. This is a worldwide acceptable & standard requirement for all technical/Software solutions.
+            </p>
+            <p>
+              This Log Data may include information such as your device Internet Protocol (“IP”) address, device name, operating system version, the configuration of the app when utilizing our Service, the time and date of your use of the Service, and other statistics. This information remains confidential always.
+            </p>
           </Panel>
-          <Panel header="Your Rights" key="3">
-            <p>You have the right to access, correct, or delete your personal information. Contact us if you wish to exercise these rights or have any questions about our privacy practices.</p>
+          <Panel header="Security" key="3">
+            <p>
+              We safeguard your Personal Information and use commercially acceptable means of protecting it. Force Majeure clause is applicable for circumstances unforeseen in commercial, natural distress/Disasters, and Government interventions.
+            </p>
           </Panel>
-          <Panel header="Policy Updates" key="4">
-            <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.</p>
+          <Panel header="Links to Other Sites" key="4">
+            <p>
+              This Service may contain links to external sites. If you click on a third-party link, you will be redirected to that site/online services. External sites are not operated by us and we strongly advise you to review the Privacy Policy of these external vendor services. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services.
+            </p>
+            <p>
+              Smart Annoyers does not share information with third-party /external websites.
+            </p>
+          </Panel>
+          <Panel header="Children’s Privacy" key="5">
+            <p>
+              These Services do not address anyone under the age of 13. We do not knowingly collect personally identifiable information from children under 13. In the case we discover that a child under 13 has provided us with personal information, we immediately delete this from our servers. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact us so that we will be able to do necessary actions.
+            </p>
+          </Panel>
+          <Panel header="Changes to This Privacy Policy" key="6">
+            <p>
+              We may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. We will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately after they are posted on this page.
+            </p>
+          </Panel>
+          <Panel header="Contact Us" key="7">
+            <p>
+              If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us.
+            </p>
           </Panel>
         </Collapse>
       </Modal>
@@ -641,12 +843,6 @@ const FAQSection = () => {
   );
 };
 
-
-// const StyledSection = styled.section`
-//   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-//   padding: 80px 20px;
-// `;
-
 const FAQCard = styled(Card)`
   border-radius: 15px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
@@ -671,23 +867,6 @@ const FAQCard = styled(Card)`
   }
 `;
 
-// const StyledButton = styled(Button)`
-//   background: linear-gradient(45deg, #1890ff, #36d1dc);
-//   border: none;
-//   height: 50px;
-//   font-size: 18px;
-//   font-weight: bold;
-//   border-radius: 25px;
-//   padding: 0 30px;
-//   transition: all 0.3s ease;
-//   color: #fff;
-
-//   &:hover {
-//     opacity: 0.9;
-//     transform: scale(1.05);
-//   }
-// `;
-
 
 
 const StyledSection = styled.section`
@@ -703,23 +882,6 @@ const GlassCard = styled.div`
   backdrop-filter: blur(4px);
   border: 1px solid rgba(255, 255, 255, 0.18);
 `;
-
-// const StyledButton = styled(Button)`
-//   background: linear-gradient(90deg, #4ca1af 0%, #c4e0e5 100%);
-//   border: none;
-//   height: 50px;
-//   font-size: 18px;
-//   font-weight: bold;
-//   border-radius: 25px;
-//   padding: 0 30px;
-//   transition: all 0.3s ease;
-//   color: #fff;
-
-//   &:hover {
-//     opacity: 0.9;
-//     transform: scale(1.05);
-//   }
-// `;
 
 const IconBox = styled.div`
   display: flex;
@@ -754,27 +916,27 @@ const TermsAndConditionsSection = () => {
                 <IconBox>
                   <FileProtectOutlined />
                 </IconBox>
-                <Title level={4} style={{ textAlign: 'center' }}>Legal Agreement</Title>
+                <Title level={4} style={{ textAlign: 'center' }}>License</Title>
                 <Paragraph style={{ textAlign: 'center' }}>
-                  Our terms form a legally binding agreement between you and Smart Annoyers Software Solutions.
+                  Any use of Smart Annoyers logo is prohibited without prior approval from Smart Annoyers Technologies. Smart Annoyers applications and its source code are proprietary and not distributable under any circumstances.
                 </Paragraph>
               </Col>
               <Col xs={24} md={8}>
                 <IconBox>
                   <SafetyOutlined />
                 </IconBox>
-                <Title level={4} style={{ textAlign: 'center' }}>User Responsibilities</Title>
+                <Title level={4} style={{ textAlign: 'center' }}>Subscription & Payment</Title>
                 <Paragraph style={{ textAlign: 'center' }}>
-                  Learn about your rights and responsibilities when using our services.
+                  A valid subscription is required to use Smart Annoyers. You authorize us to remind you about subscription expiry. Refunds are not provided for subscription fees.
                 </Paragraph>
               </Col>
               <Col xs={24} md={8}>
                 <IconBox>
                   <QuestionCircleOutlined />
                 </IconBox>
-                <Title level={4} style={{ textAlign: 'center' }}>FAQ</Title>
+                <Title level={4} style={{ textAlign: 'center' }}>Support</Title>
                 <Paragraph style={{ textAlign: 'center' }}>
-                  Find answers to commonly asked questions about our terms and conditions.
+                  Our support team is here to assist you. For emergencies, contact the CEO directly. We aim to provide the best customer experience.
                 </Paragraph>
               </Col>
             </Row>
@@ -797,17 +959,17 @@ const TermsAndConditionsSection = () => {
         ]}
       >
         <Tabs defaultActiveKey="1">
-          <TabPane tab="General Terms" key="1">
-            <p>These terms and conditions outline the rules and regulations for the use of Smart Annoyers Software Solutions' services.</p>
+          <TabPane tab="License" key="1">
+            <p>Hostel Master and its source code are property of Smart Annoyers Technologies. Any use of the Smart Annoyers logo is prohibited without prior approval. The application and its APIs are not for public use; a subscription is required for access.</p>
           </TabPane>
-          <TabPane tab="User Agreement" key="2">
-            <p>By accessing our services, you agree to be bound by these terms and conditions, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws.</p>
+          <TabPane tab="Subscription & Payment" key="2">
+            <p>A valid subscription is required for use. You authorize Smart Annoyers to remind you about upcoming expirations. Renewals should be done in advance. Refunds are not provided except for failed transactions, which will be handled within 7 working days.</p>
           </TabPane>
-          <TabPane tab="Intellectual Property" key="3">
-            <p>The content, features, and functionality of our services are owned by Smart Annoyers Software Solutions and are protected by international copyright, trademark, patent, trade secret, and other intellectual property laws.</p>
+          <TabPane tab="Support" key="3">
+            <p>We are committed to providing the best support. Contact our support team for assistance. In emergencies, you can email the CEO directly for urgent matters.</p>
           </TabPane>
-          <TabPane tab="Limitations" key="4">
-            <p>In no event shall Smart Annoyers Software Solutions be liable for any damages arising out of the use or inability to use our services.</p>
+          <TabPane tab="Limitations of Liability" key="4">
+            <p>Smart Annoyers aims to offer the best customer experience and technical support. However, we limit our liability for any damages arising from the use or inability to use our services.</p>
           </TabPane>
         </Tabs>
       </Modal>
@@ -1138,7 +1300,7 @@ const Home = () => {
             >
               <h2
                 style={{
-                  fontSize: "4rem",
+                  fontSize: "3rem",
                   fontWeight: "900",
                   textTransform: "uppercase",
                   letterSpacing: "2px",
