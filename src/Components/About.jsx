@@ -24,7 +24,6 @@ import view4 from '../assets/view-1.jpg';
 import view5 from '../assets/view-3.jpg';
 import view6 from '../assets/view-5.jpg';
 import view7 from '../assets/view-6.jpg';
-import "./About.css"
 
 const { Title } = Typography;
 const { Footer } = Layout;
